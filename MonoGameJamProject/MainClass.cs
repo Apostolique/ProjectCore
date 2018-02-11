@@ -9,17 +9,25 @@ namespace MonoGameJamProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Board board;
+        Tower tower;
+        Minion minion;
 
         public MainClass()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            Window.AllowUserResizing = true;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Utility.Window = Window;
+            board = new Board(10, 5);
+            tower = new Tower(3, 2);
+            minion = new Minion(1.7f, 4.2f);
 
             base.Initialize();
         }
@@ -43,10 +51,13 @@ namespace MonoGameJamProject
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            board.Draw(spriteBatch);
+            tower.Draw(spriteBatch, board.BoardRatio);
+            minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
             spriteBatch.End();
 
             base.Draw(gameTime);
