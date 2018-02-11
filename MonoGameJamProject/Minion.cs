@@ -20,7 +20,8 @@ namespace MonoGameJamProject
         }
 
         public void Draw(SpriteBatch s, float size, int gridSize) {
-            s.FillRectangle(new RectangleF(x * gridSize, y * gridSize, size * gridSize, size * gridSize), Color.Green);
+            float halfSize = size * gridSize / 2f;
+            s.FillRectangle(new RectangleF(x * gridSize - halfSize, y * gridSize - halfSize, size * gridSize, size * gridSize), Color.Green);
         }
     }
 }
