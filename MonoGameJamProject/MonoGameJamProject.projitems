@@ -9,6 +9,6 @@
     <Import_RootNamespace>MonoGameJamProject</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MainClass.cs" />
   </ItemGroup>
 </Project>

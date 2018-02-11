@@ -4,14 +4,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MonoGameJamProject
 {
-    public class Game1 : Game
+    public class MainClass : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Texture2D image;
 
-        public Game1()
+        public MainClass()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -30,7 +29,6 @@ namespace MonoGameJamProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            image = Content.Load<Texture2D>("UselessImage");
         }
 
         protected override void Update(GameTime gameTime)
@@ -49,7 +47,6 @@ namespace MonoGameJamProject
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(image, new Vector2(100, 100), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
