@@ -12,6 +12,7 @@ namespace MonoGameJamProject
         Board board;
         Tower tower;
         Minion minion;
+        Path path;
 
         public MainClass()
         {
@@ -26,8 +27,16 @@ namespace MonoGameJamProject
             // TODO: Add your initialization logic here
             Utility.Window = Window;
             board = new Board(10, 5);
-            tower = new Tower(3, 2);
-            minion = new Minion(1.7f, 4.2f);
+            tower = new Tower(2, 2);
+            minion = new Minion(1.7f, 3.5f);
+            path = new Path();
+            path.Add(new Point(0, 0));
+            path.Add(new Point(1, 0));
+            path.Add(new Point(1, 1));
+            path.Add(new Point(1, 2));
+            path.Add(new Point(1, 3));
+            path.Add(new Point(2, 3));
+            path.Add(new Point(2, 4));
 
             base.Initialize();
         }
@@ -56,6 +65,7 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             board.Draw(spriteBatch);
+            path.Draw(spriteBatch, board.BoardRatio);
             tower.Draw(spriteBatch, board.BoardRatio);
             minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
             spriteBatch.End();
