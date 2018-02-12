@@ -85,6 +85,20 @@ namespace MonoGameJamProject
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
+            foreach(Tower t in towerList)
+            {
+                Tile currenttile = board.GetTile(new Point(t.X, t.Y));
+                if (board.IsTileOnPath(currenttile))
+                    t.IsDisabled = true;
+                else
+                    t.IsDisabled = false;
+            }
+
+            foreach(Minion m in minionList)
+            {
+                if (m.dead)
+                    minionList.Remove(m);
+            }
             if (input.MouseLeftButtonPressed) {
                 board.ClearPaths();
                 board.GeneratePath();
@@ -141,15 +155,8 @@ namespace MonoGameJamProject
                 //TODO: check if there is no path on this position, and if there isn't place the tower
                 else
                 {
-                    // for now it just places the tower wherever you click
-                    foreach(Tower t in towerList)
-                    {
-                        if (t == selectedTower)
-                            continue;
-                        if(t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
-                            return;
-                    }
-
+                    if (!IsValidTileForTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y))
+                        return;
                     AddTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y,previewTower.type);
                     towerList.Remove(selectedTower);
                     previewTower = null;
@@ -157,6 +164,26 @@ namespace MonoGameJamProject
             }
         }
 
+        /// <summary>
+        /// Checks if the given position is valid for a tower on the game grid
+        /// </summary>
+        /// <param name="x">x coordinate to check</param>
+        /// <param name="y">y coordinate to check</param>
+        /// <returns>whether the given position is valid for the tower</returns>
+        private bool IsValidTileForTower(int x, int y)
+        {
+            foreach (Tower t in towerList)
+            {
+                if (t == selectedTower)
+                    continue;
+                if (t.X == x && t.Y == y)
+                    return false;
+            }
+            Tile currenttile = board.GetTile(new Point(x, y));
+            if (board.IsTileOnPath(currenttile))
+                return false;
+            return true;
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -170,7 +197,7 @@ namespace MonoGameJamProject
             if (previewTower != null)
             {
                 if (IsWithinDimensions())
-                    hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange);
+                    hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             }
 

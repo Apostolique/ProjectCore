@@ -14,6 +14,8 @@ namespace MonoGameJamProject
     {
         float x;
         float y;
+        float hp;
+        public bool dead;
         public Minion(float iX, float iY)
         {
             x = iX;
@@ -25,6 +27,16 @@ namespace MonoGameJamProject
             float halfSize = size * gridSize / 2f;
             s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize) - halfSize, Utility.GameToScreen(y, gridSize) - halfSize, size * gridSize, size * gridSize), Color.Green);
         }
+
+        public void TakeDamage(int damage)
+        {
+            this.hp -= damage;
+            if(hp < 0)
+            {
+                dead = true;
+            }
+        }
+
     }
 }
 
