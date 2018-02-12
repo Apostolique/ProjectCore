@@ -15,7 +15,6 @@ namespace MonoGameJamProject
     {
         List<Path> paths;
         Tile[,] tiles;
-
         public Board(int iWidth, int iHeight) {
             Width = iWidth;
             Height = iHeight;

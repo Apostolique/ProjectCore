@@ -4,11 +4,10 @@ namespace MonoGameJamProject.Towers
 {
     class Sniper : Tower
     {
+        private const int minimumRange = 3;
         public Sniper(int iX, int iY) : base(iX, iY)
         {
-            towerColor = Color.DeepPink;
-            type = Utility.TowerType.Sniper;
-            minimumRange = 3;
+            towerColor = Color.Blue;
         }
     }
 }

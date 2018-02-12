@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
 
 namespace MonoGameJamProject.Towers
 {
@@ -8,7 +6,9 @@ namespace MonoGameJamProject.Towers
     {
         public Shotgun(int iX, int iY) : base(iX, iY)
         {
-
+            towerColor = Color.SaddleBrown;
+            type = Utility.TowerType.Shotgun;
+            minimumRange = 1;
         }
     }
 }

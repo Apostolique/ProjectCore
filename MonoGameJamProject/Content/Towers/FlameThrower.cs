@@ -7,8 +7,6 @@ namespace MonoGameJamProject.Towers
         public FlameThrower(int iX, int iY) : base(iX, iY)
         {
             towerColor = Color.Orange;
-            type = Utility.TowerType.FlameThrower;
-            minimumRange = 0;
         }
     }
 }
