@@ -112,10 +112,21 @@ namespace MonoGameJamProject
 
             paths.Add(newPath);
         }
-        private bool isEdge(Tile t)
+        public bool IsTileOnPath(Tile tile)
+        {
+            foreach (Path p in paths)
+            {
+                if (p.Contains(tile))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool isEdge(Tile tile)
         {
             HashSet<Tile> edges = getEdgeTiles();
-            return edges.Contains(t);
+            return edges.Contains(tile);
         }
         private int getTileValue(Tile t, Tile start, int length, int preferedSize, Path p) {
             int tileValue = 0;
