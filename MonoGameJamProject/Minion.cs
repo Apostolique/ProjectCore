@@ -17,9 +17,10 @@ namespace MonoGameJamProject
             get; set;
         }
         float speed;
-
         Vector2 start;
+        CoolDownTimer damageClock, onFireClock;
         Vector2 target;
+        private const int fireDamage = 6;
         float distance;
         float inBetween;
         public bool dead;
@@ -29,13 +30,39 @@ namespace MonoGameJamProject
         {
             //FIXME: The speed and movement is really wrong.
             position = new Vector2(iX, iY);
+            damageClock = new CoolDownTimer(0.5F);
+            onFireClock = new CoolDownTimer(5F);
             speed = 0.005f;
             distance = 0;
             inBetween = 0;
+            Reset();
+            damageClock.IsExpired = true;
         }
         public bool IsMoving => inBetween < distance;
+
+        public void Reset()
+        {
+            damageClock.Reset();
+            onFireClock.Reset();
+        }
         public void Update(GameTime gameTime)
         {
+            damageClock.Update(gameTime);
+            if (onFireClock.IsExpired)
+            {
+                IsOnFire = false;
+                onFireClock.Reset();
+            }
+            if (IsOnFire)
+            {
+                onFireClock.Update(gameTime);
+                if (damageClock.IsExpired)
+                {
+                    this.TakeDamage(fireDamage);
+                    damageClock.Reset();
+                }
+            }
+
             if (IsMoving) {
                 inBetween += speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 inBetween = Math.Min(distance, inBetween);
@@ -63,6 +90,11 @@ namespace MonoGameJamProject
             {
                 dead = true;
             }
+        }
+
+        public bool IsOnFire
+        {
+            get; set;
         }
 
     }

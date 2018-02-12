@@ -13,12 +13,14 @@ namespace MonoGameJamProject.Towers
             type = Utility.TowerType.FlameThrower;
             minRange = 0;
             maxRange = 1;
+            damage = 0;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
             GenerateDamageTiles();
-            base.Update(gameTime);
+            CheckDamageTiles(iMinionList);
+            base.Update(gameTime, iMinionList);
         }
 
         public void GenerateDamageTiles()
@@ -39,7 +41,7 @@ namespace MonoGameJamProject.Towers
                 foreach(Point p in damageTiles)
                 {
                     if (p.X == m.position.X && p.Y == m.position.Y)
-                        m.TakeDamage(damage);
+                        m.IsOnFire = true;
                 }
             }
         }
