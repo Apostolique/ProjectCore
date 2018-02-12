@@ -8,7 +8,8 @@ namespace MonoGameJamProject.Towers
         {
             towerColor = Color.SaddleBrown;
             type = Utility.TowerType.Shotgun;
-            minimumRange = 1;
+            minRange = 1;
+            maxRange = 2;
         }
     }
 }

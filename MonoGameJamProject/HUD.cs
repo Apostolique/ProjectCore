@@ -18,10 +18,10 @@ namespace MonoGameJamProject
         public void DrawPlacementIndicator(SpriteBatch s, int minimumRange)
         {
             s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
-            DrawMinimumRangeIndicators(s, new Point(input.MouseToGameGrid(gridSize).X, input.MouseToGameGrid(gridSize).Y), minimumRange, 0.4f);
+            DrawRangeIndicators(s, new Point(input.MouseToGameGrid(gridSize).X, input.MouseToGameGrid(gridSize).Y), minimumRange, 0.4f);
         }
 
-        public void DrawMinimumRangeIndicators(SpriteBatch s, Point origin, int minimumRange, float transparency = 0.1f)
+        public void DrawRangeIndicators(SpriteBatch s, Point origin, int minimumRange, float transparency = 0.1f)
         {
             for (int i = -minimumRange; i <= minimumRange; i++)
             {

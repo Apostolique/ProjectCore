@@ -14,7 +14,7 @@ namespace MonoGameJamProject.Towers
     {
         private const float highlightOffset = 0.07F;
         protected Color towerColor;
-        protected int minimumRange;
+        protected int minRange, maxRange;
         public Utility.TowerType type;
         int x;
         int y;
@@ -41,7 +41,7 @@ namespace MonoGameJamProject.Towers
 
         protected bool IsWithinRange(int iX, int iY)
         {
-            if (Math.Abs(iX) > minimumRange || Math.Abs(iY) > minimumRange)
+            if (Math.Abs(iX) > minRange || Math.Abs(iY) > minRange)
                 return false;
             return true;
         }
@@ -61,7 +61,12 @@ namespace MonoGameJamProject.Towers
 
         public int MinimumRange
         {
-            get { return minimumRange; }
+            get { return minRange; }
+        }
+
+        public int MaximumRange
+        {
+            get { return maxRange; }
         }
     }
 }
