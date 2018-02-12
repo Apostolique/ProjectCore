@@ -115,7 +115,9 @@ namespace MonoGameJamProject
 
             if (input.MouseMiddleButtonPressed)
             {
-                board.ClearPaths();
+                if (board.paths.Count > 3) {
+                    board.ClearPaths();
+                }
                 board.GeneratePath();
             }
             if (input.MouseLeftButtonPressed)
@@ -209,6 +211,7 @@ namespace MonoGameJamProject
             spriteBatch.Begin();
             board.Draw(spriteBatch);
             board.DrawPaths(spriteBatch, board.GridSize);
+            board.DrawPathLines(spriteBatch, board.GridSize);
             HoveringOverTowerChecker(spriteBatch, board.GridSize);
             // Highlight needs to be drawn before the actual towers
             if (previewTower != null)

@@ -13,7 +13,10 @@ namespace MonoGameJamProject
     /// </summary>
     class Board
     {
-        List<Path> paths;
+        public List<Path> paths
+        {
+            get; set;
+        }
         Tile[,] tiles;
         struct TileValue
         {
@@ -248,6 +251,13 @@ namespace MonoGameJamProject
             foreach (Path p in paths)
             {
                 p.Draw(s, gridSize);
+            }
+        }
+        public void DrawPathLines(SpriteBatch s, int gridSize)
+        {
+            foreach (Path p in paths)
+            {
+                p.DrawLine(s, gridSize);
             }
         }
     }
