@@ -42,6 +42,7 @@ namespace MonoGameJamProject
         {
             return (value + gridSize) / gridSize;
         }
+        public static readonly Random random = new Random();
     }
 }
 
