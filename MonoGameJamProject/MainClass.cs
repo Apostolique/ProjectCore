@@ -13,6 +13,7 @@ namespace MonoGameJamProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Input input;
+        HUD hud;
         Board board;
         // list for all towers
         List<Tower> towerList;
@@ -35,6 +36,7 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             board = new Board(10, 5);
+            hud = new HUD(input, board.GridSize);
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
@@ -79,12 +81,13 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
+            hud.GridSize = board.GridSize;
             TowerMovementChecker();
             input.Update();
             base.Update(gameTime);
         }
 
-        private bool IsWithinDimensions()
+        public bool IsWithinDimensions()
         {
             if (input.MouseToGameGrid(board.GridSize).X >= board.FullWidth - 1 || input.MouseToGameGrid(board.GridSize).X <= 0)
                 return false;
@@ -132,7 +135,7 @@ namespace MonoGameJamProject
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)
             {
-                DrawPlacementIndicator(spriteBatch, board.GridSize);
+                hud.DrawPlacementIndicator(spriteBatch, selectedTower.MinimumRange);
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             }
                 
@@ -144,6 +147,11 @@ namespace MonoGameJamProject
             spriteBatch.End();
 
             base.Draw(gameTime);
+
+            /* 
+             * if (!IsWithinDimensions())
+                return;
+                */
         }
 
         private void HoveringOverTowerChecker(SpriteBatch s, int gridSize)
@@ -153,15 +161,10 @@ namespace MonoGameJamProject
             foreach (Tower t in towerList)
             {
                 if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
-                    t.DrawMinimumRangeIndicators(s, gridSize);
+                    hud.DrawMinimumRangeIndicators(s, new Point(t.X, t.Y) , t.MinimumRange);
             }
         }
 
-        private void DrawPlacementIndicator(SpriteBatch s, int gridSize)
-        {
-            if (!IsWithinDimensions())
-                return;
-            s.FillRectangle(new RectangleF(input.MouseGridPosition(board.GridSize).X * gridSize, input.MouseGridPosition(board.GridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
-        }
+       
     }
 }

@@ -39,17 +39,6 @@ namespace MonoGameJamProject.Towers
             s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize) - gridSize * highlightOffset / 2, Utility.GameToScreen(y, gridSize) - gridSize * highlightOffset / 2, gridSize + highlightOffset * gridSize, gridSize + highlightOffset * gridSize), Color.Yellow);
         }
 
-        public void DrawMinimumRangeIndicators(SpriteBatch s, int gridSize)
-        {
-            for(int i = -minimumRange; i <= minimumRange; i++)
-            {
-                for(int j = -minimumRange; j <= minimumRange; j++)
-                {
-                    s.FillRectangle(new RectangleF(Utility.GameToScreen(x + i, gridSize), Utility.GameToScreen(y + j, gridSize), gridSize, gridSize), Color.Red * 0.2f);
-                }
-            }
-        }
-
         protected bool IsWithinRange(int iX, int iY)
         {
             if (Math.Abs(iX) > minimumRange || Math.Abs(iY) > minimumRange)
@@ -68,6 +57,11 @@ namespace MonoGameJamProject.Towers
         {
             get { return y; }
             set { y = value; }
+        }
+
+        public int MinimumRange
+        {
+            get { return minimumRange; }
         }
     }
 }
