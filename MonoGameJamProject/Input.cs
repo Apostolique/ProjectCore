@@ -21,10 +21,13 @@ namespace MonoGameJamProject
         {
             get { return new Vector2(currentMouseState.X, currentMouseState.Y); }
         }
+        public Point MouseToGameGrid(int gridSize) {
+            return new Point((int)Utility.ScreenToGame(MousePosition.X, gridSize), (int)(Utility.ScreenToGame(MousePosition.Y, gridSize)));
+        }
 
         public Point MouseGridPosition(int gridSize)
         {
-             return new Point((int)Utility.ScreenToGame(MousePosition.X, gridSize), (int)(Utility.ScreenToGame(MousePosition.Y, gridSize)));
+            return new Point((int)(MousePosition.X / gridSize), (int)(MousePosition.Y / gridSize));
         }
 
         public bool MouseLeftButtonPressed

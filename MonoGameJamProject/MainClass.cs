@@ -85,9 +85,9 @@ namespace MonoGameJamProject
 
         private bool IsWithinDimensions()
         {
-            if (input.MouseGridPosition(board.GridSize).X >= board.FullWidth - 1 || input.MouseGridPosition(board.GridSize).X <= 0)
+            if (input.MouseToGameGrid(board.GridSize).X >= board.FullWidth - 1 || input.MouseToGameGrid(board.GridSize).X <= 0)
                 return false;
-            else if (input.MouseGridPosition(board.GridSize).Y >= board.FullHeight - 1 || input.MouseGridPosition(board.GridSize).Y <= 0)
+            else if (input.MouseToGameGrid(board.GridSize).Y >= board.FullHeight - 1 || input.MouseToGameGrid(board.GridSize).Y <= 0)
                 return false;
             else
                 return true;
@@ -104,7 +104,7 @@ namespace MonoGameJamProject
                 {
                     foreach (Tower t in towerList)
                     {
-                        if (t.X == input.MouseGridPosition(board.GridSize).X && t.Y == input.MouseGridPosition(board.GridSize).Y)
+                        if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
                             selectedTower = t;
                     }
                 }
@@ -112,15 +112,12 @@ namespace MonoGameJamProject
                 else
                 {
                     // for now it just places the tower wherever you click
-                    selectedTower.X = input.MouseGridPosition(board.GridSize).X;
-                    selectedTower.Y = input.MouseGridPosition(board.GridSize).Y;
+                    selectedTower.X = input.MouseToGameGrid(board.GridSize).X;
+                    selectedTower.Y = input.MouseToGameGrid(board.GridSize).Y;
                     selectedTower = null;
                 }
             }
         }
-
-        
-      
 
         protected override void Draw(GameTime gameTime)
         {
@@ -150,7 +147,7 @@ namespace MonoGameJamProject
                 return;
             foreach (Tower t in towerList)
             {
-                if (t.X == input.MouseGridPosition(board.GridSize).X && t.Y == input.MouseGridPosition(board.GridSize).Y)
+                if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
                     t.DrawMinimumRangeIndicators(s, gridSize);
             }
         }
