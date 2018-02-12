@@ -97,7 +97,7 @@ namespace MonoGameJamProject
             board.Draw(spriteBatch);
             foreach(Tower t in towerList)
             {
-                t.Draw(spriteBatch, board.BoardRatio);
+                t.Draw(spriteBatch, board.GridSize);
             }
             minion.Draw(spriteBatch, 0.3f, board.GridSize);
             spriteBatch.End();
