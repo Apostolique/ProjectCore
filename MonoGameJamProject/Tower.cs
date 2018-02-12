@@ -14,7 +14,7 @@ namespace MonoGameJamProject
     {
         int x;
         int y;
-        int size;
+        public int size;
         public Tower(int iX, int iY, int iSize) {
             x = iX;
             y = iY;
@@ -29,7 +29,6 @@ namespace MonoGameJamProject
         {
             get { return new Rectangle(x * size, y * size, size, size); }
         }
-
         public int X
         {
             get { return x; }

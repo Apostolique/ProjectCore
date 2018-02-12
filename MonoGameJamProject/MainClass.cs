@@ -57,6 +57,10 @@ namespace MonoGameJamProject
                 Exit();
             // TODO: Add your update logic here
             input.Update();
+            foreach(Tower t in towerList)
+            {
+                t.size = board.BoardRatio;
+            }
             TowerMovementChecker();
             base.Update(gameTime);
         }
