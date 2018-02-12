@@ -88,7 +88,6 @@ namespace MonoGameJamProject
             Tile startTile = edges.ElementAt(Utility.random.Next(edges.Count));
             Tile t = startTile;
             newPath.Add(t);
-            Console.WriteLine("Added: " + t.X + ", " + t.Y);
             length++;
 
             do
@@ -102,12 +101,10 @@ namespace MonoGameJamProject
                 }
                 nextTileSort.Sort((v1, v2) => v1.value.CompareTo(v2.value));
                 foreach (TileValue tv in nextTileSort) {
-                    Console.WriteLine("\tSort: " + tv.tile.X + ", " + tv.tile.Y + ": " + tv.value);
                 }
                 t = nextTileSort.Last().tile;
                 newPath.Add(t);
                 length++;
-                Console.WriteLine("Added: " + t.X + ", " + t.Y);
             } while (t != startTile && !isEdge(t));
 
             paths.Add(newPath);
