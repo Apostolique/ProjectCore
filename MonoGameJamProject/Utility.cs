@@ -10,6 +10,7 @@ namespace MonoGameJamProject
     /// </summary>
     static class Utility
     {
+        public enum TowerType { Sniper, Shotgun, FlameThrower };
         public static GameWindow Window;
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.

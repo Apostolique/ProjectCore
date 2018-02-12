@@ -34,7 +34,7 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             board = new Board(10, 5);
-            AddTower(3, 2);
+            AddTower(3, 2, Utility.TowerType.Sniper);
             minion = new Minion(1.7f, 4.2f);
             path = new Path();
             path.Add(new Point(0, 1));
@@ -45,9 +45,22 @@ namespace MonoGameJamProject
             base.Initialize();
         }
 
-        private void AddTower(int x, int y)
+        private void AddTower(int x, int y, Utility.TowerType type)
         {
-            Tower tower = new Tower(x, y);
+            Tower tower = null;
+            switch(type)
+            {
+                case Utility.TowerType.FlameThrower:
+                    tower = new FlameThrower(x, y);
+                    break;
+                case Utility.TowerType.Sniper:
+                    tower = new Sniper(x, y);
+                    break;
+                case Utility.TowerType.Shotgun:
+                    tower = new Shotgun(x, y);
+                    break;
+                default: throw new ArgumentException("invalid tower type: " + type);
+            }
             towerList.Add(tower);
         }
 
@@ -68,12 +81,21 @@ namespace MonoGameJamProject
             base.Update(gameTime);
         }
 
-        private void TowerMovementChecker()
+        private bool IsWithinDimensions()
         {
             if (input.MouseGridPosition(board.GridSize).X >= board.FullWidth - 1 || input.MouseGridPosition(board.GridSize).X <= 0)
+                return false;
+            else if (input.MouseGridPosition(board.GridSize).Y >= board.FullHeight - 1 || input.MouseGridPosition(board.GridSize).Y <= 0)
+                return false;
+            else
+                return true;
+        }
+
+        private void TowerMovementChecker()
+        {
+            if (!IsWithinDimensions())
                 return;
-            if (input.MouseGridPosition(board.GridSize).Y >= board.FullHeight - 1 || input.MouseGridPosition(board.GridSize).Y <= 0)
-                return;
+
             if (input.MouseRightButtonPressed)
             {
                 if (selectedTower == null)
@@ -93,8 +115,11 @@ namespace MonoGameJamProject
                     selectedTower = null;
                 }
             }
-            
         }
+
+        
+      
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -103,10 +128,10 @@ namespace MonoGameJamProject
             spriteBatch.Begin();
             board.Draw(spriteBatch);
             path.Draw(spriteBatch, board.GridSize);
-
+            HoveringOverTowerChecker(spriteBatch, board.GridSize);
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)
-                selectedTower.DrawHighlight(spriteBatch, board.GridSize);
+                selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             foreach (Tower t in towerList)
             {
                 t.Draw(spriteBatch, board.GridSize);
@@ -116,5 +141,17 @@ namespace MonoGameJamProject
 
             base.Draw(gameTime);
         }
+
+        private void HoveringOverTowerChecker(SpriteBatch s, int gridSize)
+        {
+            if (!IsWithinDimensions())
+                return;
+            foreach (Tower t in towerList)
+            {
+                if (t.X == input.MouseGridPosition(board.GridSize).X && t.Y == input.MouseGridPosition(board.GridSize).Y)
+                    t.DrawMinimumRangeIndicators(s, gridSize);
+            }
+        }
+
     }
 }
