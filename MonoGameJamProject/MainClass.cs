@@ -163,17 +163,18 @@ namespace MonoGameJamProject
             path.Draw(spriteBatch, board.GridSize);
             HoveringOverTowerChecker(spriteBatch, board.GridSize);
             // Highlight needs to be drawn before the actual towers
-            foreach (Tower t in towerList)
-            {
-                t.Draw(spriteBatch, board.GridSize);
-            }
-
             if (previewTower != null)
             {
                 if (IsWithinDimensions())
                     hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange);
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             }
+
+            foreach (Tower t in towerList)
+            {
+                t.Draw(spriteBatch, board.GridSize);
+            }
+
             minion.Draw(spriteBatch, 0.3f, board.GridSize);
             spriteBatch.End();
 
