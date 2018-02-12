@@ -135,7 +135,8 @@ namespace MonoGameJamProject
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)
             {
-                hud.DrawPlacementIndicator(spriteBatch, selectedTower.MinimumRange);
+                if (IsWithinDimensions())
+                    hud.DrawPlacementIndicator(spriteBatch, selectedTower.MinimumRange);
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             }
                 
@@ -147,11 +148,6 @@ namespace MonoGameJamProject
             spriteBatch.End();
 
             base.Draw(gameTime);
-
-            /* 
-             * if (!IsWithinDimensions())
-                return;
-                */
         }
 
         private void HoveringOverTowerChecker(SpriteBatch s, int gridSize)
