@@ -24,9 +24,9 @@ namespace MonoGameJamProject
             s.FillRectangle(new Rectangle(x * size, y * size, size, size), Color.Red);
         }
 
-        public void DrawHighlight(SpriteBatch s, int Gridsize)
+        public void DrawHighlight(SpriteBatch s, int gridsize)
         {
-            s.FillRectangle(new Rectangle((int)(x * Gridsize - Gridsize * highlightOffset / 2), (int)(y * Gridsize - Gridsize * highlightOffset / 2), (int)(Gridsize + highlightOffset * Gridsize), (int)(Gridsize + highlightOffset * Gridsize)), Color.Yellow);
+            s.FillRectangle(new Rectangle((int)(x * gridsize - gridsize * highlightOffset / 2), (int)(y * gridsize - gridsize * highlightOffset / 2), (int)(gridsize + highlightOffset * gridsize), (int)(gridsize + highlightOffset * gridsize)), Color.Yellow);
         }
 
         public int X
