@@ -43,6 +43,10 @@ namespace MonoGameJamProject
         {
             get { return currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released; }
         }
+        public bool MouseMiddleButtonPressed
+        {
+            get { return currentMouseState.MiddleButton == ButtonState.Pressed && previousMouseState.MiddleButton == ButtonState.Released; }
+        }
 
         public bool KeyPressed(Keys k)
         {
