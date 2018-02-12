@@ -8,7 +8,7 @@ namespace MonoGameJamProject.Towers
         {
             towerColor = Color.DeepPink;
             type = Utility.TowerType.Sniper;
-            minimumRange = 2;
+            minRange = 2;
         }
     }
 }

@@ -10,11 +10,14 @@ namespace MonoGameJamProject
     class Input
     {
         protected MouseState currentMouseState, previousMouseState;
+        protected KeyboardState currentKeyboardState, previousKeyboardState;
 
         public void Update()
         {
             previousMouseState = currentMouseState;
+            previousKeyboardState = currentKeyboardState;
             currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
         }
 
         public Vector2 MousePosition
@@ -39,6 +42,16 @@ namespace MonoGameJamProject
         public bool MouseRightButtonPressed
         {
             get { return currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released; }
+        }
+
+        public bool KeyPressed(Keys k)
+        {
+            return currentKeyboardState.IsKeyDown(k) && previousKeyboardState.IsKeyUp(k);
+        }
+
+        public bool IsKeyDown(Keys k)
+        {
+            return currentKeyboardState.IsKeyDown(k);
         }
     }
 }
