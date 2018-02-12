@@ -28,7 +28,6 @@ namespace MonoGameJamProject
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
         }
-
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -47,10 +46,8 @@ namespace MonoGameJamProject
             ITSMYMINION = new Minion(5, 5);
             minionList.Add(ITSMYMINION);
 
-
             base.Initialize();
         }
-
         private void AddTower(int x, int y, Utility.TowerType type)
         {
             Tower tower = null;
@@ -69,17 +66,14 @@ namespace MonoGameJamProject
             }
             towerList.Add(tower);
         }
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Utility.mainFont = Content.Load<SpriteFont>("jura");
             // TODO: use this.Content to load your game content here
         }
-
         protected override void Update(GameTime gameTime)
         {
-           
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
@@ -96,9 +90,7 @@ namespace MonoGameJamProject
                 else
                     towerList[i].IsDisabled = false;
                 towerList[i].Update(gameTime, minionList);
-            }
-                
-            
+            }  
             for(int i = minionList.Count - 1; i >= 0; i--)
             {
                 minionList[i].Update(gameTime);
@@ -113,7 +105,6 @@ namespace MonoGameJamProject
             }
             base.Update(gameTime);
         }
-
         public bool IsWithinDimensions()
         {
             if (input.MouseToGameGrid(board.GridSize).X >= board.FullWidth - 1 || input.MouseToGameGrid(board.GridSize).X <= 0)
@@ -123,7 +114,6 @@ namespace MonoGameJamProject
             else
                 return true;
         }
-
         private void TowerSwitchInput()
         {
             if(previewTower != null)
@@ -171,7 +161,6 @@ namespace MonoGameJamProject
                 }
             }
         }
-
         /// <summary>
         /// Checks if the given position is valid for a tower on the game grid
         /// </summary>
@@ -221,7 +210,6 @@ namespace MonoGameJamProject
 
             base.Draw(gameTime);
         }
-
         private void HoveringOverTowerChecker(SpriteBatch s, int gridSize)
         {
             if (!IsWithinDimensions())
