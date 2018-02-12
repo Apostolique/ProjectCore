@@ -34,7 +34,9 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             board = new Board(10, 5);
-            AddTower(3, 2, Utility.TowerType.Sniper);
+            AddTower(3, 1, Utility.TowerType.Sniper);
+            AddTower(3, 3, Utility.TowerType.Shotgun);
+            AddTower(3, 5, Utility.TowerType.FlameThrower);
             minion = new Minion(1.7f, 4.2f);
             path = new Path();
             path.Add(new Point(0, 1));
