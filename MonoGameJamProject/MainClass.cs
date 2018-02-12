@@ -98,9 +98,13 @@ namespace MonoGameJamProject
                 minionList[i].Update(gameTime);
             }
 
-            if (input.MouseLeftButtonPressed) {
+            if (input.MouseMiddleButtonPressed)
+            {
                 board.ClearPaths();
                 board.GeneratePath();
+            }
+            if (input.MouseLeftButtonPressed)
+            {
                 ITSMYMINION.MoveTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
             base.Update(gameTime);
