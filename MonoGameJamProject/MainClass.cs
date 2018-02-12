@@ -63,9 +63,9 @@ namespace MonoGameJamProject
 
         private void TowerMovementChecker()
         {
-            if (input.MouseGridPosition(board.GridSize).X > board.FullWidth - 3 || input.MouseGridPosition(board.GridSize).X < 1)
+            if (input.MouseGridPosition(board.GridSize).X > board.FullWidth - 3 || input.MouseGridPosition(board.GridSize).X < 0)
                 return;
-            if (input.MouseGridPosition(board.GridSize).Y > board.FullHeight - 3 || input.MouseGridPosition(board.GridSize).Y < 1)
+            if (input.MouseGridPosition(board.GridSize).Y > board.FullHeight - 3 || input.MouseGridPosition(board.GridSize).Y < 0)
                 return;
             if (input.MouseRightButtonPressed)
             {
