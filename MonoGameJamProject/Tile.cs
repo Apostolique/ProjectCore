@@ -12,15 +12,15 @@ namespace MonoGameJamProject
     /// </summary>
     class Tile
     {
-        float x;
-        float y;
-        public Tile(float iX, float iY) {
-            x = iX;
-            y = iY;
+        public int X;
+        public int Y;
+        public Tile(int iX, int iY) {
+            X = iX;
+            Y = iY;
         }
 
         public void Draw(SpriteBatch s, int gridSize) {
-            s.DrawRectangle(new RectangleF(x * gridSize, y * gridSize, gridSize, gridSize), Color.White, 0.02f * gridSize);
+            s.DrawRectangle(new RectangleF(X * gridSize - gridSize, Y * gridSize - gridSize, gridSize, gridSize), Color.White, 0.02f * gridSize);
         }
     }
 }
