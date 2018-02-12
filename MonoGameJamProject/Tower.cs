@@ -12,6 +12,7 @@ namespace MonoGameJamProject
     /// </summary>
     class Tower
     {
+        private const float highlightOffset = 0.1F;
         int x;
         int y;
         public Tower(int iX, int iY) {
@@ -21,6 +22,11 @@ namespace MonoGameJamProject
 
         public void Draw(SpriteBatch s, int size) {
             s.FillRectangle(new Rectangle(x * size, y * size, size, size), Color.Red);
+        }
+
+        public void DrawHighlight(SpriteBatch s, int Gridsize)
+        {
+            s.FillRectangle(new Rectangle((int)(x * Gridsize - Gridsize * highlightOffset / 2), (int)(y * Gridsize - Gridsize * highlightOffset / 2), (int)(Gridsize + highlightOffset * Gridsize), (int)(Gridsize + highlightOffset * Gridsize)), Color.Yellow);
         }
 
         public int X
