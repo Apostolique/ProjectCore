@@ -72,7 +72,7 @@ namespace MonoGameJamProject
         {
             Path newPath = new Path();
 
-            int preferedSize = 15;
+            int preferedSize = 10;
             int length = 0;
             
             //Edge restriction: Only edges in paths at the start and end of a path.

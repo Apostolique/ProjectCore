@@ -20,7 +20,6 @@ namespace MonoGameJamProject
         List<Tower> towerList;
         Minion minion;
         Tower selectedTower = null, previewTower = null;
-        Path path;
 
         public MainClass()
         {

@@ -50,6 +50,15 @@ namespace MonoGameJamProject
             {
                 s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X, gridSize), Utility.GameToScreen(p.Y, gridSize), gridSize, gridSize), Color.Blue);
             }
+            for (int i = 1; i < pathway.Count; i++)
+            {
+                float x1 = Utility.GameToScreen(pathway[i].X + 0.5f, gridSize);
+                float y1 = Utility.GameToScreen(pathway[i].Y + 0.5f, gridSize);
+                float x2 = Utility.GameToScreen(pathway[i - 1].X + 0.5f, gridSize);
+                float y2 = Utility.GameToScreen(pathway[i - 1].Y + 0.5f, gridSize);
+
+                s.DrawLine(x1, y1, x2, y2, Color.White, gridSize * 0.1f);
+            }
         }
     }
 }
