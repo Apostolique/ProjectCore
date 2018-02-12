@@ -90,7 +90,7 @@ namespace MonoGameJamProject
                 else
                     towerList[i].IsDisabled = false;
                 towerList[i].Update(gameTime, minionList);
-            }  
+            }
             for(int i = minionList.Count - 1; i >= 0; i--)
             {
                 minionList[i].Update(gameTime);
