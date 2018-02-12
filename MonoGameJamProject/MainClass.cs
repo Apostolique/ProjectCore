@@ -63,9 +63,9 @@ namespace MonoGameJamProject
 
         private void TowerMovementChecker()
         {
-            if (input.MouseGridPosition(board.BoardRatio).X > board.Width || input.MouseGridPosition(board.BoardRatio).X < 0)
+            if (input.MouseGridPosition(board.GridSize).X > board.Width || input.MouseGridPosition(board.GridSize).X < 0)
                 return;
-            if (input.MouseGridPosition(board.BoardRatio).Y > board.Height || input.MouseGridPosition(board.BoardRatio).Y < 0)
+            if (input.MouseGridPosition(board.GridSize).Y > board.Height || input.MouseGridPosition(board.GridSize).Y < 0)
                 return;
             if (input.MouseRightButtonPressed)
             {
@@ -73,7 +73,7 @@ namespace MonoGameJamProject
                 {
                     foreach (Tower t in towerList)
                     {
-                        if (t.X == input.MouseGridPosition(board.BoardRatio).X && t.Y == input.MouseGridPosition(board.BoardRatio).Y)
+                        if (t.X == input.MouseGridPosition(board.GridSize).X && t.Y == input.MouseGridPosition(board.GridSize).Y)
                             selectedTower = t;
                     }
                 }
@@ -81,8 +81,8 @@ namespace MonoGameJamProject
                 else
                 {
                     // for now it just places the tower wherever you click
-                    selectedTower.X = input.MouseGridPosition(board.BoardRatio).X;
-                    selectedTower.Y = input.MouseGridPosition(board.BoardRatio).Y;
+                    selectedTower.X = input.MouseGridPosition(board.GridSize).X;
+                    selectedTower.Y = input.MouseGridPosition(board.GridSize).Y;
                     selectedTower = null;
                 }
             }
@@ -99,7 +99,7 @@ namespace MonoGameJamProject
             {
                 t.Draw(spriteBatch, board.BoardRatio);
             }
-            minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
+            minion.Draw(spriteBatch, 0.3f, board.GridSize);
             spriteBatch.End();
 
             base.Draw(gameTime);
