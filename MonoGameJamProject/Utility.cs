@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJamProject
 {
@@ -11,6 +12,7 @@ namespace MonoGameJamProject
     static class Utility
     {
         public enum TowerType { Sniper, Shotgun, FlameThrower };
+        public static SpriteFont mainFont;
         public static GameWindow Window;
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.
