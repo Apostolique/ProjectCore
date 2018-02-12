@@ -18,7 +18,8 @@ namespace MonoGameJamProject.Towers
         public Utility.TowerType type;
         int x;
         int y;
-        public Tower(int iX, int iY) {
+        public Tower(int iX, int iY)
+        {
             x = iX;
             y = iY;
         }

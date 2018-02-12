@@ -21,7 +21,8 @@ namespace MonoGameJamProject
         {
             get { return new Vector2(currentMouseState.X, currentMouseState.Y); }
         }
-        public Point MouseToGameGrid(int gridSize) {
+        public Point MouseToGameGrid(int gridSize)
+        {
             return new Point((int)Utility.ScreenToGame(MousePosition.X, gridSize), (int)(Utility.ScreenToGame(MousePosition.Y, gridSize)));
         }
 

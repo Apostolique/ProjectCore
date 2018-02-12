@@ -21,16 +21,20 @@ namespace MonoGameJamProject
     class Path
     {
         List<Point> pathway;
-        public Path() {
+        public Path()
+        {
             pathway = new List<Point>();
         }
 
-        public void Add(Point p) {
+        public void Add(Point p)
+        {
             pathway.Add(p);
         }
 
-        public void Draw(SpriteBatch s, int gridSize) {
-            foreach (Point p in pathway) {
+        public void Draw(SpriteBatch s, int gridSize)
+        {
+            foreach (Point p in pathway)
+            {
                 s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X, gridSize), Utility.GameToScreen(p.Y, gridSize), gridSize, gridSize), Color.Blue);
             }
         }

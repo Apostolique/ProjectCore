@@ -15,25 +15,29 @@ namespace MonoGameJamProject
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.
         /// </summary>
-        public static int GameToScreen(int value, int gridSize) {
+        public static int GameToScreen(int value, int gridSize)
+        {
             return value * gridSize - gridSize;
         }
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.
         /// </summary>
-        public static float GameToScreen(float value, int gridSize) {
+        public static float GameToScreen(float value, int gridSize)
+        {
             return value * gridSize - gridSize;
         }
         /// <summary>
         /// Converts a screen coordinate into a game coordinate.
         /// </summary>
-        public static int ScreenToGame(int value, int gridSize) {
+        public static int ScreenToGame(int value, int gridSize)
+        {
             return (value + gridSize) / gridSize;
         }
         /// <summary>
         /// Converts a screen coordinate into a game coordinate.
         /// </summary>
-        public static float ScreenToGame(float value, int gridSize) {
+        public static float ScreenToGame(float value, int gridSize)
+        {
             return (value + gridSize) / gridSize;
         }
     }

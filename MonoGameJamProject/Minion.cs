@@ -14,12 +14,14 @@ namespace MonoGameJamProject
     {
         float x;
         float y;
-        public Minion(float iX, float iY) {
+        public Minion(float iX, float iY)
+        {
             x = iX;
             y = iY;
         }
 
-        public void Draw(SpriteBatch s, float size, int gridSize) {
+        public void Draw(SpriteBatch s, float size, int gridSize)
+        {
             float halfSize = size * gridSize / 2f;
             s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize) - halfSize, Utility.GameToScreen(y, gridSize) - halfSize, size * gridSize, size * gridSize), Color.Green);
         }
