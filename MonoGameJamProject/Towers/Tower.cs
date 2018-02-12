@@ -15,7 +15,9 @@ namespace MonoGameJamProject.Towers
         private const float highlightOffset = 0.07F;
         protected Color towerColor;
         protected int minRange, maxRange;
+        protected bool disabled = false;
         public Utility.TowerType type;
+        protected int damage;
         int x;
         int y;
         public Tower(int iX, int iY)
@@ -31,7 +33,10 @@ namespace MonoGameJamProject.Towers
 
         public void Draw(SpriteBatch s, int gridSize)
         {
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), towerColor);
+            if (disabled)
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), Color.Gray);
+            else
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), towerColor);
         }
 
         public void DrawSelectionHightlight(SpriteBatch s, int gridSize)
@@ -58,7 +63,11 @@ namespace MonoGameJamProject.Towers
             get { return y; }
             set { y = value; }
         }
-
+        public bool IsDisabled
+        {
+            get { return disabled; }
+            set { disabled = value; }
+        }
         public int MinimumRange
         {
             get { return minRange; }

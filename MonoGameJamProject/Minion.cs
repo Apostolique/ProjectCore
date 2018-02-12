@@ -22,6 +22,8 @@ namespace MonoGameJamProject
         Vector2 target;
         float distance;
         float inBetween;
+        public bool dead;
+        int hp;
 
         public Minion(float iX, float iY)
         {
@@ -53,6 +55,16 @@ namespace MonoGameJamProject
             float halfSize = size * gridSize / 2f;
             s.FillRectangle(new RectangleF(Utility.GameToScreen(position.X, gridSize) - halfSize, Utility.GameToScreen(position.Y, gridSize) - halfSize, size * gridSize, size * gridSize), Color.Green);
         }
+
+        public void TakeDamage(int damage)
+        {
+            this.hp -= damage;
+            if(hp < 0)
+            {
+                dead = true;
+            }
+        }
+
     }
 }
 

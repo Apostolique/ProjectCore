@@ -22,10 +22,15 @@ namespace MonoGameJamProject
             tdGameTimer += gameTime.ElapsedGameTime;
         }
         
-        public void DrawPlacementIndicator(SpriteBatch s, int minimumRange)
+        public void DrawPlacementIndicator(SpriteBatch s, int minimumRange, bool isValidPosition)
         {
-            s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
-            DrawRangeIndicators(s, new Point(input.MouseToGameGrid(gridSize).X, input.MouseToGameGrid(gridSize).Y), minimumRange, 0.4f);
+            if (isValidPosition)
+            {
+                s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
+                DrawRangeIndicators(s, new Point(input.MouseToGameGrid(gridSize).X, input.MouseToGameGrid(gridSize).Y), minimumRange, 0.4f);
+            }
+            else s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.Red * 0.7F);
+
         }
 
         public void DrawRangeIndicators(SpriteBatch s, Point origin, int minimumRange, float transparency = 0.1f)
