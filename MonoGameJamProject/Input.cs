@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace MonoGameJamProject
 {
@@ -21,14 +22,19 @@ namespace MonoGameJamProject
             get { return new Vector2(currentMouseState.X, currentMouseState.Y); }
         }
 
-        public bool MouseLeftButtonPressed()
+        public Point MouseGridPosition(int gridRatio)
         {
-            return currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released;
+             return new Point(((int)Math.Floor(MousePosition.X / gridRatio)) , ((int)Math.Floor(MousePosition.Y / gridRatio)));
         }
 
-        public bool MouseRightButtonPressed()
+        public bool MouseLeftButtonPressed
         {
-            return currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released;
+            get { return currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released; }
+        }
+
+        public bool MouseRightButtonPressed
+        {
+            get { return currentMouseState.RightButton == ButtonState.Pressed && previousMouseState.RightButton == ButtonState.Released; }
         }
     }
 }

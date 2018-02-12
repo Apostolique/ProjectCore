@@ -14,13 +14,32 @@ namespace MonoGameJamProject
     {
         int x;
         int y;
-        public Tower(int iX, int iY) {
+        int size;
+        public Tower(int iX, int iY, int iSize) {
             x = iX;
             y = iY;
+            size = iSize;
         }
 
-        public void Draw(SpriteBatch s, int size) {
-            s.FillRectangle(new Rectangle(x * size, y * size, size, size), Color.Red);
+        public void Draw(SpriteBatch s) {
+            s.FillRectangle(BoundingBox, Color.Red);
+        }
+
+        public Rectangle BoundingBox
+        {
+            get { return new Rectangle(x * size, y * size, size, size); }
+        }
+
+        public int X
+        {
+            get { return x; }
+            set { x = value; }
+        }
+
+        public int Y
+        {
+            get { return y; }
+            set { y = value; }
         }
     }
 }
