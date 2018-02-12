@@ -95,7 +95,11 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             board.Draw(spriteBatch);
-            foreach(Tower t in towerList)
+
+            // Highlight needs to be drawn before the actual towers
+            if (selectedTower != null)
+                selectedTower.DrawHighlight(spriteBatch, board.GridSize);
+            foreach (Tower t in towerList)
             {
                 t.Draw(spriteBatch, board.GridSize);
             }
