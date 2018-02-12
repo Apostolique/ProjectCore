@@ -12,6 +12,7 @@ namespace MonoGameJamProject
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        RenderTarget2D renderTarget01;
         Input input;
         HUD hud;
         Board board;
@@ -31,6 +32,7 @@ namespace MonoGameJamProject
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.Window = Window;
             towerList = new List<Tower>();
             minionList = new List<Minion>();
@@ -69,8 +71,21 @@ namespace MonoGameJamProject
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            renderTarget01 = new RenderTarget2D(GraphicsDevice, board.GridSize * board.Width, board.GridSize * board.Height);
             Utility.mainFont = Content.Load<SpriteFont>("jura");
             // TODO: use this.Content to load your game content here
+        }
+        void Window_ClientSizeChanged(object sender, EventArgs e) {
+            int w = board.GridSize * board.Width;
+            int h = board.GridSize * board.Height;
+            if (w < 1) {
+                w = 1;
+            }
+            if (h < 1) {
+                h = 1;
+            }
+            renderTarget01.Dispose();
+            renderTarget01 = new RenderTarget2D(GraphicsDevice, w, h);
         }
         protected override void Update(GameTime gameTime)
         {
@@ -187,6 +202,7 @@ namespace MonoGameJamProject
         }
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.SetRenderTarget(renderTarget01);
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
@@ -210,6 +226,12 @@ namespace MonoGameJamProject
             ITSMYMINION.Draw(spriteBatch, 0.5f, board.GridSize);
 
             hud.DrawPlayTime(spriteBatch);
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget01, new Vector2(0, 0), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
