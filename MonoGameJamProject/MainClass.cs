@@ -45,6 +45,7 @@ namespace MonoGameJamProject
             Minion m = new Minion(3, 3);
             minionList.Add(m);
             ITSMYMINION = new Minion(5, 5);
+            minionList.Add(ITSMYMINION);
 
 
             base.Initialize();
@@ -87,21 +88,24 @@ namespace MonoGameJamProject
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
-            ITSMYMINION.Update(gameTime);
-            foreach(Tower t in towerList)
+            for(int i = 0; i < towerList.Count; i++)
             {
-                Tile currenttile = board.GetTile(new Point(t.X, t.Y));
+                Tile currenttile = board.GetTile(new Point(towerList[i].X, towerList[i].Y));
                 if (board.IsTileOnPath(currenttile))
-                    t.IsDisabled = true;
+                    towerList[i].IsDisabled = true;
                 else
-                    t.IsDisabled = false;
+                    towerList[i].IsDisabled = false;
+                towerList[i].Update(gameTime, minionList);
+            }
+                
+            
+            for(int i = 0; i < minionList.Count; i++)
+            {
+                if (minionList[i].dead)
+                    minionList.Remove(minionList[i]);
+                minionList[i].Update(gameTime);
             }
 
-            foreach(Minion m in minionList)
-            {
-                if (m.dead)
-                    minionList.Remove(m);
-            }
             if (input.MouseLeftButtonPressed) {
                 board.ClearPaths();
                 board.GeneratePath();

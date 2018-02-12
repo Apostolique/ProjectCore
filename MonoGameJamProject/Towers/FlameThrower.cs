@@ -18,9 +18,12 @@ namespace MonoGameJamProject.Towers
 
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
-            GenerateDamageTiles();
-            CheckDamageTiles(iMinionList);
-            base.Update(gameTime, iMinionList);
+            if (!disabled)
+            {
+                GenerateDamageTiles();
+                CheckDamageTiles(iMinionList);
+                base.Update(gameTime, iMinionList);
+            }
         }
 
         public void GenerateDamageTiles()

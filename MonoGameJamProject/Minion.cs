@@ -23,7 +23,7 @@ namespace MonoGameJamProject
         private const int fireDamage = 6;
         float distance;
         float inBetween;
-        public bool dead;
+        public bool dead, isOnFire;
         int hp;
 
         public Minion(float iX, float iY)
@@ -35,6 +35,7 @@ namespace MonoGameJamProject
             speed = 0.005f;
             distance = 0;
             inBetween = 0;
+            hp = 1;
             Reset();
             damageClock.IsExpired = true;
         }
@@ -50,10 +51,10 @@ namespace MonoGameJamProject
             damageClock.Update(gameTime);
             if (onFireClock.IsExpired)
             {
-                IsOnFire = false;
+                isOnFire = false;
                 onFireClock.Reset();
             }
-            if (IsOnFire)
+            if (isOnFire)
             {
                 onFireClock.Update(gameTime);
                 if (damageClock.IsExpired)
@@ -94,7 +95,8 @@ namespace MonoGameJamProject
 
         public bool IsOnFire
         {
-            get; set;
+            get { return isOnFire; }
+            set { isOnFire = value; }
         }
 
     }
