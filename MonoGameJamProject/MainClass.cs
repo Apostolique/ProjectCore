@@ -32,15 +32,15 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             board = new Board(10, 5);
-            AddTower(3, 2, board.BoardRatio);
+            AddTower(3, 2);
             minion = new Minion(1.7f, 4.2f);
 
             base.Initialize();
         }
 
-        private void AddTower(int x, int y, int size)
+        private void AddTower(int x, int y)
         {
-            Tower tower = new Tower(x, y, size);
+            Tower tower = new Tower(x, y);
             towerList.Add(tower);
         }
 
@@ -56,12 +56,8 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            input.Update();
-            foreach(Tower t in towerList)
-            {
-                t.size = board.BoardRatio;
-            }
             TowerMovementChecker();
+            input.Update();
             base.Update(gameTime);
         }
 
@@ -101,7 +97,7 @@ namespace MonoGameJamProject
             board.Draw(spriteBatch);
             foreach(Tower t in towerList)
             {
-                t.Draw(spriteBatch);
+                t.Draw(spriteBatch, board.BoardRatio);
             }
             minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
             spriteBatch.End();
