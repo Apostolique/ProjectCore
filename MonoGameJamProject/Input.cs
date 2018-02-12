@@ -22,9 +22,9 @@ namespace MonoGameJamProject
             get { return new Vector2(currentMouseState.X, currentMouseState.Y); }
         }
 
-        public Point MouseGridPosition(int gridRatio)
+        public Point MouseGridPosition(int gridSize)
         {
-             return new Point(((int)Math.Floor(MousePosition.X / gridRatio)) , ((int)Math.Floor(MousePosition.Y / gridRatio)));
+             return new Point(((int)Math.Floor(MousePosition.X / gridSize)) , ((int)Math.Floor(MousePosition.Y / gridSize)));
         }
 
         public bool MouseLeftButtonPressed

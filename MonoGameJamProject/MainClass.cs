@@ -32,7 +32,7 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             board = new Board(10, 5);
-            AddTower(3, 2, board.BoardRatio);
+            AddTower(3, 2, board.GridSize);
             minion = new Minion(1.7f, 4.2f);
 
             base.Initialize();
@@ -59,7 +59,7 @@ namespace MonoGameJamProject
             input.Update();
             foreach(Tower t in towerList)
             {
-                t.size = board.BoardRatio;
+                t.size = board.GridSize;
             }
             TowerMovementChecker();
             base.Update(gameTime);
@@ -67,9 +67,9 @@ namespace MonoGameJamProject
 
         private void TowerMovementChecker()
         {
-            if (input.MouseGridPosition(board.BoardRatio).X > board.Width || input.MouseGridPosition(board.BoardRatio).X < 0)
+            if (input.MouseGridPosition(board.GridSize).X > board.Width || input.MouseGridPosition(board.GridSize).X < 0)
                 return;
-            if (input.MouseGridPosition(board.BoardRatio).Y > board.Height || input.MouseGridPosition(board.BoardRatio).Y < 0)
+            if (input.MouseGridPosition(board.GridSize).Y > board.Height || input.MouseGridPosition(board.GridSize).Y < 0)
                 return;
             if (input.MouseRightButtonPressed)
             {
@@ -77,7 +77,7 @@ namespace MonoGameJamProject
                 {
                     foreach (Tower t in towerList)
                     {
-                        if (t.X == input.MouseGridPosition(board.BoardRatio).X && t.Y == input.MouseGridPosition(board.BoardRatio).Y)
+                        if (t.X == input.MouseGridPosition(board.GridSize).X && t.Y == input.MouseGridPosition(board.GridSize).Y)
                             selectedTower = t;
                     }
                 }
@@ -85,8 +85,8 @@ namespace MonoGameJamProject
                 else
                 {
                     // for now it just places the tower wherever you click
-                    selectedTower.X = input.MouseGridPosition(board.BoardRatio).X;
-                    selectedTower.Y = input.MouseGridPosition(board.BoardRatio).Y;
+                    selectedTower.X = input.MouseGridPosition(board.GridSize).X;
+                    selectedTower.Y = input.MouseGridPosition(board.GridSize).Y;
                     selectedTower = null;
                 }
             }
@@ -103,7 +103,7 @@ namespace MonoGameJamProject
             {
                 t.Draw(spriteBatch);
             }
-            minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
+            minion.Draw(spriteBatch, 0.3f, board.GridSize);
             spriteBatch.End();
 
             base.Draw(gameTime);
