@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,20 +21,32 @@ namespace MonoGameJamProject
     /// </summary>
     class Path
     {
-        List<Point> pathway;
+        List<Tile> pathway;
         public Path()
         {
-            pathway = new List<Point>();
+            pathway = new List<Tile>();
         }
 
-        public void Add(Point p)
+        public void Add(Tile p)
         {
             pathway.Add(p);
+        }
+        public Tile First()
+        {
+            return pathway.First();
+        }
+        public Tile Last()
+        {
+            return pathway.Last();
+        }
+        public bool Contains(Tile tile)
+        {
+            return pathway.Contains(tile);
         }
 
         public void Draw(SpriteBatch s, int gridSize)
         {
-            foreach (Point p in pathway)
+            foreach (Tile p in pathway)
             {
                 s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X, gridSize), Utility.GameToScreen(p.Y, gridSize), gridSize, gridSize), Color.Blue);
             }

@@ -19,7 +19,6 @@ namespace MonoGameJamProject
         List<Tower> towerList;
         Minion minion;
         Tower selectedTower = null;
-        Path path;
 
         public MainClass()
         {
@@ -35,17 +34,13 @@ namespace MonoGameJamProject
             Utility.Window = Window;
             towerList = new List<Tower>();
             input = new Input();
-            board = new Board(10, 5);
+            board = new Board(15, 10);
             hud = new HUD(input, board.GridSize);
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
             minion = new Minion(1.7f, 4.2f);
-            path = new Path();
-            path.Add(new Point(0, 1));
-            path.Add(new Point(1, 1));
-            path.Add(new Point(2, 1));
-            path.Add(new Point(2, 2));
+            board.GeneratePath();
 
             base.Initialize();
         }
@@ -84,6 +79,10 @@ namespace MonoGameJamProject
             hud.GridSize = board.GridSize;
             TowerMovementChecker();
             input.Update();
+            if (input.MouseLeftButtonPressed) {
+                board.ClearPaths();
+                board.GeneratePath();
+            }
             base.Update(gameTime);
         }
 
@@ -130,7 +129,7 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             board.Draw(spriteBatch);
-            path.Draw(spriteBatch, board.GridSize);
+            board.DrawPaths(spriteBatch, board.GridSize);
             HoveringOverTowerChecker(spriteBatch, board.GridSize);
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)
