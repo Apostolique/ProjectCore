@@ -21,7 +21,7 @@ namespace MonoGameJamProject
             Height = iHeight;
 
             paths = new List<Path>();
-            tiles = new Tile[Width, Height];
+            tiles = new Tile[Width + 2, Height + 2];
 
             for (int i = 0; i < Width + 2; i++) {
                 for (int j = 0; j < Height + 2; j++) {
