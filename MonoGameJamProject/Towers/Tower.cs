@@ -26,7 +26,7 @@ namespace MonoGameJamProject.Towers
             y = iY;
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, List<Minion> iMinionList)
         {
 
         }

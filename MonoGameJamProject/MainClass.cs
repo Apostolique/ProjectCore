@@ -224,7 +224,7 @@ namespace MonoGameJamProject
                 return;
             foreach (Tower t in towerList)
             {
-                if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
+                if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y && !t.IsDisabled)
                     hud.DrawRangeIndicators(s, new Point(t.X, t.Y) , t.MinimumRange);
             }
         }

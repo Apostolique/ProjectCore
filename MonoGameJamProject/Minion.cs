@@ -34,7 +34,9 @@ namespace MonoGameJamProject
         float speed;
 
         float inBetween;
-        public bool dead;
+        CoolDownTimer damageClock, onFireClock;
+        private const int fireDamage = 6;
+        public bool dead, isOnFire;
         int hp;
 
         public Minion(float iX, float iY)
@@ -45,6 +47,12 @@ namespace MonoGameJamProject
             inBetween = 0;
 
             waypoints = new List<waypoint>();
+
+            damageClock = new CoolDownTimer(0.5F);
+            onFireClock = new CoolDownTimer(5F);
+            hp = 1;
+            Reset();
+            damageClock.IsExpired = true;
         }
         public bool IsMoving
         {
@@ -55,6 +63,11 @@ namespace MonoGameJamProject
                 }
                 return false;
             }
+        }
+        public void Reset()
+        {
+            damageClock.Reset();
+            onFireClock.Reset();
         }
         public void Update(GameTime gameTime)
         {
@@ -69,6 +82,22 @@ namespace MonoGameJamProject
             } else {
                 inBetween = 0;
             }
+
+            damageClock.Update(gameTime);
+            if (onFireClock.IsExpired)
+            {
+                isOnFire = false;
+                onFireClock.Reset();
+            }
+            if (isOnFire)
+            {
+                onFireClock.Update(gameTime);
+                if (damageClock.IsExpired)
+                {
+                    this.TakeDamage(fireDamage);
+                    damageClock.Reset();
+                }
+            }
         }
         public void MoveTo(Vector2 b)
         {
@@ -82,13 +111,11 @@ namespace MonoGameJamProject
 
             //inBetween = 0;
         }
-
         public void Draw(SpriteBatch s, float size, int gridSize)
         {
             float halfSize = size * gridSize / 2f;
             s.FillRectangle(new RectangleF(Utility.GameToScreen(position.X, gridSize) - halfSize, Utility.GameToScreen(position.Y, gridSize) - halfSize, size * gridSize, size * gridSize), Color.Green);
         }
-
         public void TakeDamage(int damage)
         {
             this.hp -= damage;
@@ -96,6 +123,11 @@ namespace MonoGameJamProject
             {
                 dead = true;
             }
+        }
+        public bool IsOnFire
+        {
+            get { return isOnFire; }
+            set { isOnFire = value; }
         }
 
     }
