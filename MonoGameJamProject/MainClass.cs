@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 using System.Collections.Generic;
 using MonoGameJamProject.Towers;
 using System;
@@ -133,7 +134,11 @@ namespace MonoGameJamProject
             HoveringOverTowerChecker(spriteBatch, board.GridSize);
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)
+            {
+                DrawPlacementIndicator(spriteBatch, board.GridSize);
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
+            }
+                
             foreach (Tower t in towerList)
             {
                 t.Draw(spriteBatch, board.GridSize);
@@ -155,5 +160,11 @@ namespace MonoGameJamProject
             }
         }
 
+        private void DrawPlacementIndicator(SpriteBatch s, int gridSize)
+        {
+            if (!IsWithinDimensions())
+                return;
+            s.FillRectangle(new RectangleF(input.MouseGridPosition(board.GridSize).X * gridSize, input.MouseGridPosition(board.GridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
+        }
     }
 }
