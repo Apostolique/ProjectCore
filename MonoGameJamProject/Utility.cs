@@ -11,6 +11,18 @@ namespace MonoGameJamProject
     static class Utility
     {
         public static GameWindow Window;
+        /// <summary>
+        /// Converts a game coordinate into a screen coordinate.
+        /// </summary>
+        public static int GameToScreen(int value, int gridSize) {
+            return value * gridSize - gridSize;
+        }
+        /// <summary>
+        /// Converts a game coordinate into a screen coordinate.
+        /// </summary>
+        public static float GameToScreen(float value, int gridSize) {
+            return value * gridSize - gridSize;
+        }
     }
 }
 

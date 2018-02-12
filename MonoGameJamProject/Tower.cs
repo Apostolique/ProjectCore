@@ -21,12 +21,12 @@ namespace MonoGameJamProject
         }
 
         public void Draw(SpriteBatch s, int gridSize) {
-            s.FillRectangle(new Rectangle(x * gridSize - gridSize, y * gridSize - gridSize, gridSize, gridSize), Color.Red);
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), Color.Red);
         }
 
         public void DrawHighlight(SpriteBatch s, int gridsize)
         {
-            s.FillRectangle(new RectangleF(x * gridsize - gridsize * highlightOffset / 2 - gridsize, y * gridsize - gridsize * highlightOffset / 2 - gridsize, gridsize + highlightOffset * gridsize, gridsize + highlightOffset * gridsize), Color.Yellow);
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridsize) - gridsize * highlightOffset / 2, Utility.GameToScreen(y, gridsize) - gridsize * highlightOffset / 2, gridsize + highlightOffset * gridsize, gridsize + highlightOffset * gridsize), Color.Yellow);
         }
 
         public int X
