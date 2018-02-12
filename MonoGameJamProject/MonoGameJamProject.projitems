@@ -10,9 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)*.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Towers\FlameThrower.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Towers\Shotgun.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Towers\Sniper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Towers\Tower.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)*/*.cs" />
   </ItemGroup>
 </Project>

@@ -22,13 +22,13 @@ namespace MonoGameJamProject.Towers
             y = iY;
         }
 
-        public void Draw(SpriteBatch s, int size) {
-            s.FillRectangle(new Rectangle(x * size, y * size, size, size), towerColor);
+        public void Draw(SpriteBatch s, int gridSize) {
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), Color.Red);
         }
 
-        public void DrawHighlight(SpriteBatch s, int Gridsize)
+        public void DrawHighlight(SpriteBatch s, int gridsize)
         {
-            s.FillRectangle(new RectangleF((x * Gridsize - Gridsize * highlightOffset / 2), (y * Gridsize - Gridsize * highlightOffset / 2), (Gridsize + highlightOffset * Gridsize), (Gridsize + highlightOffset * Gridsize)), Color.Yellow);
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridsize) - gridsize * highlightOffset / 2, Utility.GameToScreen(y, gridsize) - gridsize * highlightOffset / 2, gridsize + highlightOffset * gridsize, gridsize + highlightOffset * gridsize), Color.Yellow);
         }
 
         public int X

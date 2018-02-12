@@ -31,7 +31,7 @@ namespace MonoGameJamProject
 
         public void Draw(SpriteBatch s, int gridSize) {
             foreach (Point p in pathway) {
-                s.FillRectangle(new Rectangle(p.X * gridSize, p.Y * gridSize, gridSize, gridSize), Color.Blue);
+                s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X, gridSize), Utility.GameToScreen(p.Y, gridSize), gridSize, gridSize), Color.Blue);
             }
         }
     }
