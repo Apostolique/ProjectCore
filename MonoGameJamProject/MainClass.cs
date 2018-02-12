@@ -82,7 +82,7 @@ namespace MonoGameJamProject
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
-            for(int i = 0; i < towerList.Count; i++)
+            for(int i = towerList.Count - 1; i >= 0; i--)
             {
                 Tile currenttile = board.GetTile(new Point(towerList[i].X, towerList[i].Y));
                 if (board.IsTileOnPath(currenttile))
@@ -90,12 +90,12 @@ namespace MonoGameJamProject
                 else
                     towerList[i].IsDisabled = false;
                 towerList[i].Update(gameTime, minionList);
-            }
-            for(int i = 0; i < minionList.Count; i++)
+            }  
+            for(int i = minionList.Count - 1; i >= 0; i--)
             {
+                minionList[i].Update(gameTime);
                 if (minionList[i].dead)
                     minionList.Remove(minionList[i]);
-                minionList[i].Update(gameTime);
             }
 
             if (input.MouseMiddleButtonPressed)
