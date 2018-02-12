@@ -14,12 +14,14 @@ namespace MonoGameJamProject
     {
         public int X;
         public int Y;
-        public Tile(int iX, int iY) {
+        public Tile(int iX, int iY)
+        {
             X = iX;
             Y = iY;
         }
 
-        public void Draw(SpriteBatch s, int gridSize) {
+        public void Draw(SpriteBatch s, int gridSize)
+        {
             s.DrawRectangle(new RectangleF(Utility.GameToScreen(X, gridSize), Utility.GameToScreen(Y, gridSize), gridSize, gridSize), Color.White, 0.02f * gridSize);
         }
     }

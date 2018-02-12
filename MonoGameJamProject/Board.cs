@@ -15,38 +15,47 @@ namespace MonoGameJamProject
     {
         List<Path> paths;
         Tile[,] tiles;
-        public Board(int iWidth, int iHeight) {
+        public Board(int iWidth, int iHeight)
+        {
             Width = iWidth;
             Height = iHeight;
 
             paths = new List<Path>();
             tiles = new Tile[FullWidth, FullHeight];
 
-            for (int i = 0; i < FullWidth; i++) {
-                for (int j = 0; j < FullHeight; j++) {
+            for (int i = 0; i < FullWidth; i++)
+            {
+                for (int j = 0; j < FullHeight; j++)
+                {
                     tiles[i, j] = new Tile(i, j);
                 }
             }
         }
-        public int Width {
+        public int Width
+        {
             get;
             set;
         }
-        public int Height {
+        public int Height
+        {
             get;
             set;
         }
-        public int FullWidth {
+        public int FullWidth
+        {
             get => Width + 2;
         }
-        public int FullHeight {
+        public int FullHeight
+        {
             get => Height + 2;
         }
         public int GridSize => Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
-        public void GeneratePath() {
+        public void GeneratePath()
+        {
             paths.Add(new Path());
         }
-        private List<HashSet<Tile>> findIslands() {
+        private List<HashSet<Tile>> findIslands()
+        {
             //TODO: This function finds zones of continuous open tiles. Call that an Island.
             //      Right now we start by marking all the tiles as open.
             //      Then we pick one of them, switch it to closed, and
@@ -57,8 +66,10 @@ namespace MonoGameJamProject
             List<HashSet<Tile>> islands = new List<HashSet<Tile>>();
 
             //Start by adding all the tiles.
-            for (int i = 0; i < FullWidth; i++) {
-                for (int j = 0; j < FullHeight; j++) {
+            for (int i = 0; i < FullWidth; i++)
+            {
+                for (int j = 0; j < FullHeight; j++)
+                {
                     openTiles.Add(tiles[i, j]);
                 }
             }
@@ -71,28 +82,36 @@ namespace MonoGameJamProject
             
             return islands;
         }
-        private List<Tile> findNeighbors(Tile t) {
+        private List<Tile> findNeighbors(Tile t)
+        {
             List<Tile> neighbors = new List<Tile>();
-            if (t.X - 1 >= 0) {
+            if (t.X - 1 >= 0)
+            {
                 neighbors.Add(tiles[t.X - 1, t.Y]);
             }
-            if (t.X + 1 < Width + 2) {
+            if (t.X + 1 < Width + 2)
+            {
                 neighbors.Add(tiles[t.X + 1, t.Y]);
             }
-            if (t.Y - 1 >= 0) {
+            if (t.Y - 1 >= 0)
+            {
                 neighbors.Add(tiles[t.X, t.Y - 1]);
             }
-            if (t.Y + 1 < Width + 2) {
+            if (t.Y + 1 < Width + 2)
+            {
                 neighbors.Add(tiles[t.X, t.Y + 1]);
             }
 
             return neighbors;
         }
-        public void Draw(SpriteBatch s) {
+        public void Draw(SpriteBatch s)
+        {
             s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(10, 10, 10));
 
-            for (int i = 1; i < FullWidth - 1; i++) {
-                for (int j = 1; j < FullHeight - 1; j++) {
+            for (int i = 1; i < FullWidth - 1; i++)
+            {
+                for (int j = 1; j < FullHeight - 1; j++)
+                {
                     tiles[i, j].Draw(s, GridSize);
                 }
             }
