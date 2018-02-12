@@ -16,6 +16,7 @@ namespace MonoGameJamProject
         List<Tower> towerList;
         Minion minion;
         Tower selectedTower = null;
+        Path path;
 
         public MainClass()
         {
@@ -34,6 +35,11 @@ namespace MonoGameJamProject
             board = new Board(10, 5);
             AddTower(3, 2);
             minion = new Minion(1.7f, 4.2f);
+            path = new Path();
+            path.Add(new Point(0, 1));
+            path.Add(new Point(1, 1));
+            path.Add(new Point(2, 1));
+            path.Add(new Point(2, 2));
 
             base.Initialize();
         }
@@ -63,9 +69,9 @@ namespace MonoGameJamProject
 
         private void TowerMovementChecker()
         {
-            if (input.MouseGridPosition(board.GridSize).X > board.FullWidth - 3 || input.MouseGridPosition(board.GridSize).X < 0)
+            if (input.MouseGridPosition(board.GridSize).X >= board.FullWidth - 1 || input.MouseGridPosition(board.GridSize).X <= 0)
                 return;
-            if (input.MouseGridPosition(board.GridSize).Y > board.FullHeight - 3 || input.MouseGridPosition(board.GridSize).Y < 0)
+            if (input.MouseGridPosition(board.GridSize).Y >= board.FullHeight - 1 || input.MouseGridPosition(board.GridSize).Y <= 0)
                 return;
             if (input.MouseRightButtonPressed)
             {
@@ -95,6 +101,7 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             board.Draw(spriteBatch);
+            path.Draw(spriteBatch, board.GridSize);
 
             // Highlight needs to be drawn before the actual towers
             if (selectedTower != null)

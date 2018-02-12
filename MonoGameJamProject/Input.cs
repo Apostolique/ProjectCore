@@ -24,7 +24,7 @@ namespace MonoGameJamProject
 
         public Point MouseGridPosition(int gridSize)
         {
-             return new Point(((int)Math.Floor(MousePosition.X / gridSize)) , ((int)Math.Floor(MousePosition.Y / gridSize)));
+             return new Point(((int)Math.Floor((MousePosition.X + gridSize) / gridSize)), ((int)Math.Floor((MousePosition.Y + gridSize) / gridSize)));
         }
 
         public bool MouseLeftButtonPressed
