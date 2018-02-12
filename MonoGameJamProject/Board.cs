@@ -21,10 +21,10 @@ namespace MonoGameJamProject
             Height = iHeight;
 
             paths = new List<Path>();
-            tiles = new Tile[Width + 2, Height + 2];
+            tiles = new Tile[FullWidth, FullHeight];
 
-            for (int i = 0; i < Width + 2; i++) {
-                for (int j = 0; j < Height + 2; j++) {
+            for (int i = 0; i < FullWidth; i++) {
+                for (int j = 0; j < FullHeight; j++) {
                     tiles[i, j] = new Tile(i, j);
                 }
             }
@@ -36,6 +36,12 @@ namespace MonoGameJamProject
         public int Height {
             get;
             set;
+        }
+        public int FullWidth {
+            get => Width + 2;
+        }
+        public int FullHeight {
+            get => Height + 2;
         }
         public int GridSize => Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
         public void GeneratePath() {
@@ -52,8 +58,8 @@ namespace MonoGameJamProject
             List<HashSet<Tile>> islands = new List<HashSet<Tile>>();
 
             //Start by adding all the tiles.
-            for (int i = 0; i < Width + 2; i++) {
-                for (int j = 0; j < Height + 2; j++) {
+            for (int i = 0; i < FullWidth; i++) {
+                for (int j = 0; j < FullHeight; j++) {
                     openTiles.Add(tiles[i, j]);
                 }
             }
@@ -86,8 +92,8 @@ namespace MonoGameJamProject
         public void Draw(SpriteBatch s) {
             s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(10, 10, 10));
 
-            for (int i = 1; i < Width + 1; i++) {
-                for (int j = 1; j < Height + 1; j++) {
+            for (int i = 1; i < FullWidth - 1; i++) {
+                for (int j = 1; j < FullHeight - 1; j++) {
                     tiles[i, j].Draw(s, GridSize);
                 }
             }
