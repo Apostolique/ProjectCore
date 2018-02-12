@@ -21,6 +21,8 @@ namespace MonoGameJamProject
         Vector2 target;
         float reach;
         float reachSpeed;
+        public bool dead;
+        int hp;
 
         public Minion(float iX, float iY)
         {

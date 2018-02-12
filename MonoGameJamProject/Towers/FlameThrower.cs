@@ -38,7 +38,8 @@ namespace MonoGameJamProject.Towers
             {
                 foreach(Point p in damageTiles)
                 {
-                    if(p.X == m.x)
+                    if (p.X == m.position.X && p.Y == m.position.Y)
+                        m.TakeDamage(damage);
                 }
             }
         }
