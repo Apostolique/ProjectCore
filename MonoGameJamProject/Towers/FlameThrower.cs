@@ -23,11 +23,11 @@ namespace MonoGameJamProject.Towers
 
         public void GenerateDamageTiles()
         {
-            for(int x = -minRange; x <= maxRange; x++)
+            for(int i = -minRange; i <= maxRange; i++)
             {
-                for(int y = -minRange; y <= maxRange; y++)
+                for(int j = -minRange; j <= maxRange; j++)
                 {
-                    damageTiles.Add(new Point(X + x, Y + y));
+                    damageTiles.Add(new Point(X + i, Y + j));
                 }
             }
         }
