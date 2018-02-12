@@ -164,7 +164,5 @@ namespace MonoGameJamProject
                     hud.DrawMinimumRangeIndicators(s, new Point(t.X, t.Y) , t.MinimumRange);
             }
         }
-
-       
     }
 }
