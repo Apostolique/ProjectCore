@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System;
 
 namespace MonoGameJamProject
 {
@@ -8,11 +10,12 @@ namespace MonoGameJamProject
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        Input input;
         Board board;
-        Tower tower;
+        // list for all towers
+        List<Tower> towerList;
         Minion minion;
-        Path path;
+        Tower selectedTower = null;
 
         public MainClass()
         {
@@ -26,19 +29,19 @@ namespace MonoGameJamProject
         {
             // TODO: Add your initialization logic here
             Utility.Window = Window;
+            towerList = new List<Tower>();
+            input = new Input();
             board = new Board(10, 5);
-            tower = new Tower(2, 2);
-            minion = new Minion(1.7f, 3.5f);
-            path = new Path();
-            path.Add(new Point(0, 0));
-            path.Add(new Point(1, 0));
-            path.Add(new Point(1, 1));
-            path.Add(new Point(1, 2));
-            path.Add(new Point(1, 3));
-            path.Add(new Point(2, 3));
-            path.Add(new Point(2, 4));
+            AddTower(3, 2, board.BoardRatio);
+            minion = new Minion(1.7f, 4.2f);
 
             base.Initialize();
+        }
+
+        private void AddTower(int x, int y, int size)
+        {
+            Tower tower = new Tower(x, y, size);
+            towerList.Add(tower);
         }
 
         protected override void LoadContent()
@@ -52,12 +55,39 @@ namespace MonoGameJamProject
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             // TODO: Add your update logic here
-
+            input.Update();
+            TowerMovementChecker();
             base.Update(gameTime);
         }
 
+        private void TowerMovementChecker()
+        {
+            if (input.MouseGridPosition(board.BoardRatio).X > board.Width || input.MouseGridPosition(board.BoardRatio).X < 0)
+                return;
+            if (input.MouseGridPosition(board.BoardRatio).Y > board.Height || input.MouseGridPosition(board.BoardRatio).Y < 0)
+                return;
+            if (input.MouseRightButtonPressed)
+            {
+                if (selectedTower == null)
+                {
+                    foreach (Tower t in towerList)
+                    {
+                        if (t.X == input.MouseGridPosition(board.BoardRatio).X && t.Y == input.MouseGridPosition(board.BoardRatio).Y)
+                            selectedTower = t;
+                    }
+                }
+                //TODO: check if there is no path on this position, and if there isn't place the tower
+                else
+                {
+                    // for now it just places the tower wherever you click
+                    selectedTower.X = input.MouseGridPosition(board.BoardRatio).X;
+                    selectedTower.Y = input.MouseGridPosition(board.BoardRatio).Y;
+                    selectedTower = null;
+                }
+            }
+            
+        }
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -65,8 +95,10 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             board.Draw(spriteBatch);
-            path.Draw(spriteBatch, board.BoardRatio);
-            tower.Draw(spriteBatch, board.BoardRatio);
+            foreach(Tower t in towerList)
+            {
+                t.Draw(spriteBatch);
+            }
             minion.Draw(spriteBatch, 0.3f, board.BoardRatio);
             spriteBatch.End();
 
