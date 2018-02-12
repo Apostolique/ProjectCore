@@ -19,6 +19,7 @@ namespace MonoGameJamProject
         List<Tower> towerList;
         List<Minion> minionList;
         Tower selectedTower = null, previewTower = null;
+        Minion ITSMYMINION;
 
         public MainClass()
         {
@@ -43,6 +44,7 @@ namespace MonoGameJamProject
             board.GeneratePath();
             Minion m = new Minion(3, 3);
             minionList.Add(m);
+            ITSMYMINION = new Minion(5, 5);
 
 
             base.Initialize();
@@ -85,9 +87,11 @@ namespace MonoGameJamProject
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
+            ITSMYMINION.Update(gameTime);
             if (input.MouseLeftButtonPressed) {
                 board.ClearPaths();
                 board.GeneratePath();
+                ITSMYMINION.MoveTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
             base.Update(gameTime);
         }
@@ -178,6 +182,8 @@ namespace MonoGameJamProject
                 t.Draw(spriteBatch, board.GridSize);
             foreach(Minion m in minionList)
                 m.Draw(spriteBatch, 0.3f, board.GridSize);
+
+            ITSMYMINION.Draw(spriteBatch, 0.5f, board.GridSize);
 
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();

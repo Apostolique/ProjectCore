@@ -18,29 +18,34 @@ namespace MonoGameJamProject
         }
         float speed;
 
+        Vector2 start;
         Vector2 target;
-        float reach;
-        float reachSpeed;
+        float distance;
+        float inBetween;
 
         public Minion(float iX, float iY)
         {
+            //FIXME: The speed and movement is really wrong.
             position = new Vector2(iX, iY);
-            speed = 1;
-            reach = 1;
+            speed = 0.005f;
+            distance = 0;
+            inBetween = 0;
         }
-        public bool IsMoving => reach < 1;
-        public void Update()
+        public bool IsMoving => inBetween < distance;
+        public void Update(GameTime gameTime)
         {
             if (IsMoving) {
-                position = Vector2.Lerp(position, target, reach);
+                inBetween += speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                inBetween = Math.Min(distance, inBetween);
+                position = Vector2.Lerp(start, target, inBetween / distance);
             }
         }
         public void MoveTo(Vector2 b)
         {
-            reach = 0;
+            inBetween = 0;
+            start = position;
             target = b;
-            float distance = Vector2.Distance(position, target);
-            reachSpeed = distance / speed;
+            distance = Vector2.Distance(start, target);
         }
 
         public void Draw(SpriteBatch s, float size, int gridSize)
