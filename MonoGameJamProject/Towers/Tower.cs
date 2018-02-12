@@ -33,7 +33,10 @@ namespace MonoGameJamProject.Towers
 
         public void Draw(SpriteBatch s, int gridSize)
         {
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), towerColor);
+            if (disabled)
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), Color.Gray);
+            else
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), towerColor);
         }
 
         public void DrawSelectionHightlight(SpriteBatch s, int gridSize)
