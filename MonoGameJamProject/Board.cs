@@ -86,8 +86,8 @@ namespace MonoGameJamProject
         public void Draw(SpriteBatch s) {
             s.FillRectangle(new Rectangle(0, 0, BoardRatio * Width, BoardRatio * Height), new Color(10, 10, 10));
 
-            for (int i = 1; i < Width + 2; i++) {
-                for (int j = 1; j < Height + 2; j++) {
+            for (int i = 1; i < Width + 1; i++) {
+                for (int j = 1; j < Height + 1; j++) {
                     tiles[i, j].Draw(s, BoardRatio);
                 }
             }
