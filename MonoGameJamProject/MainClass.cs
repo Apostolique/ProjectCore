@@ -10,7 +10,6 @@ namespace MonoGameJamProject
 {
     public class MainClass : Game
     {
-       
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Input input;
@@ -18,7 +17,7 @@ namespace MonoGameJamProject
         Board board;
         // list for all towers
         List<Tower> towerList;
-        Minion minion;
+        List<Minion> minionList;
         Tower selectedTower = null, previewTower = null;
         Path path;
 
@@ -35,13 +34,15 @@ namespace MonoGameJamProject
             // TODO: Add your initialization logic here
             Utility.Window = Window;
             towerList = new List<Tower>();
+            minionList = new List<Minion>();
             input = new Input();
             board = new Board(10, 5);
             hud = new HUD(input, board.GridSize);
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
-            minion = new Minion(1.7f, 4.2f);
+            Minion m = new Minion(3, 3);
+            minionList.Add(m);
             path = new Path();
             path.Add(new Point(0, 1));
             path.Add(new Point(1, 1));
@@ -174,10 +175,10 @@ namespace MonoGameJamProject
             }
 
             foreach (Tower t in towerList)
-            {
                 t.Draw(spriteBatch, board.GridSize);
-            }
-            minion.Draw(spriteBatch, 0.3f, board.GridSize);
+            foreach(Minion m in minionList)
+                m.Draw(spriteBatch, 0.3f, board.GridSize);
+
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
 

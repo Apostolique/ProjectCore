@@ -11,5 +11,10 @@ namespace MonoGameJamProject.Towers
             minRange = 0;
             maxRange = 1;
         }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
     }
 }
