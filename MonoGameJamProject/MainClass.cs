@@ -5,6 +5,7 @@ using MonoGame.Extended;
 using System.Collections.Generic;
 using MonoGameJamProject.Towers;
 using System;
+using System.Linq;
 
 namespace MonoGameJamProject
 {
@@ -20,7 +21,6 @@ namespace MonoGameJamProject
         List<Tower> towerList;
         List<Minion> minionList;
         Tower selectedTower = null, previewTower = null;
-        Minion ITSMYMINION;
 
         public MainClass()
         {
@@ -45,8 +45,6 @@ namespace MonoGameJamProject
             board.GeneratePath();
             Minion m = new Minion(3, 3, 0.3f);
             minionList.Add(m);
-            ITSMYMINION = new Minion(5, 5, 0.3f);
-            minionList.Add(ITSMYMINION);
 
             base.Initialize();
         }
@@ -109,7 +107,7 @@ namespace MonoGameJamProject
             for(int i = minionList.Count - 1; i >= 0; i--)
             {
                 minionList[i].Update(gameTime);
-                if (minionList[i].dead)
+                if (minionList[i].dead || !minionList[i].IsMoving)
                     minionList.Remove(minionList[i]);
             }
 
@@ -123,7 +121,9 @@ namespace MonoGameJamProject
             if (input.MouseLeftButtonPressed)
             {
                 if (board.paths.Count > 0) {
-                    ITSMYMINION.FollowPath(board.paths[0]);
+                    Minion m = new Minion(0, 0, 0.3f);
+                    minionList.Add(m);
+                    m.FollowPath(board.paths[0]);
                 }
                 //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
@@ -228,8 +228,6 @@ namespace MonoGameJamProject
                 t.Draw(spriteBatch, board.GridSize);
             foreach(Minion m in minionList)
                 m.Draw(spriteBatch, board.GridSize);
-
-            ITSMYMINION.Draw(spriteBatch, board.GridSize);
 
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();

@@ -63,10 +63,7 @@ namespace MonoGameJamProject
         {
             get
             {
-                if (waypoints.Count > 0) {
-                    return inBetween < waypoints[0].distance;
-                }
-                return false;
+                return waypoints.Count > 0;
             }
         }
         public void Reset()
