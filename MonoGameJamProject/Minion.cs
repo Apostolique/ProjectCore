@@ -133,6 +133,7 @@ namespace MonoGameJamProject
         }
         public void Draw(SpriteBatch s, int gridSize)
         {
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X, gridSize), Utility.GameToScreen(position.Y, gridSize)), (Radius + 0.1f) * gridSize), 8, Color.Black, 0.1f * gridSize);
             s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X, gridSize), Utility.GameToScreen(position.Y, gridSize)), Radius * gridSize), 8, Color.Green, Radius * gridSize);
         }
         public void TakeDamage(int damage)
