@@ -43,9 +43,6 @@ namespace MonoGameJamProject
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
             board.GeneratePath();
-            Minion m = new Minion(3, 3, 0.3f);
-            minionList.Add(m);
-
             base.Initialize();
         }
         private void AddTower(int x, int y, Utility.TowerType type)
