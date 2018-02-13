@@ -223,12 +223,11 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
             }
+            foreach (Minion m in minionList)
+                m.Draw(spriteBatch, board.GridSize);
 
             foreach (Tower t in towerList)
                 t.Draw(spriteBatch, board.GridSize);
-            foreach(Minion m in minionList)
-                m.Draw(spriteBatch, board.GridSize);
-
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
 
