@@ -43,9 +43,9 @@ namespace MonoGameJamProject
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
             board.GeneratePath();
-            Minion m = new Minion(3, 3);
+            Minion m = new Minion(3, 3, 0.3f);
             minionList.Add(m);
-            ITSMYMINION = new Minion(5, 5);
+            ITSMYMINION = new Minion(5, 5, 0.3f);
             minionList.Add(ITSMYMINION);
 
             base.Initialize();
@@ -227,9 +227,9 @@ namespace MonoGameJamProject
             foreach (Tower t in towerList)
                 t.Draw(spriteBatch, board.GridSize);
             foreach(Minion m in minionList)
-                m.Draw(spriteBatch, 0.3f, board.GridSize);
+                m.Draw(spriteBatch, board.GridSize);
 
-            ITSMYMINION.Draw(spriteBatch, 0.5f, board.GridSize);
+            ITSMYMINION.Draw(spriteBatch, board.GridSize);
 
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();

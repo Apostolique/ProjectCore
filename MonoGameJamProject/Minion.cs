@@ -32,6 +32,10 @@ namespace MonoGameJamProject
         }
         List<waypoint> waypoints;
         float speed;
+        public float Radius
+        {
+            get; set;
+        }
 
         float inBetween;
         CoolDownTimer damageClock, onFireClock;
@@ -39,12 +43,13 @@ namespace MonoGameJamProject
         public bool dead, isOnFire;
         int hp;
 
-        public Minion(float iX, float iY)
+        public Minion(float iX, float iY, float iRadius)
         {
             //FIXME: The speed and movement is really wrong.
             position = new Vector2(iX, iY);
-            speed = 0.005f;
+            speed = 0.0005f;
             inBetween = 0;
+            Radius = iRadius;
 
             waypoints = new List<waypoint>();
 
@@ -129,10 +134,9 @@ namespace MonoGameJamProject
                 }
             }
         }
-        public void Draw(SpriteBatch s, float size, int gridSize)
+        public void Draw(SpriteBatch s, int gridSize)
         {
-            float halfSize = size * gridSize / 2f;
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(position.X, gridSize) - halfSize, Utility.GameToScreen(position.Y, gridSize) - halfSize, size * gridSize, size * gridSize), Color.Green);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X, gridSize), Utility.GameToScreen(position.Y, gridSize)), Radius * gridSize), 8, Color.Green, Radius * gridSize);
         }
         public void TakeDamage(int damage)
         {
