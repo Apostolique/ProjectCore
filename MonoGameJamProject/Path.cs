@@ -21,7 +21,7 @@ namespace MonoGameJamProject
     /// </summary>
     class Path
     {
-        List<Tile> pathway;
+        public List<Tile> pathway;
         public Path()
         {
             pathway = new List<Tile>();
@@ -38,6 +38,10 @@ namespace MonoGameJamProject
         public Tile Last()
         {
             return pathway.Last();
+        }
+        public int Count()
+        {
+            return pathway.Count;
         }
         public bool Contains(Tile tile)
         {

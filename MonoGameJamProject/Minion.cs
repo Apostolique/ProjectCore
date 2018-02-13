@@ -101,6 +101,11 @@ namespace MonoGameJamProject
         }
         public void MoveTo(Vector2 b)
         {
+            position = b;
+            waypoints.Clear();
+        }
+        public void WalkTo(Vector2 b)
+        {
             if (waypoints.Count > 0) {
                 waypoint waypoint = new waypoint(waypoints.Last().target, b, Vector2.Distance(waypoints.Last().target, b));
                 waypoints.Add(waypoint);
@@ -110,6 +115,19 @@ namespace MonoGameJamProject
             }
 
             //inBetween = 0;
+        }
+        public void FollowPath(Path p)
+        {
+            if (p.Count() > 0) {
+                Tile t = p.First();
+                Vector2 v1 = new Vector2(t.X + 0.5f, t.Y + 0.5f);
+                MoveTo(v1);
+                for (int i = 1; i < p.Count(); i++)
+                {
+                    Vector2 v2 = new Vector2(p.pathway[i].X + 0.5f, p.pathway[i].Y + 0.5f);
+                    WalkTo(v2);
+                }
+            }
         }
         public void Draw(SpriteBatch s, float size, int gridSize)
         {

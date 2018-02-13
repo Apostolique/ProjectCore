@@ -122,7 +122,10 @@ namespace MonoGameJamProject
             }
             if (input.MouseLeftButtonPressed)
             {
-                ITSMYMINION.MoveTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
+                if (board.paths.Count > 0) {
+                    ITSMYMINION.FollowPath(board.paths[0]);
+                }
+                //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
             base.Update(gameTime);
         }
