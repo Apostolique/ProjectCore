@@ -16,24 +16,17 @@ namespace MonoGameJamProject.Towers
             minRange = 2;
             towerInfo = "Sniper Tower\n MinRange: " + minRange + "\nMaxRange: INFINITE!\nPosX:";
         }
-
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
-            if (targetedMinion != null)
-                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y) || targetedMinion.dead)
-                    targetedMinion = null;
             TargetClosestMinion(iMinionList);
             base.Update(gameTime, iMinionList);
         }
-
         public override void Draw(SpriteBatch s)
         {
             base.Draw(s);
             if (!disabled && !(targetedMinion == null))
                 s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
-
         }
-
         private void TargetClosestMinion(List<Minion> minionList)
         {
             targetedMinion = null;
@@ -52,10 +45,6 @@ namespace MonoGameJamProject.Towers
                     }
                 }
             }
-            else
-                targetedMinion = null;
-            
         }
-
     }
 }

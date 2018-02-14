@@ -15,7 +15,6 @@ namespace MonoGameJamProject.Towers
             maxRange = 1;
             damage = 0;
         }
-
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
             if (!disabled)
@@ -25,7 +24,6 @@ namespace MonoGameJamProject.Towers
                 base.Update(gameTime, iMinionList);
             }
         }
-
         public void GenerateDamageTiles()
         {
             damageTiles.Clear();
@@ -37,7 +35,6 @@ namespace MonoGameJamProject.Towers
                 }
             }
         }
-
         public void CheckDamageTiles(List<Minion> iMinionList)
         {
             foreach(Minion m in iMinionList)
