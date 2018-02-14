@@ -72,7 +72,6 @@ namespace MonoGameJamProject
             // TODO: use this.Content to load your game content here
         }
         void Window_ClientSizeChanged(object sender, EventArgs e) {
-            Utility.board.CacheGridSize();
             int w = Utility.board.GridSize * Utility.board.Width;
             int h = Utility.board.GridSize * Utility.board.Height;
             if (w < 1) {
@@ -89,7 +88,6 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            Utility.board.Update();
             hud.Update(gameTime);
             TowerMovementChecker();
             TowerSwitchInput();

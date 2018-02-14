@@ -9,6 +9,7 @@ namespace MonoGameJamProject.Towers
     class Sniper : Tower
     {
         Minion targetedMinion;
+        bool drawLazer;
         public Sniper(int iX, int iY) : base(iX, iY)
         {
             towerColor = Color.White;
@@ -27,7 +28,13 @@ namespace MonoGameJamProject.Towers
         {
             base.Draw(s);
             if (!disabled && !(targetedMinion == null))
-                s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
+            {
+                if (OutsideMinimumRange((int)Math.Floor(targetedMinion.Position.X), (int)Math.Floor(targetedMinion.Position.Y)))
+                    s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Gray, 2f);
+                else
+                    s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
+            }
+            
         }
 
         private void TargetClosestMinion(List<Minion> minionList)
@@ -36,13 +43,13 @@ namespace MonoGameJamProject.Towers
             {
                 foreach (Minion m in minionList)
                 {
-                    if(CheckMinimumRange((int)Math.Floor(m.Position.X), (int)Math.Floor(m.Position.Y)))
+                    if (OutsideMinimumRange((int)Math.Floor(m.Position.X), (int)Math.Floor(m.Position.Y)))
+                        continue;
+                    else
                     {
-
+                        targetedMinion = m;
+                        break;
                     }
-                    targetedMinion = m;
-                    break;
-
                 }
             }
             else
