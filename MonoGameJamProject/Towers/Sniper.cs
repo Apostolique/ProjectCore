@@ -9,7 +9,6 @@ namespace MonoGameJamProject.Towers
     class Sniper : Tower
     {
         Minion targetedMinion;
-        bool drawLazer;
         public Sniper(int iX, int iY) : base(iX, iY)
         {
             towerColor = Color.White;
@@ -31,13 +30,8 @@ namespace MonoGameJamProject.Towers
         {
             base.Draw(s);
             if (!disabled && !(targetedMinion == null))
-            {
-                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y))
-                    s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Gray, 2f);
-                else
-                    s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
-            }
-            
+                s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
+
         }
 
         private void TargetClosestMinion(List<Minion> minionList)
