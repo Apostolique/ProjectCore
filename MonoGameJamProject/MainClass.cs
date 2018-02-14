@@ -34,6 +34,7 @@ namespace MonoGameJamProject
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.Window = Window;
+            Utility.board = new Board(15, 10);
             towerList = new List<Tower>();
             minionList = new List<Minion>();
             input = new Input();
@@ -209,15 +210,15 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             Utility.board.Draw(spriteBatch);
-            Utility.board.DrawPaths(spriteBatch, Utility.board.GridSize);
-            Utility.board.DrawPathLines(spriteBatch, Utility.board.GridSize);
-            HoveringOverTowerChecker(spriteBatch, Utility.board.GridSize);
+            Utility.board.DrawPaths(spriteBatch);
+            Utility.board.DrawPathLines(spriteBatch);
+            HoveringOverTowerChecker(spriteBatch);
             // Highlight needs to be drawn before the actual towers
             if (previewTower != null)
             {
                 if (IsWithinDimensions())
                     hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
-                selectedTower.DrawSelectionHightlight(spriteBatch, Utility.board.GridSize);
+                selectedTower.DrawSelectionHightlight(spriteBatch);
             }
             foreach (Minion m in minionList)
                 m.Draw(spriteBatch);
@@ -235,7 +236,7 @@ namespace MonoGameJamProject
 
             base.Draw(gameTime);
         }
-        private void HoveringOverTowerChecker(SpriteBatch s, int gridSize)
+        private void HoveringOverTowerChecker(SpriteBatch s)
         {
             if (!IsWithinDimensions())
                 return;

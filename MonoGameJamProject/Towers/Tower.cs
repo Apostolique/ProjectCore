@@ -41,9 +41,9 @@ namespace MonoGameJamProject.Towers
                 s.FillRectangle(new RectangleF(Utility.GameToScreen(x), Utility.GameToScreen(y), Utility.board.GridSize, Utility.board.GridSize), towerColor);
         }
 
-        public void DrawSelectionHightlight(SpriteBatch s, int gridSize)
+        public void DrawSelectionHightlight(SpriteBatch s)
         {
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(x) - gridSize * highlightOffset / 2, Utility.GameToScreen(y) - gridSize * highlightOffset / 2, gridSize + highlightOffset * gridSize, gridSize + highlightOffset * gridSize), Color.Yellow);
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x) - Utility.board.GridSize * highlightOffset / 2, Utility.GameToScreen(y) - Utility.board.GridSize * highlightOffset / 2, Utility.board.GridSize + highlightOffset * Utility.board.GridSize, Utility.board.GridSize + highlightOffset * Utility.board.GridSize), Color.Yellow);
         }
 
         protected bool IsWithinRange(int iX, int iY)

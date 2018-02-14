@@ -11,7 +11,7 @@ namespace MonoGameJamProject
     /// </summary>
     static class Utility
     {
-        public static Board board = new Board(15, 10);
+        public static Board board;
         public enum TowerType { Sniper, Shotgun, FlameThrower };
         public static SpriteFont mainFont;
         public static GameWindow Window;
