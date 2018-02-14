@@ -43,7 +43,7 @@ namespace MonoGameJamProject.Towers
             {
                 foreach(Point p in damageTiles)
                 {
-                    if (p.X == m.position.X && p.Y == m.position.Y)
+                    if (p.X == m.Position.X && p.Y == m.Position.Y)
                         m.IsOnFire = true;
                 }
             }

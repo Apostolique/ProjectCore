@@ -23,11 +23,11 @@ namespace MonoGameJamProject.Towers
             base.Update(gameTime, iMinionList);
         }
 
-        public override void Draw(SpriteBatch s, int gridSize)
+        public override void Draw(SpriteBatch s)
         {
-            base.Draw(s, gridSize);
+            base.Draw(s);
             if (!disabled && !(targetedMinion == null))
-                s.DrawLine(Utility.GameToScreen(this.X, gridSize) + gridSize / 2, Utility.GameToScreen(this.Y, gridSize) + gridSize / 2, Utility.GameToScreen(targetedMinion.position.X, gridSize), Utility.GameToScreen(targetedMinion.position.Y, gridSize), Color.Red, 2f);
+                s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
         }
 
         private void TargetClosestMinion(List<Minion> minionList)

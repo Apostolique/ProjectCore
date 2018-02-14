@@ -16,7 +16,7 @@ namespace MonoGameJamProject
         RenderTarget2D renderTarget01;
         Input input;
         HUD hud;
-        Board board;
+        
         // list for all towers
         List<Tower> towerList;
         List<Minion> minionList;
@@ -37,12 +37,12 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             minionList = new List<Minion>();
             input = new Input();
-            board = new Board(15, 10);
-            hud = new HUD(input, board.GridSize);
+            
+            hud = new HUD(input);
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
-            board.GeneratePath();
+            Utility.board.GeneratePath();
             base.Initialize();
         }
         private void AddTower(int x, int y, Utility.TowerType type)
@@ -66,13 +66,13 @@ namespace MonoGameJamProject
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            renderTarget01 = new RenderTarget2D(GraphicsDevice, board.GridSize * board.Width, board.GridSize * board.Height);
+            renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.board.GridSize * Utility.board.Width, Utility.board.GridSize * Utility.board.Height);
             Utility.mainFont = Content.Load<SpriteFont>("jura");
             // TODO: use this.Content to load your game content here
         }
         void Window_ClientSizeChanged(object sender, EventArgs e) {
-            int w = board.GridSize * board.Width;
-            int h = board.GridSize * board.Height;
+            int w = Utility.board.GridSize * Utility.board.Width;
+            int h = Utility.board.GridSize * Utility.board.Height;
             if (w < 1) {
                 w = 1;
             }
@@ -87,15 +87,14 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            hud.GridSize = board.GridSize;
             hud.Update(gameTime);
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
             for(int i = towerList.Count - 1; i >= 0; i--)
             {
-                Tile currenttile = board.GetTile(new Point(towerList[i].X, towerList[i].Y));
-                if (board.IsTileOnPath(currenttile))
+                Tile currenttile = Utility.board.GetTile(new Point(towerList[i].X, towerList[i].Y));
+                if (Utility.board.IsTileOnPath(currenttile))
                     towerList[i].IsDisabled = true;
                 else
                     towerList[i].IsDisabled = false;
@@ -110,17 +109,17 @@ namespace MonoGameJamProject
 
             if (input.MouseMiddleButtonPressed)
             {
-                if (board.paths.Count > 3) {
-                    board.ClearPaths();
+                if (Utility.board.Paths.Count > 3) {
+                    Utility.board.ClearPaths();
                 }
-                board.GeneratePath();
+                Utility.board.GeneratePath();
             }
             if (input.MouseLeftButtonPressed)
             {
-                if (board.paths.Count > 0) {
+                if (Utility.board.Paths.Count > 0) {
                     Minion m = new Minion(0, 0, 0.3f);
                     minionList.Add(m);
-                    m.FollowPath(board.paths[0]);
+                    m.FollowPath(Utility.board.Paths[0]);
                 }
                 //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
@@ -128,9 +127,9 @@ namespace MonoGameJamProject
         }
         public bool IsWithinDimensions()
         {
-            if (input.MouseToGameGrid(board.GridSize).X >= board.FullWidth - 1 || input.MouseToGameGrid(board.GridSize).X <= 0)
+            if (input.MouseToGameGrid().X >= Utility.board.FullWidth - 1 || input.MouseToGameGrid().X <= 0)
                 return false;
-            else if (input.MouseToGameGrid(board.GridSize).Y >= board.FullHeight - 1 || input.MouseToGameGrid(board.GridSize).Y <= 0)
+            else if (input.MouseToGameGrid().Y >= Utility.board.FullHeight - 1 || input.MouseToGameGrid().Y <= 0)
                 return false;
             else
                 return true;
@@ -164,7 +163,7 @@ namespace MonoGameJamProject
                 {
                     foreach (Tower t in towerList)
                     {
-                        if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y)
+                        if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y)
                         {
                             selectedTower = t;
                             previewTower = t;
@@ -174,9 +173,9 @@ namespace MonoGameJamProject
                 //TODO: check if there is no path on this position, and if there isn't place the tower
                 else
                 {
-                    if (!IsValidTileForTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y))
+                    if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
-                    AddTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y,previewTower.type);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y,previewTower.type);
                     towerList.Remove(selectedTower);
                     previewTower = null;
                 }
@@ -197,8 +196,8 @@ namespace MonoGameJamProject
                 if (t.X == x && t.Y == y)
                     return false;
             }
-            Tile currenttile = board.GetTile(new Point(x, y));
-            if (board.IsTileOnPath(currenttile))
+            Tile currenttile = Utility.board.GetTile(new Point(x, y));
+            if (Utility.board.IsTileOnPath(currenttile))
                 return false;
             return true;
         }
@@ -209,22 +208,22 @@ namespace MonoGameJamProject
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            board.Draw(spriteBatch);
-            board.DrawPaths(spriteBatch, board.GridSize);
-            board.DrawPathLines(spriteBatch, board.GridSize);
-            HoveringOverTowerChecker(spriteBatch, board.GridSize);
+            Utility.board.Draw(spriteBatch);
+            Utility.board.DrawPaths(spriteBatch, Utility.board.GridSize);
+            Utility.board.DrawPathLines(spriteBatch, Utility.board.GridSize);
+            HoveringOverTowerChecker(spriteBatch, Utility.board.GridSize);
             // Highlight needs to be drawn before the actual towers
             if (previewTower != null)
             {
                 if (IsWithinDimensions())
-                    hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid(board.GridSize).X, input.MouseToGameGrid(board.GridSize).Y));
-                selectedTower.DrawSelectionHightlight(spriteBatch, board.GridSize);
+                    hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
+                selectedTower.DrawSelectionHightlight(spriteBatch, Utility.board.GridSize);
             }
             foreach (Minion m in minionList)
-                m.Draw(spriteBatch, board.GridSize);
+                m.Draw(spriteBatch);
 
             foreach (Tower t in towerList)
-                t.Draw(spriteBatch, board.GridSize);
+                t.Draw(spriteBatch);
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
 
@@ -242,7 +241,7 @@ namespace MonoGameJamProject
                 return;
             foreach (Tower t in towerList)
             {
-                if (t.X == input.MouseToGameGrid(board.GridSize).X && t.Y == input.MouseToGameGrid(board.GridSize).Y && !t.IsDisabled)
+                if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
                     hud.DrawRangeIndicators(s, new Point(t.X, t.Y) , t.MinimumRange);
             }
         }

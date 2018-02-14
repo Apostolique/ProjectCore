@@ -17,9 +17,9 @@ namespace MonoGameJamProject
             Y = iY;
         }
 
-        public void Draw(SpriteBatch s, int gridSize, Color c)
+        public void Draw(SpriteBatch s, Color c)
         {
-            s.DrawRectangle(new RectangleF(Utility.GameToScreen(X, gridSize), Utility.GameToScreen(Y, gridSize), gridSize, gridSize), c, 0.02f * gridSize);
+            s.DrawRectangle(new RectangleF(Utility.GameToScreen(X), Utility.GameToScreen(Y), Utility.board.GridSize, Utility.board.GridSize), c, 0.02f * Utility.board.GridSize);
         }
     }
 }

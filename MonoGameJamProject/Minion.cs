@@ -13,24 +13,24 @@ namespace MonoGameJamProject
     /// </summary>
     class Minion
     {
-        public Vector2 position
+        public Vector2 Position
         {
             get; set;
         }
-        struct waypoint
+        struct Waypoint
         {
             public Vector2 start;
             public Vector2 target;
             public float distance;
             
-            public waypoint(Vector2 iStart, Vector2 iTarget, float iDistance)
+            public Waypoint(Vector2 iStart, Vector2 iTarget, float iDistance)
             {
                 start = iStart;
                 target = iTarget;
                 distance = iDistance;
             }
         }
-        List<waypoint> waypoints;
+        List<Waypoint> waypoints;
         float speed;
         public float Radius
         {
@@ -46,12 +46,12 @@ namespace MonoGameJamProject
         public Minion(float iX, float iY, float iRadius)
         {
             //FIXME: The speed and movement is really wrong.
-            position = new Vector2(iX, iY);
+            Position = new Vector2(iX, iY);
             speed = 0.005f;
             inBetween = 0;
             Radius = iRadius;
 
-            waypoints = new List<waypoint>();
+            waypoints = new List<Waypoint>();
 
             damageClock = new CoolDownTimer(0.5F);
             onFireClock = new CoolDownTimer(5F);
@@ -80,7 +80,7 @@ namespace MonoGameJamProject
             if (waypoints.Count > 0) {
                 inBetween += speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 inBetween = Math.Min(waypoints[0].distance, inBetween);
-                position = Vector2.Lerp(waypoints[0].start, waypoints[0].target, inBetween / waypoints[0].distance);
+                Position = Vector2.Lerp(waypoints[0].start, waypoints[0].target, inBetween / waypoints[0].distance);
             } else {
                 inBetween = 0;
             }
@@ -103,16 +103,16 @@ namespace MonoGameJamProject
         }
         public void MoveTo(Vector2 b)
         {
-            position = b;
+            Position = b;
             waypoints.Clear();
         }
         public void WalkTo(Vector2 b)
         {
             if (waypoints.Count > 0) {
-                waypoint waypoint = new waypoint(waypoints.Last().target, b, Vector2.Distance(waypoints.Last().target, b));
+                Waypoint waypoint = new Waypoint(waypoints.Last().target, b, Vector2.Distance(waypoints.Last().target, b));
                 waypoints.Add(waypoint);
             } else {
-                waypoint waypoint = new waypoint(position, b, Vector2.Distance(position, b));
+                Waypoint waypoint = new Waypoint(Position, b, Vector2.Distance(Position, b));
                 waypoints.Add(waypoint);
             }
 
@@ -131,10 +131,10 @@ namespace MonoGameJamProject
                 }
             }
         }
-        public void Draw(SpriteBatch s, int gridSize)
+        public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X, gridSize), Utility.GameToScreen(position.Y, gridSize)), (Radius + 0.1f) * gridSize), 8, Color.Black, 1.1f * gridSize);
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X, gridSize), Utility.GameToScreen(position.Y, gridSize)), Radius * gridSize), 8, Color.Green, 1f * gridSize);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), (Radius + 0.1f) * Utility.board.GridSize), 8, Color.Black, 1.1f * Utility.board.GridSize);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Green, 1f * Utility.board.GridSize);
         }
         public void TakeDamage(int damage)
         {

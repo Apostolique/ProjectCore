@@ -9,11 +9,9 @@ namespace MonoGameJamProject
     {
         TimeSpan tdGameTimer;
         Input input;
-        int gridSize;
-        public HUD(Input iInput, int iGridSize)
+        public HUD(Input iInput)
         {
             input = iInput;
-            gridSize = iGridSize;
             tdGameTimer = TimeSpan.Zero;
         }
 
@@ -26,10 +24,10 @@ namespace MonoGameJamProject
         {
             if (isValidPosition)
             {
-                s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.White * 0.5F);
-                DrawRangeIndicators(s, new Point(input.MouseToGameGrid(gridSize).X, input.MouseToGameGrid(gridSize).Y), minimumRange, 0.4f);
+                s.FillRectangle(new RectangleF(input.MouseGridPosition().X * Utility.board.GridSize, input.MouseGridPosition().Y * Utility.board.GridSize, Utility.board.GridSize, Utility.board.GridSize), Color.White * 0.5F);
+                DrawRangeIndicators(s, new Point(input.MouseToGameGrid().X, input.MouseToGameGrid().Y), minimumRange, 0.4f);
             }
-            else s.FillRectangle(new RectangleF(input.MouseGridPosition(gridSize).X * gridSize, input.MouseGridPosition(gridSize).Y * gridSize, gridSize, gridSize), Color.Red * 0.7F);
+            else s.FillRectangle(new RectangleF(input.MouseGridPosition().X * Utility.board.GridSize, input.MouseGridPosition().Y * Utility.board.GridSize, Utility.board.GridSize, Utility.board.GridSize), Color.Red * 0.7F);
 
         }
 
@@ -41,7 +39,7 @@ namespace MonoGameJamProject
                 {
                     if (i == 0 && j == 0)
                         continue;
-                    s.FillRectangle(new RectangleF(Utility.GameToScreen(origin.X + i, gridSize), Utility.GameToScreen(origin.Y + j, gridSize), gridSize, gridSize), Color.Red * transparency);
+                    s.FillRectangle(new RectangleF(Utility.GameToScreen(origin.X + i), Utility.GameToScreen(origin.Y + j), Utility.board.GridSize, Utility.board.GridSize), Color.Red * transparency);
                 }
             }
         }
@@ -52,10 +50,5 @@ namespace MonoGameJamProject
             s.DrawString(Utility.mainFont, time, Vector2.Zero, Color.Red);
         }
 
-        public int GridSize
-        {
-            get { return gridSize; }
-            set { gridSize = value; }
-        }
     }
 }

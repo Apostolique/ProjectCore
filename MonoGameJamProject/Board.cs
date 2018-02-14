@@ -13,7 +13,7 @@ namespace MonoGameJamProject
     /// </summary>
     class Board
     {
-        public List<Path> paths
+        public List<Path> Paths
         {
             get; set;
         }
@@ -33,7 +33,7 @@ namespace MonoGameJamProject
             Width = iWidth;
             Height = iHeight;
 
-            paths = new List<Path>();
+            Paths = new List<Path>();
             tiles = new Tile[FullWidth, FullHeight];
 
             for (int i = 0; i < FullWidth; i++)
@@ -69,7 +69,7 @@ namespace MonoGameJamProject
         }
         public void ClearPaths()
         {
-            paths.Clear();
+            Paths.Clear();
         }
         public void GeneratePath()
         {
@@ -84,9 +84,9 @@ namespace MonoGameJamProject
             //3) When the path is short, bias towards the center.
             //4) When the path is long, bias towards the edges.
             //5) If game difficulty is hard, bias towards shorter paths.
-            HashSet<Tile> edges = getEdgeTiles();
-            removeCorners(ref edges);
-            removeStartAndEnd(ref edges);
+            HashSet<Tile> edges = GetEdgeTiles();
+            RemoveCorners(ref edges);
+            RemoveStartAndEnd(ref edges);
 
             Tile startTile = edges.ElementAt(Utility.random.Next(edges.Count));
             Tile t = startTile;
@@ -95,12 +95,12 @@ namespace MonoGameJamProject
 
             do
             {
-                HashSet<Tile> nextTiles = findNeighbors(t);
-                removeStartAndEnd(ref nextTiles);
+                HashSet<Tile> nextTiles = FindNeighbors(t);
+                RemoveStartAndEnd(ref nextTiles);
                 List<TileValue> nextTileSort = new List<TileValue>();
                 foreach (Tile i in nextTiles)
                 {
-                    nextTileSort.Add(new TileValue(i, getTileValue(i, startTile, length, preferedSize, newPath)));
+                    nextTileSort.Add(new TileValue(i, GetTileValue(i, startTile, length, preferedSize, newPath)));
                 }
                 nextTileSort.Sort((v1, v2) => v1.value.CompareTo(v2.value));
                 foreach (TileValue tv in nextTileSort) {
@@ -108,13 +108,13 @@ namespace MonoGameJamProject
                 t = nextTileSort.Last().tile;
                 newPath.Add(t);
                 length++;
-            } while (t != startTile && !isEdge(t));
+            } while (t != startTile && !IsEdge(t));
 
-            paths.Add(newPath);
+            Paths.Add(newPath);
         }
         public bool IsTileOnPath(Tile tile)
         {
-            foreach (Path p in paths)
+            foreach (Path p in Paths)
             {
                 if (p.Contains(tile))
                 {
@@ -123,15 +123,15 @@ namespace MonoGameJamProject
             }
             return false;
         }
-        private bool isEdge(Tile tile)
+        private bool IsEdge(Tile tile)
         {
-            HashSet<Tile> edges = getEdgeTiles();
+            HashSet<Tile> edges = GetEdgeTiles();
             return edges.Contains(tile);
         }
-        private int getTileValue(Tile t, Tile start, int length, int preferedSize, Path p) {
+        private int GetTileValue(Tile t, Tile start, int length, int preferedSize, Path p) {
             int tileValue = 0;
 
-            bool isEdge = getEdgeTiles().Contains(t);
+            bool isEdge = GetEdgeTiles().Contains(t);
 
             Vector2 relativeCenter = new Vector2(0.5f, 0.5f);
             Vector2 relativeStart = new Vector2((start.X + 0.5f) / FullWidth, (start.Y + 0.5f) / FullHeight);
@@ -156,43 +156,43 @@ namespace MonoGameJamProject
 
             return tileValue;
         }
-        private HashSet<Tile> getEdgeTiles()
+        private HashSet<Tile> GetEdgeTiles()
         {
             HashSet<Tile> edgeTiles = new HashSet<Tile>();
 
             //Get top row.
-            edgeTiles.UnionWith(getRow(0));
+            edgeTiles.UnionWith(GetRow(0));
             //Get bottom row.
-            edgeTiles.UnionWith(getRow(FullHeight - 1));
+            edgeTiles.UnionWith(GetRow(FullHeight - 1));
             //Get left column.
-            edgeTiles.UnionWith(getColumn(0));
+            edgeTiles.UnionWith(GetColumn(0));
             //Get right column.
-            edgeTiles.UnionWith(getColumn(FullWidth - 1));
+            edgeTiles.UnionWith(GetColumn(FullWidth - 1));
 
             return edgeTiles;
         }
-        private void removeEdges(ref HashSet<Tile> tileSet)
+        private void RemoveEdges(ref HashSet<Tile> tileSet)
         {
-            foreach (Tile t in getEdgeTiles())
+            foreach (Tile t in GetEdgeTiles())
             {
                 tileSet.Remove(t);
             }
         }
-        private void removeCorners(ref HashSet<Tile> tileSet)
+        private void RemoveCorners(ref HashSet<Tile> tileSet)
         {
             tileSet.Remove(tiles[0, 0]);
             tileSet.Remove(tiles[0, FullHeight - 1]);
             tileSet.Remove(tiles[FullWidth - 1, 0]);
             tileSet.Remove(tiles[FullWidth - 1, FullHeight - 1]);
         }
-        private void removeStartAndEnd(ref HashSet<Tile> tileSet)
+        private void RemoveStartAndEnd(ref HashSet<Tile> tileSet)
         {
-            foreach (Path p in paths) {
+            foreach (Path p in Paths) {
                 tileSet.Remove(p.First());
                 tileSet.Remove(p.Last());
             }
         }
-        private HashSet<Tile> getRow(int row)
+        private HashSet<Tile> GetRow(int row)
         {
             HashSet<Tile> rowTiles = new HashSet<Tile>();
             for (int i = 0; i < FullWidth; i++)
@@ -202,7 +202,7 @@ namespace MonoGameJamProject
 
             return rowTiles;
         }
-        private HashSet<Tile> getColumn(int column)
+        private HashSet<Tile> GetColumn(int column)
         {
             HashSet<Tile> rowTiles = new HashSet<Tile>();
             for (int i = 0; i < FullHeight; i++)
@@ -212,7 +212,7 @@ namespace MonoGameJamProject
 
             return rowTiles;
         }
-        private HashSet<Tile> findNeighbors(Tile t)
+        private HashSet<Tile> FindNeighbors(Tile t)
         {
             HashSet<Tile> neighbors = new HashSet<Tile>();
             if (t.X - 1 >= 0)
@@ -242,20 +242,20 @@ namespace MonoGameJamProject
             {
                 for (int j = 1; j < FullHeight - 1; j++)
                 {
-                    tiles[i, j].Draw(s, GridSize, Color.White);
+                    tiles[i, j].Draw(s, Color.White);
                 }
             }
         }
         public void DrawPaths(SpriteBatch s, int gridSize)
         {
-            foreach (Path p in paths)
+            foreach (Path p in Paths)
             {
                 p.Draw(s, gridSize);
             }
         }
         public void DrawPathLines(SpriteBatch s, int gridSize)
         {
-            foreach (Path p in paths)
+            foreach (Path p in Paths)
             {
                 p.DrawLine(s, gridSize);
             }

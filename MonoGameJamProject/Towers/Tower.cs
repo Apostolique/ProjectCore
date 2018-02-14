@@ -33,17 +33,17 @@ namespace MonoGameJamProject.Towers
 
         }
 
-        public virtual void Draw(SpriteBatch s, int gridSize)
+        public virtual void Draw(SpriteBatch s)
         {
             if (disabled)
-                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), Color.Gray);
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x), Utility.GameToScreen(y), Utility.board.GridSize, Utility.board.GridSize), Color.Gray);
             else
-                s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize), Utility.GameToScreen(y, gridSize), gridSize, gridSize), towerColor);
+                s.FillRectangle(new RectangleF(Utility.GameToScreen(x), Utility.GameToScreen(y), Utility.board.GridSize, Utility.board.GridSize), towerColor);
         }
 
         public void DrawSelectionHightlight(SpriteBatch s, int gridSize)
         {
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(x, gridSize) - gridSize * highlightOffset / 2, Utility.GameToScreen(y, gridSize) - gridSize * highlightOffset / 2, gridSize + highlightOffset * gridSize, gridSize + highlightOffset * gridSize), Color.Yellow);
+            s.FillRectangle(new RectangleF(Utility.GameToScreen(x) - gridSize * highlightOffset / 2, Utility.GameToScreen(y) - gridSize * highlightOffset / 2, gridSize + highlightOffset * gridSize, gridSize + highlightOffset * gridSize), Color.Yellow);
         }
 
         protected bool IsWithinRange(int iX, int iY)
