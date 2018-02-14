@@ -150,16 +150,24 @@ namespace MonoGameJamProject
             set { isOnFire = value; }
         }
 
+        //bugged
         public bool IsInTile(int iX, int iY)
         {
             Rectangle tileBoundingBox = new Rectangle(iX, iY, Utility.board.GridSize, Utility.board.GridSize);
-            float closestX = MathHelper.Clamp(Position.X, tileBoundingBox.Left, tileBoundingBox.Right);
-            float closestY = MathHelper.Clamp(Position.Y, tileBoundingBox.Top, tileBoundingBox.Bottom);
-            float distanceX = Position.X - closestX;
-            float distanceY = Position.Y - closestY;
-            // If the distance is less than the circle's radius, an intersection occurs
-            float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
-            return distanceSquared < (Radius * Radius);
+            Vector2 circleDistance = new Vector2(Math.Abs(Position.X - iX), Math.Abs(Position.Y - iY));
+            if (circleDistance.X > (tileBoundingBox.Width / 2 + Radius))
+                return false;
+            if (circleDistance.Y > (tileBoundingBox.Height / 2 + Radius))
+                return false;
+
+            if (circleDistance.X <= (tileBoundingBox.Width / 2))
+                return true; 
+            if (circleDistance.Y <= (tileBoundingBox.Height / 2))
+                return true;
+
+            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2), 2) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2), 2);
+
+            return (cornerDistance_sq <= (Radius * Radius));
         }
 
     }

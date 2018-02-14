@@ -36,8 +36,13 @@ namespace MonoGameJamProject.Towers
             {
                 foreach (Minion m in minionList)
                 {
+                    if(CheckMinimumRange((int)Math.Floor(m.Position.X), (int)Math.Floor(m.Position.Y)))
+                    {
+
+                    }
                     targetedMinion = m;
                     break;
+
                 }
             }
             else

@@ -53,7 +53,21 @@ namespace MonoGameJamProject.Towers
             return true;
         }
         
-
+        protected bool CheckMinimumRange(int iX, int iY)
+        {
+            if(Math.Abs(iX) > Math.Abs(iY))
+            {
+                if (Math.Abs(iX) > MinimumRange)
+                    return true;
+                return false;
+            }
+            else
+            {
+                if (Math.Abs(iY) > MinimumRange)
+                    return true;
+                return false;
+            }
+        }
         public int X
         {
             get { return x; }
