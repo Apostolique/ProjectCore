@@ -153,8 +153,8 @@ namespace MonoGameJamProject
         //bugged
         public bool IsInTile(int iX, int iY)
         {
-            Rectangle tileBoundingBox = new Rectangle(iX, iY, Utility.board.GridSize, Utility.board.GridSize);
-            Vector2 circleDistance = new Vector2(Math.Abs(Position.X - iX), Math.Abs(Position.Y - iY));
+            Rectangle tileBoundingBox = new Rectangle(Utility.GameToScreen(iX), Utility.GameToScreen(iY), Utility.board.GridSize, Utility.board.GridSize);
+            Vector2 circleDistance = new Vector2(Math.Abs(Utility.GameToScreen(Position.X) - Utility.GameToScreen(iX)), Math.Abs(Utility.GameToScreen(Position.Y) - Utility.GameToScreen(iY)));
             if (circleDistance.X > (tileBoundingBox.Width / 2 + Radius))
                 return false;
             if (circleDistance.Y > (tileBoundingBox.Height / 2 + Radius))
