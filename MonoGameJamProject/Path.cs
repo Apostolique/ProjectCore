@@ -69,6 +69,7 @@ namespace MonoGameJamProject
                 if (spawnTimer.IsExpired)
                 {
                     pathsShown++;
+                    Utility.PathSpawnSound.Play(0.1f, 0f, 0f);
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {

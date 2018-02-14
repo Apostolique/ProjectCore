@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJamProject
@@ -15,6 +16,7 @@ namespace MonoGameJamProject
         public enum TowerType { Sniper, Shotgun, FlameThrower };
         public static SpriteFont mainFont;
         public static GameWindow Window;
+        public static SoundEffect PathSpawnSound;
 
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.

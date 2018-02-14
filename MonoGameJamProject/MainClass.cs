@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using MonoGameJamProject.Towers;
 using System;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 
 namespace MonoGameJamProject
 {
@@ -69,6 +70,7 @@ namespace MonoGameJamProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
             renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.board.GridSize * Utility.board.Width, Utility.board.GridSize * Utility.board.Height);
             Utility.mainFont = Content.Load<SpriteFont>("jura");
+            Utility.PathSpawnSound = Content.Load<SoundEffect>("Robot_Servo_006");
             // TODO: use this.Content to load your game content here
         }
         void Window_ClientSizeChanged(object sender, EventArgs e) {
