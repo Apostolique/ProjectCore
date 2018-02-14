@@ -9,15 +9,26 @@ namespace MonoGameJamProject.Towers
     class Sniper : Tower
     {
         Minion targetedMinion;
+        CoolDownTimer shootTimer;
+        private const int sniperDamage = 10;
         public Sniper(int iX, int iY) : base(iX, iY)
         {
             towerColor = Color.White;
             type = Utility.TowerType.Sniper;
+            shootTimer = new CoolDownTimer(3);
+            shootTimer.IsExpired = true;
             minRange = 2;
             towerInfo = "Sniper Tower\n MinRange: " + minRange + "\nMaxRange: INFINITE!\nPosX:";
         }
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
+            shootTimer.Update(gameTime);
+            if (targetedMinion != null)
+                if (shootTimer.IsExpired)
+                {
+                    targetedMinion.TakeDamage(sniperDamage);
+                    shootTimer.Reset();
+                }
             TargetClosestMinion(iMinionList);
             base.Update(gameTime, iMinionList);
         }

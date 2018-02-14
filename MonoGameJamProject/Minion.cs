@@ -40,7 +40,7 @@ namespace MonoGameJamProject
         float inBetween;
         float _distanceTraveled;
         CoolDownTimer damageClock, onFireClock;
-        private const int fireDamage = 6;
+        private const int fireDamage = 1;
         public bool dead, isOnFire;
         int hp;
 
