@@ -150,7 +150,6 @@ namespace MonoGameJamProject
             set { isOnFire = value; }
         }
 
-        //bugged
         public bool IsInTile(int iX, int iY)
         {
             Rectangle tileBoundingBox = new Rectangle(Utility.GameToScreen(iX), Utility.GameToScreen(iY), Utility.board.GridSize, Utility.board.GridSize);
