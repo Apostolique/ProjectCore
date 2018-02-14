@@ -32,6 +32,7 @@ namespace MonoGameJamProject.Towers
         }
         private void TargetClosestMinion(List<Minion> minionList)
         {
+            targetedMinion = null;
             if (minionList.Count > 0)
             {
                 foreach (Minion m in minionList)
@@ -47,8 +48,6 @@ namespace MonoGameJamProject.Towers
                     }
                 }
             }
-            else
-                targetedMinion = null;
         }
     }
 }
