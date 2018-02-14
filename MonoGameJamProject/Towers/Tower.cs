@@ -54,7 +54,7 @@ namespace MonoGameJamProject.Towers
             bool bottom = iY > _y + 1 + minRange;
             bool left = iX < _x - minRange;
 
-            return !top || !right || !bottom || !left;
+            return !(top || right || bottom || left);
         }
         public int X
         {
