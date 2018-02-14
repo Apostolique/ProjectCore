@@ -28,6 +28,7 @@ namespace MonoGameJamProject.Towers
 
         public void GenerateDamageTiles()
         {
+            damageTiles.Clear();
             for(int i = -minRange; i <= maxRange; i++)
             {
                 for(int j = -minRange; j <= maxRange; j++)
