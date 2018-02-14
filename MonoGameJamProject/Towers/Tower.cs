@@ -27,12 +27,10 @@ namespace MonoGameJamProject.Towers
             y = iY;
             towerInfo = "undefined";
         }
-
         public virtual void Update(GameTime gameTime, List<Minion> iMinionList)
         {
 
         }
-
         public virtual void Draw(SpriteBatch s)
         {
             if (disabled)
@@ -40,32 +38,23 @@ namespace MonoGameJamProject.Towers
             else
                 s.FillRectangle(new RectangleF(Utility.GameToScreen(x), Utility.GameToScreen(y), Utility.board.GridSize, Utility.board.GridSize), towerColor);
         }
-
         public void DrawSelectionHightlight(SpriteBatch s)
         {
             s.FillRectangle(new RectangleF(Utility.GameToScreen(x) - Utility.board.GridSize * highlightOffset / 2, Utility.GameToScreen(y) - Utility.board.GridSize * highlightOffset / 2, Utility.board.GridSize + highlightOffset * Utility.board.GridSize, Utility.board.GridSize + highlightOffset * Utility.board.GridSize), Color.Yellow);
         }
-
         protected bool IsWithinRange(int iX, int iY)
         {
-            if (Math.Abs(iX) > minRange || Math.Abs(iY) > minRange)
-                return false;
-            return true;
+            return !(Math.Abs(iX) > minRange || Math.Abs(iY) > minRange);
         }
-        
         protected bool CheckMinimumRange(int iX, int iY)
         {
             if(Math.Abs(iX) > Math.Abs(iY))
             {
-                if (Math.Abs(iX) > MinimumRange)
-                    return true;
-                return false;
+                return Math.Abs(iX) > MinimumRange;
             }
             else
             {
-                if (Math.Abs(iY) > MinimumRange)
-                    return true;
-                return false;
+                return Math.Abs(iY) > MinimumRange;
             }
         }
         public int X
@@ -73,7 +62,6 @@ namespace MonoGameJamProject.Towers
             get { return x; }
             set { x = value; }
         }
-
         public int Y
         {
             get { return y; }
@@ -88,7 +76,6 @@ namespace MonoGameJamProject.Towers
         {
             get { return minRange; }
         }
-
         public int MaximumRange
         {
             get { return maxRange; }
