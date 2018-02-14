@@ -207,7 +207,6 @@ namespace MonoGameJamProject
         {
             GraphicsDevice.SetRenderTarget(renderTarget01);
             GraphicsDevice.Clear(Color.Black);
-
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             Utility.board.Draw(spriteBatch);
@@ -223,18 +222,15 @@ namespace MonoGameJamProject
             }
             foreach (Minion m in minionList)
                 m.Draw(spriteBatch);
-
             foreach (Tower t in towerList)
                 t.Draw(spriteBatch);
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
-
             GraphicsDevice.SetRenderTarget(null);
 
             spriteBatch.Begin();
             spriteBatch.Draw(renderTarget01, new Vector2(0, 0), Color.White);
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
         private void HoveringOverTowerChecker(SpriteBatch s)
