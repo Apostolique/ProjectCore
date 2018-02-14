@@ -9,7 +9,6 @@
     <Import_RootNamespace>MonoGameJamProject</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)*\*.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Board.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CooldownTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HUD.cs" />
@@ -18,6 +17,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Minion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Path.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\FlameThrower.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\Shotgun.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\ShotgunPellet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\Sniper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\Tower.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility.cs" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,6 @@ namespace MonoGameJamProject.Towers
     {
         Minion targetedMinion;
         CoolDownTimer shootTimer;
-        private const int sniperDamage = 10;
         public Sniper(int iX, int iY) : base(iX, iY)
         {
             towerColor = Color.White;
@@ -18,6 +17,7 @@ namespace MonoGameJamProject.Towers
             shootTimer = new CoolDownTimer(3);
             shootTimer.IsExpired = true;
             minRange = 2;
+            damage = 20;
             towerInfo = "Sniper Tower\n MinRange: " + minRange + "\nMaxRange: INFINITE!\nPosX:";
         }
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
@@ -26,10 +26,10 @@ namespace MonoGameJamProject.Towers
             if (targetedMinion != null)
                 if (shootTimer.IsExpired)
                 {
-                    targetedMinion.TakeDamage(sniperDamage);
+                    targetedMinion.TakeDamage(damage);
                     shootTimer.Reset();
                 }
-            TargetClosestMinion(iMinionList);
+            TargetMinion(iMinionList);
             base.Update(gameTime, iMinionList);
         }
         public override void Draw(SpriteBatch s)
@@ -38,7 +38,7 @@ namespace MonoGameJamProject.Towers
             if (!disabled && !(targetedMinion == null))
                 s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
         }
-        private void TargetClosestMinion(List<Minion> minionList)
+        private void TargetMinion(List<Minion> minionList)
         {
             targetedMinion = null;
             if (minionList.Count > 0)
