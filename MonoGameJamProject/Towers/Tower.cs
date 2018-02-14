@@ -47,7 +47,7 @@ namespace MonoGameJamProject.Towers
             return !(Math.Abs(iX) > minRange || Math.Abs(iY) > minRange);
         }
         // currently doesnt work?
-        protected bool OutsideMinimumRange(int iX, int iY)
+        protected bool OutsideMinimumRange(float iX, float iY)
         {
             float distanceSQ = (Math.Abs(iX - x) * Math.Abs(iX - x)) + (Math.Abs(iY - y) * Math.Abs(iY - y));
             return Math.Sqrt(distanceSQ) < minRange;

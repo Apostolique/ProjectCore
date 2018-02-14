@@ -20,6 +20,9 @@ namespace MonoGameJamProject.Towers
 
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
+            if (targetedMinion != null)
+                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y))
+                    targetedMinion = null;
             TargetClosestMinion(iMinionList);
             base.Update(gameTime, iMinionList);
         }
@@ -29,7 +32,7 @@ namespace MonoGameJamProject.Towers
             base.Draw(s);
             if (!disabled && !(targetedMinion == null))
             {
-                if (OutsideMinimumRange((int)Math.Floor(targetedMinion.Position.X), (int)Math.Floor(targetedMinion.Position.Y)))
+                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y))
                     s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Gray, 2f);
                 else
                     s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
@@ -43,9 +46,11 @@ namespace MonoGameJamProject.Towers
             {
                 foreach (Minion m in minionList)
                 {
-                    if (OutsideMinimumRange((int)Math.Floor(m.Position.X), (int)Math.Floor(m.Position.Y)))
+                    if (OutsideMinimumRange(m.Position.X, m.Position.Y))
                         continue;
-                    else
+                    else if (targetedMinion == null)
+                        targetedMinion = m;
+                    else if (m.DistanceTraveled > targetedMinion.DistanceTraveled)
                     {
                         targetedMinion = m;
                         break;
