@@ -150,6 +150,18 @@ namespace MonoGameJamProject
             set { isOnFire = value; }
         }
 
+        public bool IsInTile(int iX, int iY)
+        {
+            Rectangle tileBoundingBox = new Rectangle(iX, iY, Utility.board.GridSize, Utility.board.GridSize);
+            float closestX = MathHelper.Clamp(Position.X, tileBoundingBox.Left, tileBoundingBox.Right);
+            float closestY = MathHelper.Clamp(Position.Y, tileBoundingBox.Top, tileBoundingBox.Bottom);
+            float distanceX = Position.X - closestX;
+            float distanceY = Position.Y - closestY;
+            // If the distance is less than the circle's radius, an intersection occurs
+            float distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+            return distanceSquared < (Radius * Radius);
+        }
+
     }
 }
 
