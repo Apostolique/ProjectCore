@@ -152,19 +152,19 @@ namespace MonoGameJamProject
 
         public bool IsInTile(int iX, int iY)
         {
-            Rectangle tileBoundingBox = new Rectangle(Utility.GameToScreen(iX), Utility.GameToScreen(iY), Utility.board.GridSize, Utility.board.GridSize);
-            Vector2 circleDistance = new Vector2(Math.Abs(Utility.GameToScreen(Position.X) - Utility.GameToScreen(iX)), Math.Abs(Utility.GameToScreen(Position.Y) - Utility.GameToScreen(iY)));
-            if (circleDistance.X > (tileBoundingBox.Width / 2 + Radius))
+            Rectangle tileBoundingBox = new Rectangle(iX, iY, 1, 1);
+            Vector2 circleDistance = new Vector2(Math.Abs(Position.X - iX), Math.Abs(Position.Y - iY));
+            if (circleDistance.X > (tileBoundingBox.Width / 2f + Radius))
                 return false;
-            if (circleDistance.Y > (tileBoundingBox.Height / 2 + Radius))
+            if (circleDistance.Y > (tileBoundingBox.Height / 2f + Radius))
                 return false;
 
-            if (circleDistance.X <= (tileBoundingBox.Width / 2))
+            if (circleDistance.X <= (tileBoundingBox.Width / 2f))
                 return true; 
-            if (circleDistance.Y <= (tileBoundingBox.Height / 2))
+            if (circleDistance.Y <= (tileBoundingBox.Height / 2f))
                 return true;
 
-            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2), 2) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2), 2);
+            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2f), 2f) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2f), 2f);
 
             return (cornerDistance_sq <= (Radius * Radius));
         }
