@@ -38,6 +38,7 @@ namespace MonoGameJamProject
         }
 
         float inBetween;
+        float _distanceTraveled;
         CoolDownTimer damageClock, onFireClock;
         private const int fireDamage = 6;
         public bool dead, isOnFire;
@@ -49,6 +50,7 @@ namespace MonoGameJamProject
             Position = new Vector2(iX, iY);
             speed = 0.005f;
             inBetween = 0;
+            _distanceTraveled = 0;
             Radius = iRadius;
 
             waypoints = new List<Waypoint>();
@@ -59,6 +61,7 @@ namespace MonoGameJamProject
             Reset();
             damageClock.IsExpired = true;
         }
+        public float DistanceTraveled => _distanceTraveled;
         public bool IsMoving
         {
             get
@@ -73,12 +76,13 @@ namespace MonoGameJamProject
         }
         public void Update(GameTime gameTime)
         {
+            _distanceTraveled += speed + (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            inBetween += speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             while (waypoints.Count() > 0 && inBetween >= waypoints.First().distance) {
                 inBetween -= waypoints[0].distance;
                 waypoints.RemoveAt(0);
             }
             if (waypoints.Count > 0) {
-                inBetween += speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
                 inBetween = Math.Min(waypoints[0].distance, inBetween);
                 Position = Vector2.Lerp(waypoints[0].start, waypoints[0].target, inBetween / waypoints[0].distance);
             } else {
