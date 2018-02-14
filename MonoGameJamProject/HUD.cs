@@ -41,7 +41,7 @@ namespace MonoGameJamProject
         }
         public void DrawPlayTime(SpriteBatch s)
         {
-            string time = tdGameTimer.Minutes.ToString() + " : " + tdGameTimer.Seconds.ToString();
+            string time = tdGameTimer.Minutes.ToString("D2") + ":" + tdGameTimer.Seconds.ToString("D2");
             s.DrawString(Utility.mainFont, time, Vector2.Zero, Color.Red);
         }
     }
