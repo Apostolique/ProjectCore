@@ -15,7 +15,6 @@ namespace MonoGameJamProject
             paused = true;
             expired = false;
         }
-
         // Updates the timer
         public void Update(GameTime gameTime)
         {
@@ -31,8 +30,6 @@ namespace MonoGameJamProject
                 expired = currentime >= targettime;
             }
         }
-
-
         //Resets the timer
         public void Reset()
         {
@@ -40,7 +37,6 @@ namespace MonoGameJamProject
             IsPaused = false;
             expired = false;
         }
-
         // Properties for the timer
         public bool IsPaused
         {

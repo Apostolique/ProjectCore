@@ -14,12 +14,10 @@ namespace MonoGameJamProject
             input = iInput;
             tdGameTimer = TimeSpan.Zero;
         }
-
         public void Update(GameTime gameTime)
         {
             tdGameTimer += gameTime.ElapsedGameTime;
         }
-        
         public void DrawPlacementIndicator(SpriteBatch s, int minimumRange, bool isValidPosition)
         {
             if (isValidPosition)
@@ -28,9 +26,7 @@ namespace MonoGameJamProject
                 DrawRangeIndicators(s, new Point(input.MouseToGameGrid().X, input.MouseToGameGrid().Y), minimumRange, 0.4f);
             }
             else s.FillRectangle(new RectangleF(input.MouseGridPosition().X * Utility.board.GridSize, input.MouseGridPosition().Y * Utility.board.GridSize, Utility.board.GridSize, Utility.board.GridSize), Color.Red * 0.7F);
-
         }
-
         public void DrawRangeIndicators(SpriteBatch s, Point origin, int minimumRange, float transparency = 0.1f)
         {
             for (int i = -minimumRange; i <= minimumRange; i++)
@@ -43,12 +39,10 @@ namespace MonoGameJamProject
                 }
             }
         }
-
         public void DrawPlayTime(SpriteBatch s)
         {
             string time = tdGameTimer.Minutes.ToString() + " : " + tdGameTimer.Seconds.ToString();
             s.DrawString(Utility.mainFont, time, Vector2.Zero, Color.Red);
         }
-
     }
 }
