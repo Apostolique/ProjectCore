@@ -43,6 +43,15 @@ namespace MonoGameJamProject
                     tiles[i, j] = new Tile(i, j);
                 }
             }
+            reCacheGridSize();
+        }
+        public void Update()
+        {
+            reCacheGridSize();
+        }
+        private void reCacheGridSize()
+        {
+            _gridSize = Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
         }
         public int Width
         {
@@ -62,7 +71,8 @@ namespace MonoGameJamProject
         {
             get => Height + 2;
         }
-        public int GridSize => Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
+        int _gridSize = 1;
+        public int GridSize => _gridSize;
         public Tile GetTile(Point p)
         {
             return tiles[p.X, p.Y];
