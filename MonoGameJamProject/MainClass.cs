@@ -89,6 +89,7 @@ namespace MonoGameJamProject
                 Exit();
             // TODO: Add your update logic here
             hud.Update(gameTime);
+            Utility.board.Update(gameTime);
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();

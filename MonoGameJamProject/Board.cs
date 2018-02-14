@@ -45,9 +45,13 @@ namespace MonoGameJamProject
             }
             CacheGridSize();
         }
-        public void Update()
+        public void Update(GameTime gameTime)
         {
             CacheGridSize();
+            foreach (Path p in Paths)
+            {
+                p.Update(gameTime);
+            }
         }
         public void CacheGridSize()
         {
