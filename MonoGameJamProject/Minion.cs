@@ -48,7 +48,7 @@ namespace MonoGameJamProject
         {
             //FIXME: The speed and movement is really wrong.
             Position = new Vector2(iX, iY);
-            speed = 0.005f;
+            speed = 0.0005f;
             inBetween = 0;
             _distanceTraveled = 0;
             Radius = iRadius;
