@@ -20,7 +20,7 @@ namespace MonoGameJamProject.Towers
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
             if (targetedMinion != null)
-                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y))
+                if (OutsideMinimumRange(targetedMinion.Position.X, targetedMinion.Position.Y) || targetedMinion.dead)
                     targetedMinion = null;
             TargetClosestMinion(iMinionList);
             base.Update(gameTime, iMinionList);
@@ -36,6 +36,7 @@ namespace MonoGameJamProject.Towers
 
         private void TargetClosestMinion(List<Minion> minionList)
         {
+            targetedMinion = null;
             if (minionList.Count > 0)
             {
                 foreach (Minion m in minionList)
