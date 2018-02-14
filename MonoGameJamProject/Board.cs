@@ -43,13 +43,13 @@ namespace MonoGameJamProject
                     tiles[i, j] = new Tile(i, j);
                 }
             }
-            reCacheGridSize();
+            CacheGridSize();
         }
         public void Update()
         {
-            reCacheGridSize();
+            CacheGridSize();
         }
-        private void reCacheGridSize()
+        public void CacheGridSize()
         {
             _gridSize = Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
         }
