@@ -246,18 +246,18 @@ namespace MonoGameJamProject
                 }
             }
         }
-        public void DrawPaths(SpriteBatch s, int gridSize)
+        public void DrawPaths(SpriteBatch s)
         {
             foreach (Path p in Paths)
             {
-                p.Draw(s, gridSize);
+                p.Draw(s);
             }
         }
-        public void DrawPathLines(SpriteBatch s, int gridSize)
+        public void DrawPathLines(SpriteBatch s)
         {
             foreach (Path p in Paths)
             {
-                p.DrawLine(s, gridSize);
+                p.DrawLine(s);
             }
         }
     }

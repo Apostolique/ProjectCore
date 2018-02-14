@@ -48,14 +48,14 @@ namespace MonoGameJamProject
             return pathway.Contains(tile);
         }
 
-        public void Draw(SpriteBatch s, int gridSize)
+        public void Draw(SpriteBatch s)
         {
             foreach (Tile p in pathway)
             {
-                s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X), Utility.GameToScreen(p.Y), gridSize, gridSize), Color.Blue);
+                s.FillRectangle(new Rectangle(Utility.GameToScreen(p.X), Utility.GameToScreen(p.Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
             }
         }
-        public void DrawLine(SpriteBatch s, int gridSize)
+        public void DrawLine(SpriteBatch s)
         {
             for (int i = 1; i < pathway.Count; i++)
             {
@@ -64,8 +64,8 @@ namespace MonoGameJamProject
                 float x2 = Utility.GameToScreen(pathway[i - 1].X + 0.5f);
                 float y2 = Utility.GameToScreen(pathway[i - 1].Y + 0.5f);
 
-                s.DrawLine(x1, y1, x2, y2, Color.Black, gridSize * 0.15f);
-                s.DrawLine(x1, y1, x2, y2, Color.White, gridSize * 0.1f);
+                s.DrawLine(x1, y1, x2, y2, Color.Black, Utility.board.GridSize * 0.15f);
+                s.DrawLine(x1, y1, x2, y2, Color.White, Utility.board.GridSize * 0.1f);
             }
         }
     }
