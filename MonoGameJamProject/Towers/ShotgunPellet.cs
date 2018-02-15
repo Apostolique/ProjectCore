@@ -15,6 +15,7 @@ namespace MonoGameJamProject.Towers
         {
             position = iPos;
             direction = iDirection;
+            MarkedForDeletion = false;
         }
         public void Update(GameTime gameTime)
         {
@@ -40,6 +41,11 @@ namespace MonoGameJamProject.Towers
         public Vector2 Position
         {
             get { return position; }
+        }
+
+        public bool MarkedForDeletion
+        {
+            get; set;
         }
     }
 }

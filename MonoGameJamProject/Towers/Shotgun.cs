@@ -32,13 +32,21 @@ namespace MonoGameJamProject.Towers
                     ShootAtTargetedMinion();
                 attackTimer.Reset();
             }
-            for(int i = (bulletList.Count - 1); i >= 0; i--)
+
+            for(int x = bulletList.Count - 1; x >=0; x--)
             {
-                bulletList[i].Update(gameTime);
-                BulletCollisionChecker(iMinionList);
-                if (bulletList[i].DistanceTravelled > maxRange)
-                    bulletList.Remove(bulletList[i]);
+                if (bulletList[x].MarkedForDeletion)
+                    bulletList.Remove(bulletList[x]);
             }
+            foreach(ShotgunPellet b in bulletList)
+            {
+                b.Update(gameTime);
+                BulletCollisionChecker(iMinionList);
+                // bullets start at the center, therefore an extra 0.5f is added to the range
+                if (b.DistanceTravelled > maxRange + 0.5f)
+                    b.MarkedForDeletion = true;
+            }
+
         }
 
         private void BulletCollisionChecker(List<Minion> iMinionList)
@@ -48,7 +56,10 @@ namespace MonoGameJamProject.Towers
                 foreach(ShotgunPellet b in bulletList)
                 {
                     if (m.CollidesWithBullet(b.Position, b.Radius))
+                    {
                         m.TakeDamage(damage);
+                        b.MarkedForDeletion = true;
+                    }
                 }
             }
         }
@@ -69,14 +80,14 @@ namespace MonoGameJamProject.Towers
                 ShotgunPellet pellet = new ShotgunPellet(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection);
                 bulletList.Add(pellet);
             }
-            Utility.assetManager.PlaySFX("shotgun_shot");
+            Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
         }
 
         private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
         {
             Vector2 offsettedDirection = initialDirection;
             bool negative = Utility.random.Next(0, 2) > 0;
-            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 3);
+            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 4);
             if (negative)
                 randomizedDirectionOffset = -randomizedDirectionOffset;
             if (Math.Abs(offsettedDirection.Y) > Math.Abs(offsettedDirection.X))
