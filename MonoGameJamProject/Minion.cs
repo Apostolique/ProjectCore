@@ -46,7 +46,6 @@ namespace MonoGameJamProject
 
         public Minion(float iX, float iY, float iRadius, float iSpeed)
         {
-            //FIXME: The speed and movement is really wrong.
             Position = new Vector2(iX, iY);
             speed = iSpeed;
             inBetween = 0;
