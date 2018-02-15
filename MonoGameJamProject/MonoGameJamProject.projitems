@@ -20,7 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\FlameThrower.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Shotgun.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Towers\ShotgunPellet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Towers\Projectile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Sniper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Tower.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility.cs" />

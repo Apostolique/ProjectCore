@@ -5,27 +5,29 @@ using MonoGame.Extended;
 
 namespace MonoGameJamProject.Towers
 {
-    class ShotgunPellet
+    class Projectile
     {
-        private const float bulletRadius = 0.1f;
-        private const float bulletSpeed = 3f;
+        private const float radius = 0.1f;
+        private const float speed = 3f;
         private Vector2 position, direction;
         private float distanceTravelled;
-        public ShotgunPellet(Vector2 iPos, Vector2 iDirection)
+        private Color colour;
+        public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour)
         {
             position = iPos;
             direction = iDirection;
+            colour = iColour;
             MarkedForDeletion = false;
         }
         public void Update(GameTime gameTime)
         {
-            position += direction * bulletSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            distanceTravelled += bulletSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            distanceTravelled += speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y)), bulletRadius * Utility.board.GridSize), 8, Color.SandyBrown, bulletRadius * Utility.board.GridSize);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y)), radius * Utility.board.GridSize), 8, colour, radius * Utility.board.GridSize);
         }
 
         public float DistanceTravelled
@@ -35,7 +37,7 @@ namespace MonoGameJamProject.Towers
 
         public float Radius
         {
-            get { return bulletRadius; }
+            get { return radius; }
         }
 
         public Vector2 Position

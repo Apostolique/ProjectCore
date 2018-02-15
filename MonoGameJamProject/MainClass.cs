@@ -13,7 +13,6 @@ namespace MonoGameJamProject
     public class MainClass : Game
     {
         GraphicsDeviceManager graphics;
-        ShotgunPellet testpellet;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
         Input input;
@@ -40,7 +39,6 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             minionList = new List<Minion>();
             input = new Input();
-            testpellet = new ShotgunPellet(new Vector2(6, 2), new Vector2(0.2f, 0.2f));
             hud = new HUD(input);
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
@@ -96,7 +94,6 @@ namespace MonoGameJamProject
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
-            testpellet.Update(gameTime);
             for(int i = towerList.Count - 1; i >= 0; i--)
             {
                 Tile currenttile = Utility.board.GetTile(new Point(towerList[i].X, towerList[i].Y));
@@ -222,7 +219,6 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
-            testpellet.Draw(spriteBatch);
             foreach (Minion m in minionList)
                 m.Draw(spriteBatch);
             foreach (Tower t in towerList)
