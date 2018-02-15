@@ -44,11 +44,10 @@ namespace MonoGameJamProject
         public bool dead, isOnFire;
         int hp;
 
-        public Minion(float iX, float iY, float iRadius)
+        public Minion(float iX, float iY, float iRadius, float iSpeed)
         {
-            //FIXME: The speed and movement is really wrong.
             Position = new Vector2(iX, iY);
-            speed = 0.0005f;
+            speed = iSpeed;
             inBetween = 0;
             _distanceTraveled = 0;
             Radius = iRadius;
@@ -137,8 +136,8 @@ namespace MonoGameJamProject
         }
         public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), (Radius + 0.1f) * Utility.board.GridSize), 8, Color.Black, 1.1f * Utility.board.GridSize);
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Green, 1f * Utility.board.GridSize);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Green, Radius * Utility.board.GridSize);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Black, 0.1f * Utility.board.GridSize);
         }
         public void TakeDamage(int damage)
         {
