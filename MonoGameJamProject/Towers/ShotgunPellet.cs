@@ -22,7 +22,7 @@ namespace MonoGameJamProject.Towers
 
         public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y)), bulletRadius * Utility.board.GridSize), 16, Color.SandyBrown, 11f);
+            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y)), bulletRadius * Utility.board.GridSize), 8, Color.SandyBrown, bulletRadius * Utility.board.GridSize);
         }
     }
 }
