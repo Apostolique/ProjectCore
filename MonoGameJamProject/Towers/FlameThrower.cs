@@ -57,7 +57,7 @@ namespace MonoGameJamProject.Towers
             for (int i = 0; i <= amountOfFlamesPerCycle; i++)
             {
                 Vector2 randomDirection = RandomDirectionGenerator();
-                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange);
+                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 2.5f);
                 flameList.Add(flame);
             }
         }

@@ -8,15 +8,16 @@ namespace MonoGameJamProject.Towers
     class Projectile
     {
         private const float radius = 0.1f;
-        private const float speed = 3f;
+        float speed;
         private Vector2 position, direction;
         private float distanceTravelled;
         private Color colour;
-        public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour)
+        public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour, float iSpeed = 7f)
         {
             position = iPos;
             direction = iDirection;
             colour = iColour;
+            speed = iSpeed;
             MarkedForDeletion = false;
         }
         public void Update(GameTime gameTime)

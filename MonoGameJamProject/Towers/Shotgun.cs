@@ -43,7 +43,7 @@ namespace MonoGameJamProject.Towers
                 b.Update(gameTime);
                 BulletCollisionChecker(iMinionList);
                 // bullets start at the center, therefore an extra 0.5f is added to the range
-                if (b.DistanceTravelled > maxRange + 0.5f)
+                if (b.DistanceTravelled > maxRange + 10.5f)
                     b.MarkedForDeletion = true;
             }
 
@@ -76,25 +76,14 @@ namespace MonoGameJamProject.Towers
             Vector2 direction = Vector2.Normalize(new Vector2(targetedMinion.Position.X - this.X, targetedMinion.Position.Y - this.Y));
             for(int i = 0; i <= amountOfPellets; i++)
             {
-                Vector2 newDirection = GenerateDirectionOffset(direction);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown);
+                float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 3);
+                Vector2 spreadDirection = new Vector2(direction.X - randomizedDirectionOffset, direction.Y - randomizedDirectionOffset);
+                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), spreadDirection, Color.SandyBrown);
                 bulletList.Add(pellet);
             }
             Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
         }
 
-        private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
-        {
-            Vector2 offsettedDirection = initialDirection;
-            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 4);
-            if (Utility.random.Next(0, 2) > 0)
-                randomizedDirectionOffset = -randomizedDirectionOffset;
-            if (Math.Abs(offsettedDirection.Y) > Math.Abs(offsettedDirection.X))
-                offsettedDirection.X += randomizedDirectionOffset;
-            else
-                offsettedDirection.Y += randomizedDirectionOffset;
-            return offsettedDirection;
-        }
 
         private void TargetRandomMinion(List<Minion> minionList)
         {
