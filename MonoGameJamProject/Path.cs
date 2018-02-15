@@ -69,7 +69,7 @@ namespace MonoGameJamProject
                 if (spawnTimer.IsExpired)
                 {
                     pathsShown++;
-                    Utility.assetManager.PlaySFX("Robot_Servo_006");
+                    Utility.assetManager.PlaySFX("Robot_Servo_006", 0.1f);
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
