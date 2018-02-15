@@ -32,3 +32,9 @@
 /processorParam:Quality=Best
 /build:sniper_shot.wav
 
+#begin shotgun_shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shotgun_shot.wav
+

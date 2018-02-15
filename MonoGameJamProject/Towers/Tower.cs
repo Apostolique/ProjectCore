@@ -26,10 +26,8 @@ namespace MonoGameJamProject.Towers
         {
             _x = iX;
             _y = iY;
-            attackTimer = new CoolDownTimer(iAttackCooldown)
-            {
-                IsExpired = true
-            };
+            attackTimer = new CoolDownTimer(iAttackCooldown);
+            attackTimer.Reset();
             towerInfo = "undefined";
         }
         public virtual void Update(GameTime gameTime, List<Minion> iMinionList)
@@ -52,12 +50,12 @@ namespace MonoGameJamProject.Towers
             return !(Math.Abs(iX) > minRange || Math.Abs(iY) > minRange);
         }
 
-        protected bool OutsideMinimumRange(float iX, float iY)
+        protected bool RangeChecker(float iX, float iY, int range)
         {
-            bool top = iY < _y - minRange;
-            bool right = iX > _x + 1 + minRange;
-            bool bottom = iY > _y + 1 + minRange;
-            bool left = iX < _x - minRange;
+            bool top = iY < _y - range;
+            bool right = iX > _x + 1 + range;
+            bool bottom = iY > _y + 1 + range;
+            bool left = iX < _x - range;
 
             return !(top || right || bottom || left);
         }

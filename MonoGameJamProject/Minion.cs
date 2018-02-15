@@ -173,6 +173,13 @@ namespace MonoGameJamProject
             return (cornerDistance_sq <= (Radius * Radius));
         }
 
+        public bool CollidesWithBullet(Vector2 bulletOrigin , float bulletRadius)
+        {
+            var totalRadius = Radius + bulletRadius;
+            var dX = Position.X - bulletOrigin.X;
+            var dY = Position.Y - bulletOrigin.Y;
+            return dX * dX + dY * dY <= totalRadius * totalRadius;
+        }
     }
 }
 
