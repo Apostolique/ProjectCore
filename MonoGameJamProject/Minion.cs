@@ -13,6 +13,7 @@ namespace MonoGameJamProject
     /// </summary>
     class Minion
     {
+        public enum MinionType { slow, fast, boss };
         public Vector2 Position
         {
             get; set;
@@ -32,10 +33,7 @@ namespace MonoGameJamProject
         }
         List<Waypoint> waypoints;
         float speed;
-        public float Radius
-        {
-            get; set;
-        }
+        float radius;
 
         float inBetween;
         float _distanceTraveled;
@@ -43,22 +41,38 @@ namespace MonoGameJamProject
         private const int fireDamage = 1;
         public bool dead, isOnFire;
         int hp;
+        MinionType type;
 
-        public Minion(float iX, float iY, float iRadius, float iSpeed)
+        public Minion(float iX, float iY, MinionType iType)
         {
             Position = new Vector2(iX, iY);
-            speed = iSpeed;
             inBetween = 0;
             _distanceTraveled = 0;
-            Radius = iRadius;
 
             waypoints = new List<Waypoint>();
 
             damageClock = new CoolDownTimer(0.5F);
             onFireClock = new CoolDownTimer(5F);
-            hp = 1;
             Reset();
             damageClock.IsExpired = true;
+            type = iType;
+
+            if (type == MinionType.fast)
+            {
+                hp = 10;
+                speed = 0.001f;
+                radius = 0.2f;
+            } else if (type == MinionType.slow)
+            {
+                hp = 100;
+                speed = 0.0005f;
+                radius = 0.4f;
+            } else if (type == MinionType.boss)
+            {
+                hp = 1000;
+                speed = 0.0001f;
+                radius = 0.4f;
+            }
         }
         public float DistanceTraveled => _distanceTraveled;
         public bool IsMoving
@@ -72,6 +86,72 @@ namespace MonoGameJamProject
         {
             damageClock.Reset();
             onFireClock.Reset();
+        }
+        public void MoveTo(Vector2 b)
+        {
+            Position = b;
+            waypoints.Clear();
+        }
+        public void WalkTo(Vector2 b)
+        {
+            if (waypoints.Count > 0) {
+                Waypoint waypoint = new Waypoint(waypoints.Last().target, b, Vector2.Distance(waypoints.Last().target, b));
+                waypoints.Add(waypoint);
+            } else {
+                Waypoint waypoint = new Waypoint(Position, b, Vector2.Distance(Position, b));
+                waypoints.Add(waypoint);
+            }
+        }
+        public void FollowPath(Path p)
+        {
+            if (p.Count() > 0) {
+                Tile t = p.First();
+                Vector2 v1 = new Vector2(t.X + 0.5f, t.Y + 0.5f);
+                MoveTo(v1);
+                for (int i = 1; i < p.Count(); i++)
+                {
+                    Vector2 v2 = new Vector2(p.pathway[i].X + 0.5f, p.pathway[i].Y + 0.5f);
+                    WalkTo(v2);
+                }
+            }
+        }
+        public void TakeDamage(int damage)
+        {
+            this.hp -= damage;
+            if(hp < 0)
+            {
+                dead = true;
+            }
+        }
+        public bool IsOnFire
+        {
+            get { return isOnFire; }
+            set { isOnFire = value; }
+        }
+        public bool IsInTile(int iX, int iY)
+        {
+            Rectangle tileBoundingBox = new Rectangle(iX, iY, 1, 1);
+            Vector2 circleDistance = new Vector2(Math.Abs(Position.X - iX), Math.Abs(Position.Y - iY));
+            if (circleDistance.X > (tileBoundingBox.Width / 2f + radius))
+                return false;
+            if (circleDistance.Y > (tileBoundingBox.Height / 2f + radius))
+                return false;
+
+            if (circleDistance.X <= (tileBoundingBox.Width / 2f))
+                return true; 
+            if (circleDistance.Y <= (tileBoundingBox.Height / 2f))
+                return true;
+
+            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2f), 2f) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2f), 2f);
+
+            return (cornerDistance_sq <= (radius * radius));
+        }
+        public bool CollidesWithBullet(Vector2 bulletOrigin , float bulletRadius)
+        {
+            var totalRadius = radius + bulletRadius;
+            var dX = Position.X - bulletOrigin.X;
+            var dY = Position.Y - bulletOrigin.Y;
+            return dX * dX + dY * dY <= totalRadius * totalRadius;
         }
         public void Update(GameTime gameTime)
         {
@@ -104,80 +184,22 @@ namespace MonoGameJamProject
                 }
             }
         }
-        public void MoveTo(Vector2 b)
-        {
-            Position = b;
-            waypoints.Clear();
-        }
-        public void WalkTo(Vector2 b)
-        {
-            if (waypoints.Count > 0) {
-                Waypoint waypoint = new Waypoint(waypoints.Last().target, b, Vector2.Distance(waypoints.Last().target, b));
-                waypoints.Add(waypoint);
-            } else {
-                Waypoint waypoint = new Waypoint(Position, b, Vector2.Distance(Position, b));
-                waypoints.Add(waypoint);
-            }
-
-            //inBetween = 0;
-        }
-        public void FollowPath(Path p)
-        {
-            if (p.Count() > 0) {
-                Tile t = p.First();
-                Vector2 v1 = new Vector2(t.X + 0.5f, t.Y + 0.5f);
-                MoveTo(v1);
-                for (int i = 1; i < p.Count(); i++)
-                {
-                    Vector2 v2 = new Vector2(p.pathway[i].X + 0.5f, p.pathway[i].Y + 0.5f);
-                    WalkTo(v2);
-                }
-            }
-        }
         public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Green, Radius * Utility.board.GridSize);
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y)), Radius * Utility.board.GridSize), 8, Color.Black, 0.1f * Utility.board.GridSize);
-        }
-        public void TakeDamage(int damage)
-        {
-            this.hp -= damage;
-            if(hp < 0)
+            Point2 tempP = new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y));
+            if (type == MinionType.fast)
             {
-                dead = true;
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Green, 0.1f * Utility.board.GridSize);
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, 2f);
+            } else if (type == MinionType.slow)
+            {
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Orange, radius * Utility.board.GridSize);
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, 0.1f * Utility.board.GridSize);
+            } else
+            {
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, (radius + 1f) * Utility.board.GridSize);
+                s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Red, (radius + 0.8f) * Utility.board.GridSize);
             }
-        }
-        public bool IsOnFire
-        {
-            get { return isOnFire; }
-            set { isOnFire = value; }
-        }
-
-        public bool IsInTile(int iX, int iY)
-        {
-            Rectangle tileBoundingBox = new Rectangle(iX, iY, 1, 1);
-            Vector2 circleDistance = new Vector2(Math.Abs(Position.X - iX), Math.Abs(Position.Y - iY));
-            if (circleDistance.X > (tileBoundingBox.Width / 2f + Radius))
-                return false;
-            if (circleDistance.Y > (tileBoundingBox.Height / 2f + Radius))
-                return false;
-
-            if (circleDistance.X <= (tileBoundingBox.Width / 2f))
-                return true; 
-            if (circleDistance.Y <= (tileBoundingBox.Height / 2f))
-                return true;
-
-            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2f), 2f) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2f), 2f);
-
-            return (cornerDistance_sq <= (Radius * Radius));
-        }
-
-        public bool CollidesWithBullet(Vector2 bulletOrigin , float bulletRadius)
-        {
-            var totalRadius = Radius + bulletRadius;
-            var dX = Position.X - bulletOrigin.X;
-            var dY = Position.Y - bulletOrigin.Y;
-            return dX * dX + dY * dY <= totalRadius * totalRadius;
         }
     }
 }
