@@ -9,6 +9,7 @@
     <Import_RootNamespace>MonoGameJamProject</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssetManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Board.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CooldownTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HUD.cs" />

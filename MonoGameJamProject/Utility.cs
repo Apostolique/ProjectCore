@@ -14,9 +14,8 @@ namespace MonoGameJamProject
     {
         public static Board board;
         public enum TowerType { Sniper, Shotgun, FlameThrower };
-        public static SpriteFont mainFont;
         public static GameWindow Window;
-        public static SoundEffect PathSpawnSound;
+        public static AssetManager assetManager;
 
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.
