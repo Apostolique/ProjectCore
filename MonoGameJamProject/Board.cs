@@ -17,6 +17,10 @@ namespace MonoGameJamProject
         {
             get; set;
         }
+        public List<Path> OldPaths
+        {
+            get; set;
+        }
         Tile[,] tiles;
         struct TileValue
         {
@@ -34,6 +38,7 @@ namespace MonoGameJamProject
             Height = iHeight;
 
             Paths = new List<Path>();
+            OldPaths = new List<Path>();
             tiles = new Tile[FullWidth, FullHeight];
 
             for (int i = 0; i < FullWidth; i++)
@@ -51,6 +56,13 @@ namespace MonoGameJamProject
             foreach (Path p in Paths)
             {
                 p.Update(gameTime);
+            }
+            for (int i = OldPaths.Count - 1; i >= 0; i--)
+            {
+                OldPaths[i].Update(gameTime);
+                if (OldPaths[i].Done) {
+                    OldPaths.RemoveAt(i);
+                }
             }
         }
         public void CacheGridSize()
@@ -83,6 +95,11 @@ namespace MonoGameJamProject
         }
         public void ClearPaths()
         {
+            foreach (Path p in Paths)
+            {
+                OldPaths.Add(p);
+                p.Despawn();
+            }
             Paths.Clear();
         }
         public void GeneratePath()
@@ -259,17 +276,21 @@ namespace MonoGameJamProject
                     tiles[i, j].Draw(s, Color.White);
                 }
             }
+            DrawPaths(s, OldPaths);
+            DrawPathLines(s, OldPaths);
+            DrawPaths(s, Paths);
+            DrawPathLines(s, Paths);
         }
-        public void DrawPaths(SpriteBatch s)
+        public void DrawPaths(SpriteBatch s, List<Path> paths)
         {
-            foreach (Path p in Paths)
+            foreach (Path p in paths)
             {
                 p.Draw(s);
             }
         }
-        public void DrawPathLines(SpriteBatch s)
+        public void DrawPathLines(SpriteBatch s, List<Path> paths)
         {
-            foreach (Path p in Paths)
+            foreach (Path p in paths)
             {
                 p.DrawLine(s);
             }

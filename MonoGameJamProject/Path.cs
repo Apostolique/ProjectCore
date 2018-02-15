@@ -21,10 +21,16 @@ namespace MonoGameJamProject
     /// </summary>
     class Path
     {
+        enum animation { spawn, despawn, none }
         public List<Tile> pathway;
         private CoolDownTimer spawnTimer;
         private int pathsShown;
-        private bool spawnSequence;
+        private animation sequence;
+        private bool _done;
+        public bool Done
+        {
+            get => _done;
+        }
 
         public Path()
         {
@@ -32,7 +38,8 @@ namespace MonoGameJamProject
             spawnTimer = new CoolDownTimer(0.2f);
             spawnTimer.Reset();
             pathsShown = 0;
-            spawnSequence = true;
+            sequence = animation.spawn;
+            _done = false;
         }
 
         public void Add(Tile p)
@@ -61,9 +68,15 @@ namespace MonoGameJamProject
             }
             return false;
         }
+        public void Despawn()
+        {
+            spawnTimer.Reset();
+            pathsShown = 0;
+            sequence = animation.despawn;
+        }
         public void Update(GameTime gameTime)
         {
-            if (spawnSequence)
+            if (sequence == animation.spawn)
             {
                 spawnTimer.Update(gameTime);
                 if (spawnTimer.IsExpired)
@@ -74,7 +87,22 @@ namespace MonoGameJamProject
                     if (pathsShown >= pathway.Count)
                     {
                         Console.WriteLine("Spawn done.");
-                        spawnSequence = false;
+                        sequence = animation.none;
+                    }
+                }
+            } else if (sequence == animation.despawn)
+            {
+                spawnTimer.Update(gameTime);
+                if (spawnTimer.IsExpired)
+                {
+                    pathsShown++;
+                    Utility.assetManager.PlaySFX("Robot_Servo_006", 0.1f);
+                    spawnTimer.Reset();
+                    if (pathsShown >= pathway.Count)
+                    {
+                        Console.WriteLine("Despawn done.");
+                        sequence = animation.none;
+                        _done = true;
                     }
                 }
             }
@@ -82,23 +110,57 @@ namespace MonoGameJamProject
 
         public void Draw(SpriteBatch s)
         {
-            for (int i = 0; i < pathsShown; i++)
+            if (sequence == animation.spawn)
             {
-                s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                for (int i = 0; i < pathsShown; i++)
+                {
+                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                }
+            } else if (sequence == animation.despawn)
+            {
+                for (int i = pathsShown; i < pathway.Count; i++)
+                {
+                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                }
+            } else
+            {
+                for (int i = 0; i < pathway.Count; i++) 
+                {
+                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                }
             }
         }
         public void DrawLine(SpriteBatch s)
         {
-            for (int i = 1; i < pathsShown; i++)
+            if (sequence == animation.spawn)
             {
-                float x1 = Utility.GameToScreen(pathway[i].X + 0.5f);
-                float y1 = Utility.GameToScreen(pathway[i].Y + 0.5f);
-                float x2 = Utility.GameToScreen(pathway[i - 1].X + 0.5f);
-                float y2 = Utility.GameToScreen(pathway[i - 1].Y + 0.5f);
-
-                s.DrawLine(x1, y1, x2, y2, Color.Black, Utility.board.GridSize * 0.15f);
-                s.DrawLine(x1, y1, x2, y2, Color.White, Utility.board.GridSize * 0.1f);
+                for (int i = 1; i < pathsShown; i++)
+                {
+                    drawPathLine(s, i);
+                }
+            } else if (sequence == animation.despawn)
+            {
+                for (int i = pathsShown + 1; i < pathway.Count; i++)
+                {
+                    drawPathLine(s, i);
+                }
+            } else
+            {
+                for (int i = 1; i < pathway.Count; i++)
+                {
+                    drawPathLine(s, i);
+                }
             }
+        }
+        private void drawPathLine(SpriteBatch s, int i)
+        {
+            float x1 = Utility.GameToScreen(pathway[i].X + 0.5f);
+            float y1 = Utility.GameToScreen(pathway[i].Y + 0.5f);
+            float x2 = Utility.GameToScreen(pathway[i - 1].X + 0.5f);
+            float y2 = Utility.GameToScreen(pathway[i - 1].Y + 0.5f);
+
+            s.DrawLine(x1, y1, x2, y2, Color.Black, Utility.board.GridSize * 0.15f);
+            s.DrawLine(x1, y1, x2, y2, Color.White, Utility.board.GridSize * 0.1f);
         }
     }
 }
