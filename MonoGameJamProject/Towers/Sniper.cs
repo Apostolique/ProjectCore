@@ -43,7 +43,7 @@ namespace MonoGameJamProject.Towers
             {
                 foreach (Minion m in minionList)
                 {
-                    if (OutsideMinimumRange(m.Position.X, m.Position.Y))
+                    if (RangeChecker(m.Position.X, m.Position.Y, MinimumRange))
                         continue;
                     else if (targetedMinion == null)
                         targetedMinion = m;

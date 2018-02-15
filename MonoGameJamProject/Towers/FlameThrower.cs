@@ -39,7 +39,9 @@ namespace MonoGameJamProject.Towers
         {
             foreach(Minion m in iMinionList)
             {
-                foreach(Point p in damageTiles)
+                if (!RangeChecker(m.Position.X, m.Position.Y, maxRange))
+                    continue;
+                foreach (Point p in damageTiles)
                 {
                     if (m.IsInTile(p.X, p.Y))
                         m.isOnFire = true;
