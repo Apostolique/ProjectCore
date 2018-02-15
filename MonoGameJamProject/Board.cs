@@ -152,6 +152,13 @@ namespace MonoGameJamProject
                     return true;
                 }
             }
+            foreach (Path p in OldPaths)
+            {
+                if (p.Contains(tile))
+                {
+                    return true;
+                }
+            }
             return false;
         }
         private bool IsEdge(Tile tile)
@@ -267,7 +274,7 @@ namespace MonoGameJamProject
         }
         public void Draw(SpriteBatch s)
         {
-            s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(10, 10, 10));
+            s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(15, 15, 15));
 
             for (int i = 1; i < FullWidth - 1; i++)
             {

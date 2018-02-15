@@ -60,12 +60,24 @@ namespace MonoGameJamProject
         }
         public bool Contains(Tile tile)
         {
-            for (int i = 0; i < pathsShown; i++)
-            {
-                if (pathway[i] == tile) {
-                    return true;
+            if (sequence == animation.spawn) {
+                for (int i = 0; i < pathsShown; i++)
+                {
+                    if (pathway[i] == tile) {
+                        return true;
+                    }
                 }
+            } else if (sequence == animation.despawn) {
+                for (int i = pathsShown; i < pathway.Count; i++)
+                {
+                    if (pathway[i] == tile) {
+                        return true;
+                    }
+                }
+            } else {
+                return pathway.Contains(tile);
             }
+
             return false;
         }
         public void Despawn()
@@ -86,7 +98,6 @@ namespace MonoGameJamProject
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        Console.WriteLine("Spawn done.");
                         sequence = animation.none;
                     }
                 }
@@ -100,7 +111,6 @@ namespace MonoGameJamProject
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        Console.WriteLine("Despawn done.");
                         sequence = animation.none;
                         _done = true;
                     }
@@ -114,19 +124,19 @@ namespace MonoGameJamProject
             {
                 for (int i = 0; i < pathsShown; i++)
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             } else if (sequence == animation.despawn)
             {
                 for (int i = pathsShown; i < pathway.Count; i++)
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             } else
             {
                 for (int i = 0; i < pathway.Count; i++) 
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             }
         }
@@ -151,6 +161,10 @@ namespace MonoGameJamProject
                     drawPathLine(s, i);
                 }
             }
+        }
+        private void drawPathTile(SpriteBatch s, int i)
+        {
+            s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), new Color(19, 59, 131));
         }
         private void drawPathLine(SpriteBatch s, int i)
         {
