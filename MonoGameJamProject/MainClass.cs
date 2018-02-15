@@ -123,7 +123,7 @@ namespace MonoGameJamProject
             if (input.MouseLeftButtonPressed)
             {
                 if (Utility.board.Paths.Count > 0) {
-                    Minion m = new Minion(0, 0, 0.3f);
+                    Minion m = new Minion(0, 0, 0.4f, 0.0005f);
                     minionList.Add(m);
                     m.FollowPath(Utility.board.Paths[0]);
                 }
