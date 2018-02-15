@@ -40,6 +40,7 @@ namespace MonoGameJamProject
             minionList = new List<Minion>();
             input = new Input();
             hud = new HUD(input);
+            Utility.tdGameTimer = TimeSpan.Zero;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
@@ -89,7 +90,7 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            hud.Update(gameTime);
+            Utility.tdGameTimer += gameTime.ElapsedGameTime;
             Utility.board.Update(gameTime);
             TowerMovementChecker();
             TowerSwitchInput();

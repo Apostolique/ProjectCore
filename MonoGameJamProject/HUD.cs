@@ -7,16 +7,10 @@ namespace MonoGameJamProject
 {
     class HUD
     {
-        TimeSpan tdGameTimer;
         Input input;
         public HUD(Input iInput)
         {
             input = iInput;
-            tdGameTimer = TimeSpan.Zero;
-        }
-        public void Update(GameTime gameTime)
-        {
-            tdGameTimer += gameTime.ElapsedGameTime;
         }
         public void DrawPlacementIndicator(SpriteBatch s, int minimumRange, bool isValidPosition)
         {
@@ -41,7 +35,7 @@ namespace MonoGameJamProject
         }
         public void DrawPlayTime(SpriteBatch s)
         {
-            string time = tdGameTimer.Minutes.ToString("D2") + ":" + tdGameTimer.Seconds.ToString("D2");
+            string time = Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2");
             s.DrawString(Utility.assetManager.GetFont("jura"), time, Vector2.Zero, Color.Red);
         }
     }
