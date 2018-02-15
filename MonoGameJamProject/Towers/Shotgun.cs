@@ -93,6 +93,7 @@ namespace MonoGameJamProject.Towers
                 offsettedDirection.X += randomizedDirectionOffset;
             else
                 offsettedDirection.Y += randomizedDirectionOffset;
+            offsettedDirection.Normalize();
             return offsettedDirection;
         }
 
