@@ -12,7 +12,7 @@ namespace MonoGameJamProject.Towers
         private Vector2 position, direction;
         private float distanceTravelled;
         private Color colour;
-        public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour, float iSpeed = 7f)
+        public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour, float iSpeed)
         {
             position = iPos;
             direction = iDirection;

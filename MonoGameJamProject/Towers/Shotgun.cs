@@ -78,7 +78,7 @@ namespace MonoGameJamProject.Towers
             {
                 float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 3);
                 Vector2 spreadDirection = new Vector2(direction.X - randomizedDirectionOffset, direction.Y - randomizedDirectionOffset);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), spreadDirection, Color.SandyBrown);
+                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), spreadDirection, Color.SandyBrown, 7F);
                 bulletList.Add(pellet);
             }
             Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
