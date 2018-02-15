@@ -26,3 +26,9 @@
 /processorParam:Quality=Best
 /build:Robot_Servo_006.mp3
 
+#begin sniper_shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sniper_shot.wav
+

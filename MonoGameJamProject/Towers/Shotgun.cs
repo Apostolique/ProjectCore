@@ -9,7 +9,7 @@ namespace MonoGameJamProject.Towers
     {
         Minion targetedMinion = null;
         private const int targetChance = 33;
-        public Shotgun(int iX, int iY) : base(iX, iY)
+        public Shotgun(int iX, int iY) : base(iX, iY, 2F)
         {
             towerColor = Color.SaddleBrown;
             type = Utility.TowerType.Shotgun;
@@ -21,6 +21,7 @@ namespace MonoGameJamProject.Towers
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
             TargetRandomMinion(iMinionList);
+
             base.Update(gameTime, iMinionList);
         }
 

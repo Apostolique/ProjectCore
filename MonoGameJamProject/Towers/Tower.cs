@@ -16,20 +16,25 @@ namespace MonoGameJamProject.Towers
         protected Color towerColor;
         protected int minRange, maxRange;
         protected bool disabled = false;
+        protected CoolDownTimer attackTimer;
         public Utility.TowerType type;
         protected int damage;
         public string towerInfo;
         int _x;
         int _y;
-        public Tower(int iX, int iY)
+        public Tower(int iX, int iY, float iAttackCooldown)
         {
             _x = iX;
             _y = iY;
+            attackTimer = new CoolDownTimer(iAttackCooldown)
+            {
+                IsExpired = true
+            };
             towerInfo = "undefined";
         }
         public virtual void Update(GameTime gameTime, List<Minion> iMinionList)
         {
-
+            attackTimer.Update(gameTime);
         }
         public virtual void Draw(SpriteBatch s)
         {

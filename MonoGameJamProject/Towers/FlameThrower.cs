@@ -6,22 +6,22 @@ namespace MonoGameJamProject.Towers
     class FlameThrower : Tower
     {
         List<Point> damageTiles;
-        public FlameThrower(int iX, int iY) : base(iX, iY)
+        public FlameThrower(int iX, int iY) : base(iX, iY, 1F)
         {
             towerColor = Color.OrangeRed;
             damageTiles = new List<Point>();
             type = Utility.TowerType.FlameThrower;
             minRange = 0;
             maxRange = 1;
-            damage = 0;
         }
         public override void Update(GameTime gameTime, List<Minion> iMinionList)
         {
-            if (!disabled)
+            base.Update(gameTime, iMinionList);
+            if (!disabled && attackTimer.IsExpired)
             {
                 GenerateDamageTiles();
                 CheckDamageTiles(iMinionList);
-                base.Update(gameTime, iMinionList);
+                attackTimer.Reset();
             }
         }
         public void GenerateDamageTiles()
