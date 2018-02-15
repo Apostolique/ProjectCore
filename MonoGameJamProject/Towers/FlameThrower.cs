@@ -8,7 +8,7 @@ namespace MonoGameJamProject.Towers
 {
     class FlameThrower : Tower
     {
-        private const int amountOfFlamesPerCycle = 50;
+        private const int amountOfFlamesPerCycle = 100;
         private List<Projectile> flameList;
         List<Point> damageTiles;
         public FlameThrower(int iX, int iY) : base(iX, iY, 1F)
