@@ -23,6 +23,7 @@ namespace MonoGameJamProject
     {
         enum animation { spawn, despawn, none }
         public List<Tile> pathway;
+        public List<Minion> MinionList;
         private CoolDownTimer spawnTimer;
         private int pathsShown;
         private animation sequence;
@@ -35,6 +36,7 @@ namespace MonoGameJamProject
         public Path()
         {
             pathway = new List<Tile>();
+            MinionList = new List<Minion>();
             spawnTimer = new CoolDownTimer(0.2f);
             spawnTimer.Reset();
             pathsShown = 0;
@@ -86,6 +88,11 @@ namespace MonoGameJamProject
             pathsShown = 0;
             sequence = animation.despawn;
         }
+        public void AddMinion(Minion m)
+        {
+            m.FollowPath(this);
+            MinionList.Add(m);
+        }
         public void Update(GameTime gameTime)
         {
             if (sequence == animation.spawn)
@@ -115,6 +122,12 @@ namespace MonoGameJamProject
                         _done = true;
                     }
                 }
+            }
+            for(int i = MinionList.Count - 1; i >= 0; i--)
+            {
+                MinionList[i].Update(gameTime);
+                if (MinionList[i].dead || !MinionList[i].IsMoving)
+                    MinionList.Remove(MinionList[i]);
             }
         }
 
@@ -161,6 +174,11 @@ namespace MonoGameJamProject
                     drawPathLine(s, i);
                 }
             }
+        }
+        public void DrawMinions(SpriteBatch s)
+        {
+            foreach (Minion m in MinionList)
+                m.Draw(s);
         }
         private void drawPathTile(SpriteBatch s, int i)
         {

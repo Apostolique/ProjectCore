@@ -22,12 +22,12 @@ namespace MonoGameJamProject.Towers
             damage = 5;
         }
 
-        public override void Update(GameTime gameTime, List<Minion> iMinionList)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, iMinionList);
+            base.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
-                TargetRandomMinion(iMinionList);
+                TargetRandomMinion();
                 if (targetedMinion != null)
                     ShootAtTargetedMinion();
                 attackTimer.Reset();
@@ -41,7 +41,7 @@ namespace MonoGameJamProject.Towers
             foreach(Projectile b in bulletList)
             {
                 b.Update(gameTime);
-                BulletCollisionChecker(iMinionList);
+                BulletCollisionChecker();
                 // bullets start at the center, therefore an extra 0.5f is added to the range
                 if (b.DistanceTravelled > maxRange + 0.5f)
                     b.MarkedForDeletion = true;
@@ -49,16 +49,19 @@ namespace MonoGameJamProject.Towers
 
         }
 
-        private void BulletCollisionChecker(List<Minion> iMinionList)
+        private void BulletCollisionChecker()
         {
-            foreach(Minion m in iMinionList)
+            foreach (Path p in Utility.board.Paths)
             {
-                foreach(Projectile b in bulletList)
+                foreach(Minion m in p.MinionList)
                 {
-                    if (m.CollidesWithBullet(b.Position, b.Radius))
+                    foreach(Projectile b in bulletList)
                     {
-                        m.TakeDamage(damage);
-                        b.MarkedForDeletion = true;
+                        if (m.CollidesWithBullet(b.Position, b.Radius))
+                        {
+                            m.TakeDamage(damage);
+                            b.MarkedForDeletion = true;
+                        }
                     }
                 }
             }
@@ -97,12 +100,12 @@ namespace MonoGameJamProject.Towers
             return offsettedDirection;
         }
 
-        private void TargetRandomMinion(List<Minion> minionList)
+        private void TargetRandomMinion()
         {
             targetedMinion = null;
-            if (minionList.Count > 0)
+            foreach (Path p in Utility.board.Paths)
             {
-                foreach (Minion m in minionList)
+                foreach (Minion m in p.MinionList)
                 {
                     if (RangeChecker(m.Position.X, m.Position.Y, minRange))
                         continue;
@@ -110,8 +113,13 @@ namespace MonoGameJamProject.Towers
                         continue;
                     else
                     {
-                        if (Utility.random.Next(0, 101) > targetChance)
+                        if (targetedMinion == null)
+                        {
                             targetedMinion = m;
+                        } else if (Utility.random.Next(0, 101) > targetChance)
+                        {
+                            targetedMinion = m;
+                        }
                     }
                 }
             }

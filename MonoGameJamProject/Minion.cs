@@ -60,7 +60,7 @@ namespace MonoGameJamProject
             if (type == MinionType.fast)
             {
                 hp = 10;
-                speed = 0.001f;
+                speed = 0.002f;
                 radius = 0.2f;
             } else if (type == MinionType.slow)
             {
