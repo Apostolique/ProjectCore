@@ -80,7 +80,7 @@ namespace MonoGameJamProject.Towers
             for(int i = 0; i <= amountOfPellets; i++)
             {
                 Vector2 newDirection = GenerateDirectionOffset(direction);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown);
+                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown, 6F);
                 bulletList.Add(pellet);
             }
             Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
@@ -88,14 +88,10 @@ namespace MonoGameJamProject.Towers
 
         private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
         {
-            Vector2 offsettedDirection = initialDirection;
-            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 4);
+            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 2);
             if (Utility.random.Next(0, 2) > 0)
                 randomizedDirectionOffset = -randomizedDirectionOffset;
-            if (Math.Abs(offsettedDirection.Y) > Math.Abs(offsettedDirection.X))
-                offsettedDirection.X += randomizedDirectionOffset;
-            else
-                offsettedDirection.Y += randomizedDirectionOffset;
+            Vector2 offsettedDirection = new Vector2(initialDirection.X - randomizedDirectionOffset, initialDirection.Y - randomizedDirectionOffset);
             offsettedDirection.Normalize();
             return offsettedDirection;
         }
