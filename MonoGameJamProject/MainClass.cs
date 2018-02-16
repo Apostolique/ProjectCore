@@ -13,6 +13,7 @@ namespace MonoGameJamProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
+        Tower latestHoveredOverTower;
         Input input;
         HUD hud;
         Sidebar sidebarUI;
@@ -37,8 +38,9 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             hud = new HUD(input);
-            sidebarUI = new Sidebar(new Vector2(100, 100));
+            sidebarUI = new Sidebar(new Vector2(Utility.Window.ClientBounds.Width - 190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
+            latestHoveredOverTower = null;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
@@ -90,6 +92,7 @@ namespace MonoGameJamProject
             // TODO: Add your update logic here
             Utility.tdGameTimer += gameTime.ElapsedGameTime;
             Utility.board.Update(gameTime);
+            HoveringOverTowerChecker();
             TowerMovementChecker();
             TowerSwitchInput();
             input.Update();
@@ -204,7 +207,9 @@ namespace MonoGameJamProject
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             Utility.board.Draw(spriteBatch);
-            HoveringOverTowerChecker(spriteBatch);
+            if(latestHoveredOverTower != null)
+                hud.DrawRangeIndicators(spriteBatch, new Point(latestHoveredOverTower.X, latestHoveredOverTower.Y), latestHoveredOverTower);
+
             // Highlight needs to be drawn before the actual towers
             if (previewTower != null)
             {
@@ -218,26 +223,29 @@ namespace MonoGameJamProject
             {
                 p.DrawMinions(spriteBatch);
             }
+
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 
             spriteBatch.Begin();
             spriteBatch.Draw(renderTarget01, new Vector2(0, 0), Color.White);
             spriteBatch.End();
+            // Draw sideBar
+            spriteBatch.Begin();
+            if(latestHoveredOverTower != null)
+                sidebarUI.DrawTowerInfo(spriteBatch, latestHoveredOverTower);
+            spriteBatch.End();
+            latestHoveredOverTower = null;
             base.Draw(gameTime);
         }
-        private void HoveringOverTowerChecker(SpriteBatch s)
+        private void HoveringOverTowerChecker()
         {
             if (!IsWithinDimensions())
                 return;
             foreach (Tower t in towerList)
             {
                 if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
-                {
-                    hud.DrawRangeIndicators(s, new Point(t.X, t.Y), t);
-                    sidebarUI.DrawTowerInfo(s, t);
-                }
-                    
+                    latestHoveredOverTower = t;
             }
         }
     }

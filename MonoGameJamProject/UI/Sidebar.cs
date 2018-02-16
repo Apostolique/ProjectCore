@@ -9,7 +9,7 @@ namespace MonoGameJamProject.UI
 {
     class Sidebar
     {
-        private Vector2 towerInfoPosition;
+        private float towerInfoOffset;
         Vector2 position;
         public Sidebar(Vector2 iPosition)
         {
@@ -28,7 +28,7 @@ namespace MonoGameJamProject.UI
 
         public void DrawTowerInfo(SpriteBatch s, Tower tower)
         {
-            s.DrawString(Utility.assetManager.GetFont("jura"), tower.towerInfo, towerInfoPosition, Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("jura"), tower.towerInfo, new Vector2(position.X, position.Y + towerInfoOffset), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
         }
 
         public void DrawPlayTime(SpriteBatch s)
