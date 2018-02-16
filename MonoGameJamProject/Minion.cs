@@ -13,7 +13,7 @@ namespace MonoGameJamProject
     /// </summary>
     class Minion
     {
-        public enum MinionType { slow, fast, boss };
+        
         public Vector2 Position
         {
             get; set;
@@ -37,13 +37,14 @@ namespace MonoGameJamProject
 
         float inBetween;
         float _distanceTraveled;
+        HealthBar healthBar;
         CoolDownTimer damageClock, onFireClock;
-        private const int fireDamage = 1;
+        private const int fireDamage = 2;
         public bool dead, isOnFire;
-        int hp;
-        MinionType type;
+        float hp;
+        Utility.MinionType type;
 
-        public Minion(float iX, float iY, MinionType iType)
+        public Minion(float iX, float iY, Utility.MinionType iType)
         {
             Position = new Vector2(iX, iY);
             inBetween = 0;
@@ -57,22 +58,23 @@ namespace MonoGameJamProject
             damageClock.IsExpired = true;
             type = iType;
 
-            if (type == MinionType.fast)
+            if (type == Utility.MinionType.fast)
             {
-                hp = 10;
+                hp = Utility.fastMinionHP;
                 speed = 0.002f;
                 radius = 0.2f;
-            } else if (type == MinionType.slow)
+            } else if (type == Utility.MinionType.slow)
             {
-                hp = 100;
+                hp = Utility.slowMinionHP;
                 speed = 0.0005f;
                 radius = 0.4f;
-            } else if (type == MinionType.boss)
+            } else if (type == Utility.MinionType.boss)
             {
-                hp = 1000;
+                hp = Utility.bossMinionHp;
                 speed = 0.0001f;
-                radius = 0.4f;
+                radius = 0.6f;
             }
+            healthBar = new HealthBar(this);
         }
         public float DistanceTraveled => _distanceTraveled;
         public bool IsMoving
@@ -183,15 +185,17 @@ namespace MonoGameJamProject
                     damageClock.Reset();
                 }
             }
+            healthBar.Update();
         }
         public void Draw(SpriteBatch s)
         {
+            healthBar.Draw(s);
             Point2 tempP = new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y));
-            if (type == MinionType.fast)
+            if (type == Utility.MinionType.fast)
             {
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Green, 0.1f * Utility.board.GridSize);
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, 2f);
-            } else if (type == MinionType.slow)
+            } else if (type == Utility.MinionType.slow)
             {
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Orange, radius * Utility.board.GridSize);
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, 0.1f * Utility.board.GridSize);
@@ -200,6 +204,21 @@ namespace MonoGameJamProject
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, (radius + 1f) * Utility.board.GridSize);
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Red, (radius + 0.8f) * Utility.board.GridSize);
             }
+        }
+
+        public float Radius
+        {
+            get { return radius; }
+        }
+
+        public float HP
+        {
+            get { return hp; }
+        }
+
+        public Utility.MinionType Type
+        {
+            get { return type; }
         }
     }
 }
