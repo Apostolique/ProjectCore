@@ -38,7 +38,7 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             hud = new HUD(input);
-            sidebarUI = new Sidebar(new Vector2(Utility.Window.ClientBounds.Width - 190, 10));
+            sidebarUI = new Sidebar(new Vector2(190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
             latestHoveredOverTower = null;
             AddTower(3, 1, Utility.TowerType.Sniper);
@@ -95,6 +95,7 @@ namespace MonoGameJamProject
             HoveringOverTowerChecker();
             TowerMovementChecker();
             TowerSwitchInput();
+            sidebarUI.Update();
             input.Update();
             for(int i = towerList.Count - 1; i >= 0; i--)
             {

@@ -23,6 +23,7 @@ namespace MonoGameJamProject.Towers
             damage = 2;
             minRange = 0;
             maxRange = 1;
+            towerInfo = "Flame Turret\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nX: " + X + "\nY: " + Y;
         }
         public override void Update(GameTime gameTime)
         {
