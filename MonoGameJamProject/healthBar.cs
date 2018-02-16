@@ -7,10 +7,8 @@ namespace MonoGameJamProject
 {
     class HealthBar
     {
-        Vector2 position;
-        RectangleF healthBarRectangle;
         Color fillColor, outlineColor;
-        private int healthBarHeight, healthBarWidth;
+        private float healthBarWidth, healthBarHeight;
         private const float outlineThickness = 1f;
         int maxHP;
         Minion owner;
@@ -21,48 +19,40 @@ namespace MonoGameJamProject
             {
                 case Utility.MinionType.fast:
                     maxHP = Utility.fastMinionHP;
-                    healthBarHeight = 10;
-                    healthBarWidth = 25;
+                    healthBarHeight = 0.10f;
+                    healthBarWidth = 0.25f;
                     break;
                 case Utility.MinionType.slow:
                     maxHP = Utility.slowMinionHP;
-                    healthBarHeight = 12;
-                    healthBarWidth = 35;
+                    healthBarHeight = 0.12f;
+                    healthBarWidth = 0.35f;
                     break;
                 case Utility.MinionType.boss:
                     maxHP = Utility.bossMinionHp;
-                    healthBarHeight= 20;
-                    healthBarWidth = 50;
+                    healthBarHeight= 0.20f;
+                    healthBarWidth = 0.50f;
                     break;
             }
-            position = new Vector2(Utility.GameToScreen(owner.Position.X - owner.Radius), Utility.GameToScreen(owner.Position.Y - owner.Radius));
-            healthBarRectangle = new RectangleF(position.X, position.Y, healthBarWidth, healthBarHeight);
             fillColor = Color.DarkRed;
             outlineColor = Color.Black;
         }
 
         public void Update()
         {
-            position = new Vector2(Utility.GameToScreen(owner.Position.X - owner.Radius), Utility.GameToScreen(owner.Position.Y - owner.Radius * 2));
-            healthBarRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / maxHP), healthBarHeight);
         }
 
         public void Draw(SpriteBatch s)
         {
-            s.FillRectangle(healthBarRectangle, fillColor);
-            DrawOutline(s);
+            Vector2 position = new Vector2(Utility.GameToScreen(owner.Position.X - healthBarWidth / 2), Utility.GameToScreen(owner.Position.Y - owner.Radius - healthBarHeight));
+            RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / maxHP) * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
+            s.FillRectangle(healthRectangle, fillColor);
+            DrawOutline(s, position);
         }
 
-        private void DrawOutline(SpriteBatch s)
+        private void DrawOutline(SpriteBatch s, Vector2 position)
         {
-            // Draw Left
-            s.DrawLine(position.X, position.Y, position.X, position.Y + healthBarHeight, outlineColor, outlineThickness);
-            // Draw Right
-            s.DrawLine(position.X + healthBarWidth, position.Y, position.X + healthBarWidth, position.Y + healthBarHeight, outlineColor, outlineThickness);
-            // Draw Top
-            s.DrawLine(position.X, position.Y, position.X + healthBarWidth, position.Y, outlineColor, outlineThickness);
-            // Draw Bottom
-            s.DrawLine(position.X, position.Y + healthBarHeight, position.X + healthBarWidth, position.Y + healthBarHeight, outlineColor, outlineThickness);
+            RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
+            s.DrawRectangle(healthRectangle, outlineColor, outlineThickness);
         }
     }
 }

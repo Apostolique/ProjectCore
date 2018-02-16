@@ -189,7 +189,6 @@ namespace MonoGameJamProject
         }
         public void Draw(SpriteBatch s)
         {
-            healthBar.Draw(s);
             Point2 tempP = new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y));
             if (type == Utility.MinionType.fast)
             {
@@ -204,6 +203,7 @@ namespace MonoGameJamProject
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, (radius + 1f) * Utility.board.GridSize);
                 s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Red, (radius + 0.8f) * Utility.board.GridSize);
             }
+            healthBar.Draw(s);
         }
 
         public float Radius
