@@ -25,7 +25,7 @@ namespace MonoGameJamProject
         public void DrawRangeIndicators(SpriteBatch s, Point origin, Tower tower, float transparency = 0.1f)
         {
             //Draws the minimum range.
-            RectangleF minRange = new RectangleF(Utility.GameToScreen(tower.X - tower.MinimumRange), Utility.GameToScreen(tower.Y - tower.MinimumRange), Utility.GameToScreen(tower.MinimumRange), Utility.GameToScreen(tower.MinimumRange));
+            RectangleF minRange = new RectangleF(Utility.GameToScreen(tower.X - tower.MinimumRange), Utility.GameToScreen(tower.Y - tower.MinimumRange), (tower.MinimumRange * 2 + 1) * Utility.board.GridSize, (tower.MinimumRange * 2 + 1) * Utility.board.GridSize);
             s.FillRectangle(minRange, Color.Red * transparency);
         }
         public void DrawPlayTime(SpriteBatch s)
