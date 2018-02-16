@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameJamProject.Towers;
 using System;
+using MonoGame.Extended.BitmapFonts;
 
 namespace MonoGameJamProject
 {
@@ -51,7 +52,7 @@ namespace MonoGameJamProject
         public void DrawPlayTime(SpriteBatch s)
         {
             string time = Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2");
-            s.DrawString(Utility.assetManager.GetFont("jura"), time, Vector2.Zero, Color.Red);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), time, Vector2.Zero, Color.Red);
         }
     }
 }

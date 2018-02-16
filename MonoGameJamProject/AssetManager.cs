@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 
 namespace MonoGameJamProject
 {
@@ -26,9 +27,9 @@ namespace MonoGameJamProject
             MediaPlayer.Play(content.Load<Song>(assetName));
         }
 
-        public SpriteFont GetFont(string fontName)
+        public BitmapFont GetFont(string fontName)
         {
-            return content.Load<SpriteFont>(fontName);
+            return content.Load<BitmapFont>(fontName);
         }
     }
 }
