@@ -5,7 +5,7 @@ using MonoGameJamProject.Towers;
 using System;
 using MonoGame.Extended.BitmapFonts;
 
-namespace MonoGameJamProject
+namespace MonoGameJamProject.UI
 {
     class HUD
     {

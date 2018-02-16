@@ -2,8 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 
-namespace MonoGameJamProject
+namespace MonoGameJamProject.UI
 {
     class HealthBar
     {

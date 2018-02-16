@@ -12,18 +12,22 @@
     <Compile Include="$(MSBuildThisFileDirectory)AssetManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Board.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CooldownTimer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)HUD.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\HUD.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Minion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Path.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\Sidebar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\FlameThrower.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)HealthBar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\HealthBar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Shotgun.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Projectile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Sniper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\Tower.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)UI\" />
   </ItemGroup>
 </Project>
