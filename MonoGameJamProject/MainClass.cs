@@ -209,7 +209,7 @@ namespace MonoGameJamProject
             if (previewTower != null)
             {
                 if (IsWithinDimensions())
-                    hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
+                    hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
             foreach (Tower t in towerList)
@@ -234,7 +234,7 @@ namespace MonoGameJamProject
             foreach (Tower t in towerList)
             {
                 if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
-                    hud.DrawRangeIndicators(s, new Point(t.X, t.Y) , t.MinimumRange);
+                    hud.DrawRangeIndicators(s, new Point(t.X, t.Y) , t);
             }
         }
     }
