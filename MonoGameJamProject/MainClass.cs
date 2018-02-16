@@ -15,6 +15,7 @@ namespace MonoGameJamProject
         RenderTarget2D renderTarget01;
         Input input;
         HUD hud;
+        Sidebar sidebarUI;
         
         // list for all towers
         List<Tower> towerList;
@@ -36,6 +37,7 @@ namespace MonoGameJamProject
             towerList = new List<Tower>();
             input = new Input();
             hud = new HUD(input);
+            sidebarUI = new Sidebar(new Vector2(100, 100));
             Utility.tdGameTimer = TimeSpan.Zero;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
@@ -232,7 +234,11 @@ namespace MonoGameJamProject
             foreach (Tower t in towerList)
             {
                 if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
-                    hud.DrawRangeIndicators(s, new Point(t.X, t.Y) , t);
+                {
+                    hud.DrawRangeIndicators(s, new Point(t.X, t.Y), t);
+                    sidebarUI.DrawTowerInfo(s, t);
+                }
+                    
             }
         }
     }

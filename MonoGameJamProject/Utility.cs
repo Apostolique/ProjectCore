@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGameJamProject
 {
@@ -18,6 +14,7 @@ namespace MonoGameJamProject
         public const int slowMinionHP = 100;
         public const int fastMinionHP = 10;
         public const int bossMinionHp = 1000;
+        public static int totalNumberOfKills = 0;
         public static GameWindow Window;
         public static AssetManager assetManager;
 
