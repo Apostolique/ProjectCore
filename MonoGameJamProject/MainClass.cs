@@ -114,7 +114,7 @@ namespace MonoGameJamProject
             if (input.MouseLeftButtonPressed)
             {
                 if (Utility.board.Paths.Count > 0) {
-                    Minion m = new Minion(0, 0, Utility.MinionType.boss);
+                    Minion m = new Minion(0, 0, Utility.MinionType.slow);
                     Utility.board.Paths[0].AddMinion(m);
                 }
                 //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
