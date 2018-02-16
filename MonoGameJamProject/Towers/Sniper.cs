@@ -16,7 +16,7 @@ namespace MonoGameJamProject.Towers
             minRange = 2;
             maxRange = Math.Max(Utility.board.FullWidth, Utility.board.FullHeight);
             damage = 20;
-            towerInfo = "Sniper Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange +"\nX: " + X + "\nY: " + Y;
+            towerInfo = "Sniper Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nSingle target\nhigh damage tower";
         }
         public override void Update(GameTime gameTime)
         {

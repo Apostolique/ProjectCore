@@ -174,7 +174,6 @@ namespace MonoGameJamProject
                 isOnFire = false;
                 onFireClock.Reset();
             }
-            healthBar.Update();
         }
         public void Draw(SpriteBatch s)
         {

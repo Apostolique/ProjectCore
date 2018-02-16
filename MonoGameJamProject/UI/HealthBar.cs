@@ -37,10 +37,6 @@ namespace MonoGameJamProject.UI
             fillColor = Color.DarkRed;
             outlineColor = Color.Black;
         }
-
-        public void Update()
-        {
-        }
         public void Draw(SpriteBatch s)
         {
             Vector2 position = new Vector2(Utility.GameToScreen(owner.Position.X - healthBarWidth / 2), Utility.GameToScreen(owner.Position.Y - owner.Radius - healthBarHeight));

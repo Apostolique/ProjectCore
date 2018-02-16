@@ -235,6 +235,7 @@ namespace MonoGameJamProject
             spriteBatch.Begin();
             if(latestHoveredOverTower != null)
                 sidebarUI.DrawTowerInfo(spriteBatch, latestHoveredOverTower);
+            sidebarUI.Draw(spriteBatch);
             spriteBatch.End();
             latestHoveredOverTower = null;
             base.Draw(gameTime);
