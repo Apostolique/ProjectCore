@@ -11,7 +11,9 @@ namespace MonoGameJamProject.Towers
         Minion targetedMinion = null;
         List<Projectile> bulletList;
         private const int targetChance = 33;
-        private const int amountOfPellets = 5;
+        private const int amountOfPellets = 4;
+        // The higher, the tighter the spread
+        private const int pelletDistribution = 5;
         public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
         {
             towerColor = Color.SaddleBrown;
@@ -88,7 +90,7 @@ namespace MonoGameJamProject.Towers
 
         private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
         {
-            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 2);
+            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / pelletDistribution);
             if (Utility.random.Next(0, 2) > 0)
                 randomizedDirectionOffset = -randomizedDirectionOffset;
             Vector2 offsettedDirection = new Vector2(initialDirection.X - randomizedDirectionOffset, initialDirection.Y - randomizedDirectionOffset);
