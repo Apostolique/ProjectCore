@@ -10,7 +10,7 @@ namespace MonoGameJamProject
         Vector2 position;
         RectangleF healthBarRectangle;
         Color fillColor, outlineColor;
-        private int healthBarHeight = 10, healthBarWidth = 30;
+        private int healthBarHeight, healthBarWidth;
         private const float outlineThickness = 1f;
         int maxHP;
         Minion owner;
