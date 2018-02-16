@@ -24,13 +24,25 @@ namespace MonoGameJamProject
         }
         public void DrawRangeIndicators(SpriteBatch s, Point origin, Tower tower, float transparency = 0.1f)
         {
+            float horizontal0 = origin.X - tower.MaximumRange;
+            float horizontal1 = origin.X - tower.MinimumRange;
+            float horizontal2 = origin.X + tower.MinimumRange + 1;
+            float horizontal3 = origin.X + tower.MaximumRange + 1;
+            float vertical0 = origin.Y - tower.MaximumRange;
+            float vertical1 = origin.Y - tower.MinimumRange;
+            float vertical2 = origin.Y + tower.MinimumRange + 1;
+            float vertical3 = origin.Y + tower.MaximumRange + 1;
+
             //Draws the minimum range.
-            RectangleF minRange = new RectangleF(Utility.GameToScreen(origin.X - tower.MinimumRange), Utility.GameToScreen(origin.Y - tower.MinimumRange), (tower.MinimumRange * 2 + 1) * Utility.board.GridSize, (tower.MinimumRange * 2 + 1) * Utility.board.GridSize);
+            RectangleF minRange = new RectangleF(Utility.GameToScreen(horizontal1), Utility.GameToScreen(vertical1), (horizontal2 - horizontal1) * Utility.board.GridSize, (vertical2 - vertical1) * Utility.board.GridSize);
+
+
+            RectangleF maxRangeTop = new RectangleF(Utility.GameToScreen(horizontal0), Utility.GameToScreen(vertical0), (horizontal3 - horizontal0) * Utility.board.GridSize, (vertical1 - vertical0) * Utility.board.GridSize);
+            RectangleF maxRangeBot = new RectangleF(Utility.GameToScreen(horizontal0), Utility.GameToScreen(vertical2), (horizontal3 - horizontal0) * Utility.board.GridSize, (vertical3 - vertical2) * Utility.board.GridSize);
+            RectangleF maxRangeLeft = new RectangleF(Utility.GameToScreen(horizontal0), Utility.GameToScreen(vertical1), (horizontal1 - horizontal0) * Utility.board.GridSize, (vertical2 - vertical1) * Utility.board.GridSize);
+            RectangleF maxRangeRight = new RectangleF(Utility.GameToScreen(horizontal2), Utility.GameToScreen(vertical1), (horizontal3 - horizontal2) * Utility.board.GridSize, (vertical2 - vertical1) * Utility.board.GridSize);
+
             s.FillRectangle(minRange, Color.Red * transparency);
-            RectangleF maxRangeTop = new RectangleF(Utility.GameToScreen(origin.X - tower.MaximumRange), Utility.GameToScreen(origin.Y - tower.MaximumRange), (tower.MaximumRange * 2 + 1) * Utility.board.GridSize, (tower.MaximumRange) * Utility.board.GridSize);
-            RectangleF maxRangeBot = new RectangleF(Utility.GameToScreen(origin.X - tower.MaximumRange), Utility.GameToScreen(origin.Y + tower.MaximumRange), (tower.MaximumRange * 2 + 1) * Utility.board.GridSize, (tower.MaximumRange) * Utility.board.GridSize);
-            RectangleF maxRangeLeft = new RectangleF(Utility.GameToScreen(origin.X - tower.MaximumRange), Utility.GameToScreen(origin.Y + tower.MinimumRange), (tower.MaximumRange * 2) * Utility.board.GridSize, (tower.MaximumRange) * Utility.board.GridSize);
-            RectangleF maxRangeRight = new RectangleF(Utility.GameToScreen(origin.X + tower.MaximumRange), Utility.GameToScreen(origin.Y - tower.MinimumRange), (tower.MaximumRange * 2) * Utility.board.GridSize, (tower.MaximumRange) * Utility.board.GridSize);
             s.FillRectangle(maxRangeTop, Color.Green * transparency);
             s.FillRectangle(maxRangeBot, Color.Green * transparency);
             s.FillRectangle(maxRangeLeft, Color.Green * transparency);
