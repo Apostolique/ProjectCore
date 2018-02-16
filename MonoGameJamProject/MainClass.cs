@@ -218,7 +218,6 @@ namespace MonoGameJamProject
             {
                 p.DrawMinions(spriteBatch);
             }
-            hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 

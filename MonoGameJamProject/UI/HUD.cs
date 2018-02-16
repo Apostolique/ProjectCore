@@ -49,10 +49,6 @@ namespace MonoGameJamProject.UI
             s.FillRectangle(maxRangeLeft, Color.Green * transparency);
             s.FillRectangle(maxRangeRight, Color.Green * transparency);
         }
-        public void DrawPlayTime(SpriteBatch s)
-        {
-            string time = Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2");
-            s.DrawString(Utility.assetManager.GetFont("Jura"), time, Vector2.Zero, Color.Red);
-        }
+        
     }
 }

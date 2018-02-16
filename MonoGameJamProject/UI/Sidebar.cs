@@ -28,7 +28,13 @@ namespace MonoGameJamProject.UI
 
         public void DrawTowerInfo(SpriteBatch s, Tower tower)
         {
-            s.DrawString(Utility.assetManager.GetFont("jura"), tower.towerInfo, towerInfoPosition, Color.White);
+            s.DrawString(Utility.assetManager.GetFont("jura"), tower.towerInfo, towerInfoPosition, Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+        }
+
+        public void DrawPlayTime(SpriteBatch s)
+        {
+            string time = Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2");
+            s.DrawString(Utility.assetManager.GetFont("jura"), time, Vector2.Zero, Color.Red, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
         }
     }
 }
