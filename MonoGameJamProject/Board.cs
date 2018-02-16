@@ -67,7 +67,7 @@ namespace MonoGameJamProject
         }
         public void CacheGridSize()
         {
-            _gridSize = Math.Min(Utility.Window.ClientBounds.Width / Width, Utility.Window.ClientBounds.Height / Height);
+            _gridSize = Math.Min((Utility.Window.ClientBounds.Width - Utility.sidebarWidth) / Width, Utility.Window.ClientBounds.Height / Height);
         }
         public int Width
         {

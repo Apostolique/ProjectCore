@@ -17,6 +17,7 @@ namespace MonoGameJamProject
         public static int totalNumberOfKills = 0;
         public static GameWindow Window;
         public static AssetManager assetManager;
+        public static int sidebarWidth = 200;
 
         public static TimeSpan tdGameTimer;
 
