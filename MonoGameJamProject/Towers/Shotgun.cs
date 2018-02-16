@@ -45,7 +45,7 @@ namespace MonoGameJamProject.Towers
                 b.Update(gameTime);
                 BulletCollisionChecker();
                 // bullets start at the center, therefore an extra 0.5f is added to the range
-                if (b.DistanceTravelled > maxRange + 10.5f)
+                if (b.DistanceTravelled > maxRange + 0.5f)
                     b.MarkedForDeletion = true;
             }
 
