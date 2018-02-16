@@ -20,7 +20,6 @@ namespace MonoGameJamProject
         
         // list for all towers
         List<Tower> towerList;
-        List<Minion> minionList;
         Tower selectedTower = null, previewTower = null;
 
         public MainClass()
@@ -37,9 +36,9 @@ namespace MonoGameJamProject
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
             towerList = new List<Tower>();
-            minionList = new List<Minion>();
             input = new Input();
             hud = new HUD(input);
+            Utility.tdGameTimer = TimeSpan.Zero;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
@@ -89,7 +88,7 @@ namespace MonoGameJamProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            hud.Update(gameTime);
+            Utility.tdGameTimer += gameTime.ElapsedGameTime;
             Utility.board.Update(gameTime);
             TowerMovementChecker();
             TowerSwitchInput();
@@ -101,18 +100,13 @@ namespace MonoGameJamProject
                     towerList[i].IsDisabled = true;
                 else
                     towerList[i].IsDisabled = false;
-                towerList[i].Update(gameTime, minionList);
+                towerList[i].Update(gameTime);
             }
-            for(int i = minionList.Count - 1; i >= 0; i--)
-            {
-                minionList[i].Update(gameTime);
-                if (minionList[i].dead || !minionList[i].IsMoving)
-                    minionList.Remove(minionList[i]);
-            }
+
 
             if (input.MouseMiddleButtonPressed)
             {
-                if (Utility.board.Paths.Count > 0) {
+                if (Utility.board.Paths.Count > 1) {
                     Utility.board.ClearPaths();
                 }
                 Utility.board.GeneratePath();
@@ -120,9 +114,8 @@ namespace MonoGameJamProject
             if (input.MouseLeftButtonPressed)
             {
                 if (Utility.board.Paths.Count > 0) {
-                    Minion m = new Minion(0, 0, 0.4f, 0.0005f);
-                    minionList.Add(m);
-                    m.FollowPath(Utility.board.Paths[0]);
+                    Minion m = new Minion(0, 0, Minion.MinionType.fast);
+                    Utility.board.Paths[0].AddMinion(m);
                 }
                 //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
@@ -219,10 +212,12 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower.MinimumRange, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
-            foreach (Minion m in minionList)
-                m.Draw(spriteBatch);
             foreach (Tower t in towerList)
                 t.Draw(spriteBatch);
+            foreach(Path p in Utility.board.Paths)
+            {
+                p.DrawMinions(spriteBatch);
+            }
             hud.DrawPlayTime(spriteBatch);
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);

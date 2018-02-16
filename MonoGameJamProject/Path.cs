@@ -23,6 +23,7 @@ namespace MonoGameJamProject
     {
         enum animation { spawn, despawn, none }
         public List<Tile> pathway;
+        public List<Minion> MinionList;
         private CoolDownTimer spawnTimer;
         private int pathsShown;
         private animation sequence;
@@ -35,6 +36,7 @@ namespace MonoGameJamProject
         public Path()
         {
             pathway = new List<Tile>();
+            MinionList = new List<Minion>();
             spawnTimer = new CoolDownTimer(0.2f);
             spawnTimer.Reset();
             pathsShown = 0;
@@ -60,12 +62,24 @@ namespace MonoGameJamProject
         }
         public bool Contains(Tile tile)
         {
-            for (int i = 0; i < pathsShown; i++)
-            {
-                if (pathway[i] == tile) {
-                    return true;
+            if (sequence == animation.spawn) {
+                for (int i = 0; i < pathsShown; i++)
+                {
+                    if (pathway[i] == tile) {
+                        return true;
+                    }
                 }
+            } else if (sequence == animation.despawn) {
+                for (int i = pathsShown; i < pathway.Count; i++)
+                {
+                    if (pathway[i] == tile) {
+                        return true;
+                    }
+                }
+            } else {
+                return pathway.Contains(tile);
             }
+
             return false;
         }
         public void Despawn()
@@ -73,6 +87,11 @@ namespace MonoGameJamProject
             spawnTimer.Reset();
             pathsShown = 0;
             sequence = animation.despawn;
+        }
+        public void AddMinion(Minion m)
+        {
+            m.FollowPath(this);
+            MinionList.Add(m);
         }
         public void Update(GameTime gameTime)
         {
@@ -86,7 +105,6 @@ namespace MonoGameJamProject
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        Console.WriteLine("Spawn done.");
                         sequence = animation.none;
                     }
                 }
@@ -100,11 +118,16 @@ namespace MonoGameJamProject
                     spawnTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        Console.WriteLine("Despawn done.");
                         sequence = animation.none;
                         _done = true;
                     }
                 }
+            }
+            for(int i = MinionList.Count - 1; i >= 0; i--)
+            {
+                MinionList[i].Update(gameTime);
+                if (MinionList[i].dead || !MinionList[i].IsMoving)
+                    MinionList.Remove(MinionList[i]);
             }
         }
 
@@ -114,19 +137,19 @@ namespace MonoGameJamProject
             {
                 for (int i = 0; i < pathsShown; i++)
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             } else if (sequence == animation.despawn)
             {
                 for (int i = pathsShown; i < pathway.Count; i++)
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             } else
             {
                 for (int i = 0; i < pathway.Count; i++) 
                 {
-                    s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), Color.Blue);
+                    drawPathTile(s, i);
                 }
             }
         }
@@ -151,6 +174,15 @@ namespace MonoGameJamProject
                     drawPathLine(s, i);
                 }
             }
+        }
+        public void DrawMinions(SpriteBatch s)
+        {
+            foreach (Minion m in MinionList)
+                m.Draw(s);
+        }
+        private void drawPathTile(SpriteBatch s, int i)
+        {
+            s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.board.GridSize, Utility.board.GridSize), new Color(19, 59, 131));
         }
         private void drawPathLine(SpriteBatch s, int i)
         {

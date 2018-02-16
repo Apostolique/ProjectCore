@@ -17,6 +17,8 @@ namespace MonoGameJamProject
         public static GameWindow Window;
         public static AssetManager assetManager;
 
+        public static TimeSpan tdGameTimer;
+
         /// <summary>
         /// Converts a game coordinate into a screen coordinate.
         /// </summary>

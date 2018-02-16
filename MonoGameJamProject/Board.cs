@@ -106,7 +106,7 @@ namespace MonoGameJamProject
         {
             Path newPath = new Path();
 
-            int preferedSize = 10;
+            int preferedSize = 13;
             int length = 0;
             
             //Edge restriction: Only edges in paths at the start and end of a path.
@@ -146,6 +146,13 @@ namespace MonoGameJamProject
         public bool IsTileOnPath(Tile tile)
         {
             foreach (Path p in Paths)
+            {
+                if (p.Contains(tile))
+                {
+                    return true;
+                }
+            }
+            foreach (Path p in OldPaths)
             {
                 if (p.Contains(tile))
                 {
@@ -267,7 +274,7 @@ namespace MonoGameJamProject
         }
         public void Draw(SpriteBatch s)
         {
-            s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(10, 10, 10));
+            s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(15, 15, 15));
 
             for (int i = 1; i < FullWidth - 1; i++)
             {

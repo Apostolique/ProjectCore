@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
@@ -19,7 +20,7 @@ namespace MonoGameJamProject
 
         public void Draw(SpriteBatch s, Color c)
         {
-            s.DrawRectangle(new RectangleF(Utility.GameToScreen(X), Utility.GameToScreen(Y), Utility.board.GridSize, Utility.board.GridSize), c, 0.02f * Utility.board.GridSize);
+            s.DrawRectangle(new RectangleF(Utility.GameToScreen(X), Utility.GameToScreen(Y), Utility.board.GridSize, Utility.board.GridSize), c, 1);
         }
     }
 }

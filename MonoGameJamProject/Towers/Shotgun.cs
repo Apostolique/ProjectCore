@@ -11,7 +11,9 @@ namespace MonoGameJamProject.Towers
         Minion targetedMinion = null;
         List<Projectile> bulletList;
         private const int targetChance = 33;
-        private const int amountOfPellets = 5;
+        private const int amountOfPellets = 4;
+        // The higher, the tighter the spread
+        private const int pelletDistribution = 5;
         public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
         {
             towerColor = Color.SaddleBrown;
@@ -22,12 +24,12 @@ namespace MonoGameJamProject.Towers
             damage = 5;
         }
 
-        public override void Update(GameTime gameTime, List<Minion> iMinionList)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, iMinionList);
+            base.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
-                TargetRandomMinion(iMinionList);
+                TargetRandomMinion();
                 if (targetedMinion != null)
                     ShootAtTargetedMinion();
                 attackTimer.Reset();
@@ -41,7 +43,7 @@ namespace MonoGameJamProject.Towers
             foreach(Projectile b in bulletList)
             {
                 b.Update(gameTime);
-                BulletCollisionChecker(iMinionList);
+                BulletCollisionChecker();
                 // bullets start at the center, therefore an extra 0.5f is added to the range
                 if (b.DistanceTravelled > maxRange + 10.5f)
                     b.MarkedForDeletion = true;
@@ -49,16 +51,19 @@ namespace MonoGameJamProject.Towers
 
         }
 
-        private void BulletCollisionChecker(List<Minion> iMinionList)
+        private void BulletCollisionChecker()
         {
-            foreach(Minion m in iMinionList)
+            foreach (Path p in Utility.board.Paths)
             {
-                foreach(Projectile b in bulletList)
+                foreach(Minion m in p.MinionList)
                 {
-                    if (m.CollidesWithBullet(b.Position, b.Radius))
+                    foreach(Projectile b in bulletList)
                     {
-                        m.TakeDamage(damage);
-                        b.MarkedForDeletion = true;
+                        if (m.CollidesWithBullet(b.Position, b.Radius))
+                        {
+                            m.TakeDamage(damage);
+                            b.MarkedForDeletion = true;
+                        }
                     }
                 }
             }
@@ -76,21 +81,29 @@ namespace MonoGameJamProject.Towers
             Vector2 direction = Vector2.Normalize(new Vector2(targetedMinion.Position.X - this.X, targetedMinion.Position.Y - this.Y));
             for(int i = 0; i <= amountOfPellets; i++)
             {
-                float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / 3);
-                Vector2 spreadDirection = new Vector2(direction.X - randomizedDirectionOffset, direction.Y - randomizedDirectionOffset);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), spreadDirection, Color.SandyBrown, 7F);
+                Vector2 newDirection = GenerateDirectionOffset(direction);
+                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown, 6F);
                 bulletList.Add(pellet);
             }
             Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
         }
 
+        private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
+        {
+            float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / pelletDistribution);
+            if (Utility.random.Next(0, 2) > 0)
+                randomizedDirectionOffset = -randomizedDirectionOffset;
+            Vector2 offsettedDirection = new Vector2(initialDirection.X - randomizedDirectionOffset, initialDirection.Y - randomizedDirectionOffset);
+            offsettedDirection.Normalize();
+            return offsettedDirection;
+        }
 
-        private void TargetRandomMinion(List<Minion> minionList)
+        private void TargetRandomMinion()
         {
             targetedMinion = null;
-            if (minionList.Count > 0)
+            foreach (Path p in Utility.board.Paths)
             {
-                foreach (Minion m in minionList)
+                foreach (Minion m in p.MinionList)
                 {
                     if (RangeChecker(m.Position.X, m.Position.Y, minRange))
                         continue;
@@ -98,8 +111,13 @@ namespace MonoGameJamProject.Towers
                         continue;
                     else
                     {
-                        if (Utility.random.Next(0, 101) > targetChance)
+                        if (targetedMinion == null)
+                        {
                             targetedMinion = m;
+                        } else if (Utility.random.Next(0, 101) > targetChance)
+                        {
+                            targetedMinion = m;
+                        }
                     }
                 }
             }

@@ -30,7 +30,7 @@ namespace MonoGameJamProject.Towers
             attackTimer.Reset();
             towerInfo = "undefined";
         }
-        public virtual void Update(GameTime gameTime, List<Minion> iMinionList)
+        public virtual void Update(GameTime gameTime)
         {
             attackTimer.Update(gameTime);
         }

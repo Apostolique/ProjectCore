@@ -17,18 +17,21 @@ namespace MonoGameJamProject.Towers
             damage = 20;
             towerInfo = "Sniper Tower\n MinRange: " + minRange + "\nMaxRange: INFINITE!\nPosX:";
         }
-        public override void Update(GameTime gameTime, List<Minion> iMinionList)
+        public override void Update(GameTime gameTime)
         {
-            attackTimer.Update(gameTime);
-            if (targetedMinion != null)
-                if (attackTimer.IsExpired)
-                {
-                    targetedMinion.TakeDamage(damage);
-                    Utility.assetManager.PlaySFX("sniper_shot", 0.25f);
-                    attackTimer.Reset();
-                }
-            TargetMinion(iMinionList);
-            base.Update(gameTime, iMinionList);
+            if (!disabled)
+            {
+                attackTimer.Update(gameTime);
+                if (targetedMinion != null)
+                    if (attackTimer.IsExpired)
+                    {
+                        targetedMinion.TakeDamage(damage);
+                        Utility.assetManager.PlaySFX("sniper_shot", 0.25f);
+                        attackTimer.Reset();
+                    }
+                TargetMinion();
+            }
+            base.Update(gameTime);
         }
         public override void Draw(SpriteBatch s)
         {
@@ -36,12 +39,12 @@ namespace MonoGameJamProject.Towers
             if (!disabled && !(targetedMinion == null))
                 s.DrawLine(Utility.GameToScreen(this.X) + Utility.board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.board.GridSize / 2, Utility.GameToScreen(targetedMinion.Position.X), Utility.GameToScreen(targetedMinion.Position.Y), Color.Red, 2f);
         }
-        private void TargetMinion(List<Minion> minionList)
+        private void TargetMinion()
         {
             targetedMinion = null;
-            if (minionList.Count > 0)
+            foreach (Path p in Utility.board.Paths)
             {
-                foreach (Minion m in minionList)
+                foreach (Minion m in p.MinionList)
                 {
                     if (RangeChecker(m.Position.X, m.Position.Y, MinimumRange))
                         continue;
@@ -50,7 +53,6 @@ namespace MonoGameJamProject.Towers
                     else if (m.DistanceTraveled > targetedMinion.DistanceTraveled)
                     {
                         targetedMinion = m;
-                        break;
                     }
                 }
             }

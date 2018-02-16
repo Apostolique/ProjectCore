@@ -8,15 +8,15 @@ namespace MonoGameJamProject.Towers
     class Projectile
     {
         private const float radius = 0.1f;
-        float speed;
+        private float speed;
         private Vector2 position, direction;
         private float distanceTravelled;
-        private Color colour;
+        private Color color;
         public Projectile(Vector2 iPos, Vector2 iDirection, Color iColour, float iSpeed)
         {
             position = iPos;
             direction = iDirection;
-            colour = iColour;
+            color = iColour;
             speed = iSpeed;
             MarkedForDeletion = false;
         }
@@ -28,7 +28,9 @@ namespace MonoGameJamProject.Towers
 
         public void Draw(SpriteBatch s)
         {
-            s.DrawCircle(new CircleF(new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y)), radius * Utility.board.GridSize), 8, colour, radius * Utility.board.GridSize);
+            Point2 tempP = new Point2(Utility.GameToScreen(position.X), Utility.GameToScreen(position.Y));
+            s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, color, radius * Utility.board.GridSize);
+            s.DrawCircle(new CircleF(tempP, radius * Utility.board.GridSize), 8, Color.Black, 1);
         }
 
         public float DistanceTravelled

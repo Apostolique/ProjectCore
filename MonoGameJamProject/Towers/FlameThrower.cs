@@ -8,7 +8,7 @@ namespace MonoGameJamProject.Towers
 {
     class FlameThrower : Tower
     {
-        private const int amountOfFlamesPerCycle = 50;
+        private const int amountOfFlamesPerCycle = 100;
         private List<Projectile> flameList;
         List<Point> damageTiles;
         public FlameThrower(int iX, int iY) : base(iX, iY, 1F)
@@ -20,13 +20,13 @@ namespace MonoGameJamProject.Towers
             minRange = 0;
             maxRange = 1;
         }
-        public override void Update(GameTime gameTime, List<Minion> iMinionList)
+        public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime, iMinionList);
+            base.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
                 GenerateDamageTiles();
-                CheckDamageTiles(iMinionList);
+                CheckDamageTiles();
                 GenerateFireEffect();
                 attackTimer.Reset();
             }
@@ -57,7 +57,7 @@ namespace MonoGameJamProject.Towers
             for (int i = 0; i <= amountOfFlamesPerCycle; i++)
             {
                 Vector2 randomDirection = RandomDirectionGenerator();
-                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 2.5f);
+                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 2.5F);
                 flameList.Add(flame);
             }
         }
@@ -86,16 +86,19 @@ namespace MonoGameJamProject.Towers
                 }
             }
         }
-        public void CheckDamageTiles(List<Minion> iMinionList)
+        public void CheckDamageTiles()
         {
-            foreach(Minion m in iMinionList)
+            foreach (Path p in Utility.board.Paths)
             {
-                if (!RangeChecker(m.Position.X, m.Position.Y, maxRange))
-                    continue;
-                foreach (Point p in damageTiles)
+                foreach(Minion m in p.MinionList)
                 {
-                    if (m.IsInTile(p.X, p.Y))
-                        m.isOnFire = true;
+                    if (!RangeChecker(m.Position.X, m.Position.Y, maxRange))
+                        continue;
+                    foreach (Point point in damageTiles)
+                    {
+                        if (m.IsInTile(point.X, point.Y))
+                            m.isOnFire = true;
+                    }
                 }
             }
         }
