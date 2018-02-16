@@ -14,7 +14,7 @@ namespace MonoGameJamProject.UI
         public Sidebar(Vector2 iOffset)
         {
             offset = iOffset;
-            towerInfoOffset = 170;
+            towerInfoOffset = 190;
         }
 
         public void Update()
@@ -27,12 +27,14 @@ namespace MonoGameJamProject.UI
             DrawPlayTime(s);
             // Draw amount of kills
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Kills: " + Utility.totalNumberOfKills, new Vector2(position.X, position.Y + 30), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            //Draw lives
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 60), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the number of paths
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Path amount: " + Utility.board.Paths.Count, new Vector2(position.X, position.Y + 60), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Path amount: " + Utility.board.Paths.Count, new Vector2(position.X, position.Y + 90), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the time until next path: (ADD THE TIMER HERE LATER)
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Next Path: " + "UND" , new Vector2(position.X, position.Y + 90), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Next Path: " + "UND" , new Vector2(position.X, position.Y + 120), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the difficulty
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + "UND", new Vector2(position.X, position.Y + 120), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + "UND", new Vector2(position.X, position.Y + 150), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
 
         }
 
