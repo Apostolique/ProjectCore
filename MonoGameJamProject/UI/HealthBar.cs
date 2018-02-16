@@ -41,16 +41,14 @@ namespace MonoGameJamProject.UI
         public void Update()
         {
         }
-
         public void Draw(SpriteBatch s)
         {
             Vector2 position = new Vector2(Utility.GameToScreen(owner.Position.X - healthBarWidth / 2), Utility.GameToScreen(owner.Position.Y - owner.Radius - healthBarHeight));
             RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / maxHP) * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
             s.FillRectangle(healthRectangle, fillColor);
             DrawOutline(s, position);
-            s.DrawString(Utility.assetManager.GetFont("jura"), owner.StackFlamethrowers.Count.ToString(), new Vector2(healthRectangle.X + healthRectangle.Width, healthRectangle.Y - healthRectangle.Height), Color.Orange);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), owner.StackFlamethrowers.Count.ToString(), new Vector2(healthRectangle.X + healthRectangle.Width, healthRectangle.Y - healthRectangle.Height), Color.Orange, 0f, Vector2.Zero, 0.005f * Utility.board.GridSize, SpriteEffects.None, 0);
         }
-
         private void DrawOutline(SpriteBatch s, Vector2 position)
         {
             RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
