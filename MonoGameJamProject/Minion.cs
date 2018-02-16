@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameJamProject.Towers;
 using MonoGame.Extended;
 
 namespace MonoGameJamProject
@@ -38,8 +39,8 @@ namespace MonoGameJamProject
         float inBetween;
         float _distanceTraveled;
         HealthBar healthBar;
-        CoolDownTimer damageClock, onFireClock;
-        private const int fireDamage = 2;
+        CoolDownTimer onFireClock;
+        List<FlameThrower> stackFlamethrowers;
         public bool dead, isOnFire;
         float hp;
         Utility.MinionType type;
@@ -49,13 +50,10 @@ namespace MonoGameJamProject
             Position = new Vector2(iX, iY);
             inBetween = 0;
             _distanceTraveled = 0;
-
             waypoints = new List<Waypoint>();
-
-            damageClock = new CoolDownTimer(0.5F);
-            onFireClock = new CoolDownTimer(5F);
+            onFireClock = new CoolDownTimer(7F);
+            stackFlamethrowers = new List<FlameThrower>();
             Reset();
-            damageClock.IsExpired = true;
             type = iType;
 
             if (type == Utility.MinionType.fast)
@@ -86,7 +84,6 @@ namespace MonoGameJamProject
         }
         public void Reset()
         {
-            damageClock.Reset();
             onFireClock.Reset();
         }
         public void MoveTo(Vector2 b)
@@ -170,20 +167,11 @@ namespace MonoGameJamProject
                 inBetween = 0;
             }
 
-            damageClock.Update(gameTime);
             if (onFireClock.IsExpired)
             {
+                stackFlamethrowers.Clear();
                 isOnFire = false;
                 onFireClock.Reset();
-            }
-            if (isOnFire)
-            {
-                onFireClock.Update(gameTime);
-                if (damageClock.IsExpired)
-                {
-                    this.TakeDamage(fireDamage);
-                    damageClock.Reset();
-                }
             }
             healthBar.Update();
         }
@@ -219,6 +207,11 @@ namespace MonoGameJamProject
         public Utility.MinionType Type
         {
             get { return type; }
+        }
+
+        public List<FlameThrower> StackFlamethrowers
+        {
+            get { return stackFlamethrowers; }
         }
     }
 }
