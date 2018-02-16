@@ -14,10 +14,7 @@ namespace MonoGameJamProject.Towers
             towerColor = Color.White;
             type = Utility.TowerType.Sniper;
             minRange = 2;
-            if(Utility.board.FullWidth > Utility.board.FullHeight)
-                maxRange = Utility.board.FullWidth;
-            else
-                maxRange = Utility.board.FullHeight;
+            maxRange = Math.Max(Utility.board.FullWidth, Utility.board.FullHeight);
             damage = 20;
             towerInfo = "Sniper Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange +"\nX: " + X + "\nY: " + Y;
         }
