@@ -47,6 +47,7 @@ namespace MonoGameJamProject
             RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / maxHP) * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
             s.FillRectangle(healthRectangle, fillColor);
             DrawOutline(s, position);
+            s.DrawString(Utility.assetManager.GetFont("jura"), owner.StackFlamethrowers.Count.ToString(), new Vector2(healthRectangle.X + healthRectangle.Width, healthRectangle.Y - healthRectangle.Height), Color.Orange);
         }
 
         private void DrawOutline(SpriteBatch s, Vector2 position)
