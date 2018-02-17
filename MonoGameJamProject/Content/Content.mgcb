@@ -92,9 +92,6 @@
 /processorParam:Quality=Best
 /build:axe_ice_005.wav
 
-#begin SFX-ARCADIA_Error03 (1).wav
-/copy:SFX-ARCADIA_Error03 (1).wav
-
 #begin sfx_error.mp3
 /importer:Mp3Importer
 /processor:SoundEffectProcessor

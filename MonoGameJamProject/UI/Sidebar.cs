@@ -49,7 +49,7 @@ namespace MonoGameJamProject.UI
             // Draw the number of paths
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Path amount: " + Utility.board.Paths.Count, new Vector2(position.X, position.Y + 120), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the difficulty
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + "UND", new Vector2(position.X, position.Y + 150), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + Utility.GameDifficulty, new Vector2(position.X, position.Y + 150), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
 
         }
 
