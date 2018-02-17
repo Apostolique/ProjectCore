@@ -53,9 +53,14 @@ namespace MonoGameJamProject
         public void Update(GameTime gameTime)
         {
             CacheGridSize();
-            foreach (Path p in Paths)
+            for (int i = Paths.Count - 1; i >= 0; i--)
             {
-                p.Update(gameTime);
+                Paths[i].Update(gameTime);
+                if (Paths[i].Sequence == Path.Animation.despawn)
+                {
+                    OldPaths.Add(Paths[i]);
+                    Paths.RemoveAt(i);
+                }
             }
             for (int i = OldPaths.Count - 1; i >= 0; i--)
             {
@@ -63,6 +68,10 @@ namespace MonoGameJamProject
                 if (OldPaths[i].Done) {
                     OldPaths.RemoveAt(i);
                 }
+            }
+            if (Paths.Count < 1)
+            {
+                GeneratePath();
             }
         }
         public void CacheGridSize()
@@ -97,10 +106,8 @@ namespace MonoGameJamProject
         {
             foreach (Path p in Paths)
             {
-                OldPaths.Add(p);
                 p.Despawn();
             }
-            Paths.Clear();
         }
         public void GeneratePath()
         {

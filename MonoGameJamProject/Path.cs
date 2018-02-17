@@ -21,13 +21,17 @@ namespace MonoGameJamProject
     /// </summary>
     class Path
     {
-        enum Animation { spawn, despawn, none }
+        public enum Animation { spawn, despawn, none }
         public List<Tile> pathway;
         public List<Minion> MinionList;
         private Spawner spawner;
-        private CoolDownTimer spawnTimer;
+        private CoolDownTimer spawnSequenceTimer;
+        private CoolDownTimer minionSpawner;
         private int pathsShown;
-        private Animation sequence;
+        public Animation Sequence
+        {
+            get; set;
+        }
         private bool _done;
         public bool Done
         {
@@ -38,10 +42,12 @@ namespace MonoGameJamProject
         {
             pathway = new List<Tile>();
             MinionList = new List<Minion>();
-            spawnTimer = new CoolDownTimer(0.2f);
-            spawnTimer.Reset();
+            spawnSequenceTimer = new CoolDownTimer(0.2f);
+            spawnSequenceTimer.Reset();
             pathsShown = 0;
-            sequence = Animation.spawn;
+            Sequence = Animation.spawn;
+            minionSpawner = new CoolDownTimer(10f);
+            minionSpawner.Reset();
             spawner = new Spawner();
             _done = false;
         }
@@ -64,14 +70,14 @@ namespace MonoGameJamProject
         }
         public bool Contains(Tile tile)
         {
-            if (sequence == Animation.spawn) {
+            if (Sequence == Animation.spawn) {
                 for (int i = 0; i < pathsShown; i++)
                 {
                     if (pathway[i] == tile) {
                         return true;
                     }
                 }
-            } else if (sequence == Animation.despawn) {
+            } else if (Sequence == Animation.despawn) {
                 for (int i = pathsShown; i < pathway.Count; i++)
                 {
                     if (pathway[i] == tile) {
@@ -86,9 +92,9 @@ namespace MonoGameJamProject
         }
         public void Despawn()
         {
-            spawnTimer.Reset();
+            spawnSequenceTimer.Reset();
             pathsShown = 0;
-            sequence = Animation.despawn;
+            Sequence = Animation.despawn;
         }
         public void AddMinion(Minion m)
         {
@@ -98,30 +104,39 @@ namespace MonoGameJamProject
         public void Update(GameTime gameTime)
         {
             spawner.Update(gameTime, this);
-            if (sequence == Animation.spawn)
+            minionSpawner.Update(gameTime);
+            if (minionSpawner.IsExpired && spawner.IsActive)
             {
-                spawnTimer.Update(gameTime);
-                if (spawnTimer.IsExpired)
+                spawner.IsActive = false;
+            }
+            if (!spawner.IsActive && MinionList.Count == 0 && Sequence != Animation.despawn)
+            {
+                Despawn();
+            }
+            if (Sequence == Animation.spawn)
+            {
+                spawnSequenceTimer.Update(gameTime);
+                if (spawnSequenceTimer.IsExpired)
                 {
                     pathsShown++;
                     Utility.assetManager.PlaySFX("Robot_Servo_006", 0.1f);
-                    spawnTimer.Reset();
+                    spawnSequenceTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        sequence = Animation.none;
+                        Sequence = Animation.none;
                     }
                 }
-            } else if (sequence == Animation.despawn)
+            } else if (Sequence == Animation.despawn)
             {
-                spawnTimer.Update(gameTime);
-                if (spawnTimer.IsExpired)
+                spawnSequenceTimer.Update(gameTime);
+                if (spawnSequenceTimer.IsExpired)
                 {
                     pathsShown++;
                     Utility.assetManager.PlaySFX("Robot_Servo_006", 0.1f);
-                    spawnTimer.Reset();
+                    spawnSequenceTimer.Reset();
                     if (pathsShown >= pathway.Count)
                     {
-                        sequence = Animation.none;
+                        Sequence = Animation.none;
                         _done = true;
                     }
                 }
@@ -146,13 +161,13 @@ namespace MonoGameJamProject
 
         public void Draw(SpriteBatch s)
         {
-            if (sequence == Animation.spawn)
+            if (Sequence == Animation.spawn)
             {
                 for (int i = 0; i < pathsShown; i++)
                 {
                     DrawPathTile(s, i);
                 }
-            } else if (sequence == Animation.despawn)
+            } else if (Sequence == Animation.despawn)
             {
                 for (int i = pathsShown; i < pathway.Count; i++)
                 {
@@ -168,13 +183,13 @@ namespace MonoGameJamProject
         }
         public void DrawLine(SpriteBatch s)
         {
-            if (sequence == Animation.spawn)
+            if (Sequence == Animation.spawn)
             {
                 for (int i = 1; i < pathsShown; i++)
                 {
                     DrawPathLine(s, i);
                 }
-            } else if (sequence == Animation.despawn)
+            } else if (Sequence == Animation.despawn)
             {
                 for (int i = pathsShown + 1; i < pathway.Count; i++)
                 {
