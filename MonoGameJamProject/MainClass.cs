@@ -124,7 +124,7 @@ namespace MonoGameJamProject
                 GraphicsDevice.Clear(Color.Black);
                 GraphicsDevice.SetRenderTarget(null);
                 spriteBatch.Begin();
-                string gameOverString = "GAME OVER!\nYour number of kills: " + Utility.totalNumberOfKills + "\nYour reached difficulty: " + "UND" + "\nPress R to restart!";
+                string gameOverString = "GAME OVER!\nYour number of kills: " + Utility.totalNumberOfKills + "\nYour reached difficulty: " + Utility.GameDifficulty + "\nPress R to restart!";
                 spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(200, 100), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
