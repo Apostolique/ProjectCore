@@ -98,3 +98,9 @@
 /processorParam:Quality=Best
 /build:sfx_error.mp3
 
+#begin break_space.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:break_space.mp3
+

@@ -15,7 +15,7 @@ namespace MonoGameJamProject
         public static GameState currentGamestate;
         public const int slowMinionHP = 100;
         public const int fastMinionHP = 10;
-        public const int bossMinionHp = 1000;
+        public const int bossMinionHp = 3000;
         public static int totalNumberOfKills = 0;
         public static int numberOfLives;
         public static int placeableTowers;

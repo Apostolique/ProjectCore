@@ -50,6 +50,7 @@ namespace MonoGameJamProject
             difficultyCooldown.Reset();
             latestHoveredOverTower = null;
             Utility.board.GeneratePath();
+           
             base.Initialize();
         }
         private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber)
@@ -76,6 +77,7 @@ namespace MonoGameJamProject
             spriteBatch = new SpriteBatch(GraphicsDevice);
             renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.board.GridSize * Utility.board.Width, Utility.board.GridSize * Utility.board.Height);
             Utility.assetManager = new AssetManager(Content);
+            Utility.assetManager.PlayMusic("break_space", 0.3F);
             // TODO: use this.Content to load your game content here
         }
         void Window_ClientSizeChanged(object sender, EventArgs e) {
