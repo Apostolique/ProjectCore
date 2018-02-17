@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MainClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Minion.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Path.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Spawner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Sidebar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Towers\FlameThrower.cs" />
