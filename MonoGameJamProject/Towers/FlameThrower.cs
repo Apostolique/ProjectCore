@@ -8,7 +8,7 @@ namespace MonoGameJamProject.Towers
 {
     class FlameThrower : Tower
     {
-        private const int amountOfFlamesPerCycle = 100;
+        private const int amountOfFlamesPerCycle = 200;
         private CoolDownTimer damageClock;
         private List<Projectile> flameList;
         List<Point> damageTiles;
@@ -65,7 +65,7 @@ namespace MonoGameJamProject.Towers
             for (int i = 0; i <= amountOfFlamesPerCycle; i++)
             {
                 Vector2 randomDirection = RandomDirectionGenerator();
-                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 2.5F);
+                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 3.5F);
                 flameList.Add(flame);
             }
         }
