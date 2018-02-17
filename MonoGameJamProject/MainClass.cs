@@ -22,6 +22,7 @@ namespace MonoGameJamProject
         // list for all towers
         List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
+        CoolDownTimer difficultyCooldown;
 
         public MainClass()
         {
@@ -43,6 +44,7 @@ namespace MonoGameJamProject
             hud = new HUD(input);
             sidebarUI = new Sidebar(new Vector2(190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
+            difficultyCooldown = new CoolDownTimer(30f);
             latestHoveredOverTower = null;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
@@ -140,6 +142,14 @@ namespace MonoGameJamProject
         private void UpdatePlayingState(GameTime gameTime)
         {
             Utility.tdGameTimer += gameTime.ElapsedGameTime;
+
+            difficultyCooldown.Update(gameTime);
+            if (difficultyCooldown.IsExpired)
+            {
+                difficultyCooldown.Reset();
+                Utility.GameDifficulty++;
+            }
+
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();

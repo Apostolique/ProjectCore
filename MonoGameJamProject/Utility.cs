@@ -21,6 +21,7 @@ namespace MonoGameJamProject
         public static GameWindow Window;
         public static AssetManager assetManager;
         public static int sidebarWidth = 200;
+        public static int GameDifficulty = 0;
 
         public static TimeSpan tdGameTimer;
 
