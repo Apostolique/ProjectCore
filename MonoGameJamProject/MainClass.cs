@@ -12,6 +12,7 @@ namespace MonoGameJamProject
     public class MainClass : Game
     {
         private const int startingLives = 10;
+        private const int startingTowers = 3;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
@@ -36,6 +37,7 @@ namespace MonoGameJamProject
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.numberOfLives = startingLives;
+            Utility.placeableTowers = startingTowers;
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
             towerList = new List<Tower>();
@@ -44,9 +46,6 @@ namespace MonoGameJamProject
             sidebarUI = new Sidebar(new Vector2(190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
             latestHoveredOverTower = null;
-            AddTower(3, 1, Utility.TowerType.Sniper);
-            AddTower(3, 3, Utility.TowerType.Shotgun);
-            AddTower(3, 5, Utility.TowerType.FlameThrower);
             Utility.board.GeneratePath();
             base.Initialize();
         }
@@ -123,7 +122,7 @@ namespace MonoGameJamProject
                 GraphicsDevice.SetRenderTarget(null);
                 spriteBatch.Begin();
                 string gameOverString = "GAME OVER!\nYour number of kills: " + Utility.totalNumberOfKills + "\nYour reached difficulty: " + "UND" + "\nPress R to restart!";
-                spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(Utility.Window.ClientBounds.Width / 2, Utility.Window.ClientBounds.Height), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(200, 100), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
 
@@ -134,6 +133,13 @@ namespace MonoGameJamProject
         {
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
+            Utility.placeableTowers = startingTowers;
+            towerList.Clear();
+            Utility.board.ClearPaths();
+            foreach (Path p in Utility.board.Paths)
+            {
+                p.MinionList.Clear();
+            }
             // Reset the difficulty etc.
 
         }
@@ -143,8 +149,9 @@ namespace MonoGameJamProject
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();
+            NewTowerPlacementChecker();
             TowerSwitchInput();
-            sidebarUI.Update();
+            sidebarUI.Update(gameTime);
             input.Update();
             for (int i = towerList.Count - 1; i >= 0; i--)
             {
@@ -156,7 +163,7 @@ namespace MonoGameJamProject
                 towerList[i].Update(gameTime);
             }
 
-
+            /*
             if (input.MouseMiddleButtonPressed)
             {
                 if (Utility.board.Paths.Count > 1)
@@ -173,7 +180,31 @@ namespace MonoGameJamProject
                     Utility.board.Paths[0].AddMinion(m);
                 }
             }
+            */
         }
+
+        private void NewTowerPlacementChecker()
+        {
+            if (!IsWithinDimensions())
+                return;
+
+            if (input.MouseRightButtonPressed)
+            {
+                if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
+                {
+                    Utility.assetManager.PlaySFX("sfx_error");
+                    return;
+                }
+                if(Utility.placeableTowers > 0)
+                {
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun);
+                    Utility.placeableTowers--;
+                }
+                else
+                    Utility.assetManager.PlaySFX("sfx_error");
+            }
+        }
+
         private void DrawPlayingState(SpriteBatch spriteBatch)
         {
             GraphicsDevice.SetRenderTarget(renderTarget01);
@@ -245,7 +276,7 @@ namespace MonoGameJamProject
             if (!IsWithinDimensions())
                 return;
 
-            if (input.MouseRightButtonPressed)
+            if (input.MouseLeftButtonPressed)
             {
                 if (previewTower == null)
                 {

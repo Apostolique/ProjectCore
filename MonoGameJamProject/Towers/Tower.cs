@@ -13,7 +13,7 @@ namespace MonoGameJamProject.Towers
     abstract class Tower
     {
         private const float highlightOffset = 0.07F;
-        protected Color towerColor;
+        public Color towerColor;
         protected int minRange, maxRange;
         protected bool disabled = false;
         protected CoolDownTimer attackTimer;

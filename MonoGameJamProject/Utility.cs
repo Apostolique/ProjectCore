@@ -18,6 +18,7 @@ namespace MonoGameJamProject
         public const int bossMinionHp = 1000;
         public static int totalNumberOfKills = 0;
         public static int numberOfLives;
+        public static int placeableTowers;
         public static GameWindow Window;
         public static AssetManager assetManager;
         public static int sidebarWidth = 200;

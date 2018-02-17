@@ -13,7 +13,7 @@ namespace MonoGameJamProject.Towers
         private const int targetChance = 33;
         private const int amountOfPellets = 4;
         // The higher, the tighter the spread
-        private const int pelletDistribution = 5;
+        private const int pelletDistribution = 3;
         public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
         {
             towerColor = Color.SaddleBrown;
@@ -86,7 +86,7 @@ namespace MonoGameJamProject.Towers
                 Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown, 6F);
                 bulletList.Add(pellet);
             }
-            Utility.assetManager.PlaySFX("shotgun_shot", 0.25f);
+            Utility.assetManager.PlaySFX("shotgun_shot", 0.15f);
         }
 
         private Vector2 GenerateDirectionOffset(Vector2 initialDirection)
