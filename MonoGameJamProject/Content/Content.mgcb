@@ -80,3 +80,9 @@
 /processorParam:TextureFormat=Color
 /build:Jura_2.png
 
+#begin BREAK_HIT_Celery_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BREAK_HIT_Celery_2.wav
+
