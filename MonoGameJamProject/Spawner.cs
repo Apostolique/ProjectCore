@@ -15,24 +15,35 @@ namespace MonoGameJamProject
     /// </summary>
     class Spawner
     {
-        CoolDownTimer fastTimer;
+        CoolDownTimer timer1;
+        CoolDownTimer timer2;
         public bool IsActive
         {
             get; set;
         }
         public Spawner()
         {
-            fastTimer = new CoolDownTimer(1);
-            fastTimer.Reset();
+            timer1 = new CoolDownTimer(1);
+            timer1.Reset();
+
+            timer2 = new CoolDownTimer(5);
+            timer2.Reset();
             IsActive = true;
         }
         public void Update(GameTime gameTime, Path p)
         {
-            fastTimer.Update(gameTime);
-            if (fastTimer.IsExpired && IsActive)
+            timer1.Update(gameTime);
+            timer2.Update(gameTime);
+
+            if (timer1.IsExpired && IsActive)
             {
                 p.AddMinion(new Minion(0, 0, Utility.MinionType.fast));
-                fastTimer.Reset();
+                timer1.Reset();
+            }
+            if (timer2.IsExpired && IsActive)
+            {
+                p.AddMinion(new Minion(0, 0, Utility.MinionType.slow));
+                timer2.Reset();
             }
         }
     }
