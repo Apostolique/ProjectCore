@@ -47,9 +47,11 @@ namespace MonoGameJamProject.UI
             //Draw lives
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 90), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the number of paths
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Path amount: " + Utility.board.Paths.Count, new Vector2(position.X, position.Y + 120), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Path amount: " + Utility.board.Paths.Count, new Vector2(position.X, position.Y + 120), Color.Aqua, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the difficulty
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + Utility.GameDifficulty, new Vector2(position.X, position.Y + 150), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + Utility.GameDifficulty, new Vector2(position.X, position.Y + 150), Color.Aqua, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            // Draw Credit
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Music by YERZMYEY", new Vector2(position.X, position.Y + 440), Color.LightGray, 0f, Vector2.Zero, 0.45F, SpriteEffects.None, 0);
 
         }
 

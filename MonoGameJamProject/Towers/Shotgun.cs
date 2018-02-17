@@ -16,7 +16,7 @@ namespace MonoGameJamProject.Towers
         private const int pelletDistribution = 3;
         public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
         {
-            towerColor = Color.SaddleBrown;
+            towerColor = Color.DeepPink;
             type = Utility.TowerType.Shotgun;
             bulletList = new List<Projectile>();
             minRange = 1;
@@ -83,7 +83,7 @@ namespace MonoGameJamProject.Towers
             for(int i = 0; i <= amountOfPellets; i++)
             {
                 Vector2 newDirection = GenerateDirectionOffset(direction);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.SandyBrown, 6F);
+                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.Red, 6F);
                 bulletList.Add(pellet);
             }
             Utility.assetManager.PlaySFX("shotgun_shot", 0.15f);

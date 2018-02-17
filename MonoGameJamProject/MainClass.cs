@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using MonoGame.Extended.BitmapFonts;
 using MonoGameJamProject.Towers;
@@ -101,7 +102,10 @@ namespace MonoGameJamProject
             {
                 UpdatePlayingState(gameTime);
                 if (Utility.numberOfLives < 0)
+                {
+                    MediaPlayer.Stop();
                     Utility.currentGamestate = Utility.GameState.GameOver;
+                }
             }
            else if(Utility.currentGamestate == Utility.GameState.GameOver)
             {
@@ -137,6 +141,7 @@ namespace MonoGameJamProject
 
         private void ResetPlayingState()
         {
+            Utility.assetManager.PlayMusic("break_space", 0.3F);
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
             Utility.GameDifficulty = 0;
@@ -145,8 +150,6 @@ namespace MonoGameJamProject
             Utility.board.ResetPaths();
             Utility.placeableTowers = startingTowers;
             towerList.Clear();
-            // Reset the difficulty etc.
-
         }
         private void UpdatePlayingState(GameTime gameTime)
         {
@@ -190,7 +193,7 @@ namespace MonoGameJamProject
             {
                 if (Utility.board.Paths.Count > 0)
                 {
-                    Minion m = new Minion(0, 0, Utility.MinionType.boss);
+                    Minion m = new Minion(0, 0, Utility.MinionType.fast);
                     Utility.board.Paths[0].AddMinion(m);
                 }
             }
