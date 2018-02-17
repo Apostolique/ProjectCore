@@ -99,9 +99,9 @@ namespace MonoGameJamProject.Towers
         public void GenerateDamageTiles()
         {
             damageTiles.Clear();
-            for(int i = -minRange; i <= maxRange; i++)
+            for(int i = -maxRange; i <= maxRange; i++)
             {
-                for(int j = -minRange; j <= maxRange; j++)
+                for(int j = -maxRange; j <= maxRange; j++)
                 {
                     damageTiles.Add(new Point(X + i, Y + j));
                 }

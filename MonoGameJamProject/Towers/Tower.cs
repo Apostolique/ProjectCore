@@ -82,6 +82,11 @@ namespace MonoGameJamProject.Towers
         {
             get { return maxRange; }
         }
+
+        public int HotKeyNumber
+        {
+            get; set;
+        }
     }
 }
 

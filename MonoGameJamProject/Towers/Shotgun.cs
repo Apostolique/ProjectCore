@@ -11,7 +11,7 @@ namespace MonoGameJamProject.Towers
         Minion targetedMinion = null;
         List<Projectile> bulletList;
         private const int targetChance = 33;
-        private const int amountOfPellets = 8;
+        private const int amountOfPellets = 6;
         // The higher, the tighter the spread
         private const int pelletDistribution = 3;
         public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)

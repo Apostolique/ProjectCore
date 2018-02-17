@@ -52,7 +52,7 @@ namespace MonoGameJamProject
             Utility.board.GeneratePath();
             base.Initialize();
         }
-        private void AddTower(int x, int y, Utility.TowerType type)
+        private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber)
         {
             Tower tower = null;
             switch(type)
@@ -68,6 +68,7 @@ namespace MonoGameJamProject
                     break;
                 default: throw new ArgumentException("invalid tower type: " + type);
             }
+            tower.HotKeyNumber = HotKeyNumber;
             towerList.Add(tower);
         }
         protected override void LoadContent()
@@ -208,7 +209,7 @@ namespace MonoGameJamProject
                 }
                 if(Utility.placeableTowers > 0)
                 {
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, towerList.Count);
                     Utility.placeableTowers--;
                 }
                 else
@@ -283,8 +284,15 @@ namespace MonoGameJamProject
 
             if(towerList.Count >= goToTowerNumber && goToTowerNumber != 0)
             {
-                selectedTower = towerList[goToTowerNumber - 1];
-                previewTower = towerList[goToTowerNumber - 1];
+                foreach(Tower t in towerList)
+                {
+                    if(t.HotKeyNumber == goToTowerNumber)
+                    {
+                        selectedTower = towerList[goToTowerNumber - 1];
+                        previewTower = towerList[goToTowerNumber - 1];
+                        break;
+                    }
+                }
             }
         }
         private void TowerSwitchInput()
@@ -328,7 +336,7 @@ namespace MonoGameJamProject
                 {
                     if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotKeyNumber);
                     towerList.Remove(selectedTower);
                     previewTower = null;
                 }
