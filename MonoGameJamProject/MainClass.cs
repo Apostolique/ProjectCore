@@ -23,6 +23,7 @@ namespace MonoGameJamProject
         // list for all towers
         List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
+        CoolDownTimer difficultyCooldown;
 
         public MainClass()
         {
@@ -45,6 +46,8 @@ namespace MonoGameJamProject
             hud = new HUD(input);
             sidebarUI = new Sidebar(new Vector2(190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
+            difficultyCooldown = new CoolDownTimer(30f);
+            difficultyCooldown.Reset();
             latestHoveredOverTower = null;
             Utility.board.GeneratePath();
             base.Initialize();
@@ -133,19 +136,25 @@ namespace MonoGameJamProject
         {
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
+            Utility.GameDifficulty = 0;
+            Utility.board.ResetPaths();
             Utility.placeableTowers = startingTowers;
             towerList.Clear();
-            Utility.board.ClearPaths();
-            foreach (Path p in Utility.board.Paths)
-            {
-                p.MinionList.Clear();
-            }
             // Reset the difficulty etc.
 
         }
         private void UpdatePlayingState(GameTime gameTime)
         {
             Utility.tdGameTimer += gameTime.ElapsedGameTime;
+
+            difficultyCooldown.Update(gameTime);
+            if (difficultyCooldown.IsExpired)
+            {
+                difficultyCooldown.Reset();
+                Utility.GameDifficulty++;
+                Console.WriteLine("Difficulty: " + Utility.GameDifficulty);
+            }
+
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();

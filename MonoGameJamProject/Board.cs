@@ -69,7 +69,7 @@ namespace MonoGameJamProject
                     OldPaths.RemoveAt(i);
                 }
             }
-            if (Paths.Count < 1)
+            if (Paths.Count < Utility.GameDifficulty / 2 + 1)
             {
                 GeneratePath();
             }
@@ -109,11 +109,16 @@ namespace MonoGameJamProject
                 p.Despawn();
             }
         }
+        public void ResetPaths()
+        {
+            Paths.Clear();
+            OldPaths.Clear();
+        }
         public void GeneratePath()
         {
             Path newPath = new Path();
 
-            int preferedSize = 13;
+            int preferedSize = (int)Math.Sqrt(FullWidth * FullHeight);
             int length = 0;
             
             //Edge restriction: Only edges in paths at the start and end of a path.
