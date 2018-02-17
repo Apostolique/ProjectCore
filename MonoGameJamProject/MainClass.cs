@@ -137,6 +137,8 @@ namespace MonoGameJamProject
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
             Utility.GameDifficulty = 0;
+            previewTower = null;
+            selectedTower = null;
             Utility.board.ResetPaths();
             Utility.placeableTowers = startingTowers;
             towerList.Clear();
@@ -158,6 +160,7 @@ namespace MonoGameJamProject
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();
+            TowerHotkeySelector();
             NewTowerPlacementChecker();
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
@@ -261,6 +264,29 @@ namespace MonoGameJamProject
                 return false;
             else
                 return true;
+        }
+
+        private void TowerHotkeySelector()
+        {
+            int goToTowerNumber = 0;
+            if (input.KeyPressed(Keys.Q))
+                goToTowerNumber = 1;
+            else if (input.KeyPressed(Keys.W))
+                goToTowerNumber = 2;
+            else if (input.KeyPressed(Keys.E))
+                goToTowerNumber = 3;
+            else if (input.KeyPressed(Keys.R))
+                goToTowerNumber = 4;
+            else if (input.KeyPressed(Keys.R))
+                goToTowerNumber = 5;
+            else if (input.KeyPressed(Keys.Y))
+                goToTowerNumber = 6;
+
+            if(towerList.Count >= goToTowerNumber && goToTowerNumber != 0)
+            {
+                selectedTower = towerList[goToTowerNumber - 1];
+                previewTower = towerList[goToTowerNumber - 1];
+            }
         }
         private void TowerSwitchInput()
         {
