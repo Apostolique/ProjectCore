@@ -175,8 +175,7 @@ namespace MonoGameJamProject
                 towerList[i].Update(gameTime);
             }
 
-            
-            if (input.MouseMiddleButtonPressed)
+            /*if (input.MouseMiddleButtonPressed)
             {
                 if (Utility.board.Paths.Count > 1)
                 {
@@ -191,10 +190,8 @@ namespace MonoGameJamProject
                     Minion m = new Minion(0, 0, Utility.MinionType.boss);
                     Utility.board.Paths[0].AddMinion(m);
                 }
-            }
-            
+            }*/
         }
-
         private void NewTowerPlacementChecker()
         {
             if (!IsWithinDimensions())
@@ -209,7 +206,7 @@ namespace MonoGameJamProject
                 }
                 if(Utility.placeableTowers > 0)
                 {
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, towerList.Count);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, towerList.Count + 1);
                     Utility.placeableTowers--;
                 }
                 else
@@ -288,8 +285,8 @@ namespace MonoGameJamProject
                 {
                     if(t.HotKeyNumber == goToTowerNumber)
                     {
-                        selectedTower = towerList[goToTowerNumber - 1];
-                        previewTower = towerList[goToTowerNumber - 1];
+                        selectedTower = t;
+                        previewTower = t;
                         break;
                     }
                 }
