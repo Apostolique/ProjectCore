@@ -174,7 +174,7 @@ namespace MonoGameJamProject
                 towerList[i].Update(gameTime);
             }
 
-            /*
+            
             if (input.MouseMiddleButtonPressed)
             {
                 if (Utility.board.Paths.Count > 1)
@@ -187,11 +187,11 @@ namespace MonoGameJamProject
             {
                 if (Utility.board.Paths.Count > 0)
                 {
-                    Minion m = new Minion(0, 0, Utility.MinionType.fast);
+                    Minion m = new Minion(0, 0, Utility.MinionType.boss);
                     Utility.board.Paths[0].AddMinion(m);
                 }
             }
-            */
+            
         }
 
         private void NewTowerPlacementChecker()

@@ -9,13 +9,13 @@ namespace MonoGameJamProject.Towers
     class Sniper : Tower
     {
         Minion targetedMinion;
-        public Sniper(int iX, int iY) : base(iX, iY, 5F)
+        public Sniper(int iX, int iY) : base(iX, iY, 9F)
         {
             towerColor = Color.White;
             type = Utility.TowerType.Sniper;
             minRange = 2;
             maxRange = Math.Max(Utility.board.FullWidth, Utility.board.FullHeight);
-            damage = 20;
+            damage = 100;
             towerInfo = "Sniper Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nSingle target\nhigh damage tower";
         }
         public override void Update(GameTime gameTime)

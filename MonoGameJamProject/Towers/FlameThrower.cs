@@ -22,7 +22,7 @@ namespace MonoGameJamProject.Towers
             type = Utility.TowerType.FlameThrower;
             damage = 2;
             minRange = 0;
-            maxRange = 1;
+            maxRange = 2;
             towerInfo = "Flame Turret\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nLights minions on fire\nuse multiple to stack DMG";
         }
         public override void Update(GameTime gameTime)
