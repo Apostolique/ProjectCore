@@ -12,7 +12,6 @@ namespace MonoGameJamProject
     public class MainClass : Game
     {
         private const int startingLives = 10;
-        private const int startingTowers = 3;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
@@ -21,7 +20,6 @@ namespace MonoGameJamProject
         HUD hud;
         Sidebar sidebarUI;
         // list for all towers
-        List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
         CoolDownTimer difficultyCooldown;
 
@@ -38,10 +36,9 @@ namespace MonoGameJamProject
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.numberOfLives = startingLives;
-            Utility.placeableTowers = startingTowers;
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
-            towerList = new List<Tower>();
+            Utility.TowerList = new List<Tower>();
             input = new Input();
             hud = new HUD(input);
             sidebarUI = new Sidebar(new Vector2(190, 10));
@@ -69,7 +66,7 @@ namespace MonoGameJamProject
                 default: throw new ArgumentException("invalid tower type: " + type);
             }
             tower.HotKeyNumber = HotKeyNumber;
-            towerList.Add(tower);
+            Utility.TowerList.Add(tower);
         }
         protected override void LoadContent()
         {
@@ -141,8 +138,7 @@ namespace MonoGameJamProject
             previewTower = null;
             selectedTower = null;
             Utility.board.ResetPaths();
-            Utility.placeableTowers = startingTowers;
-            towerList.Clear();
+            Utility.TowerList.Clear();
             // Reset the difficulty etc.
 
         }
@@ -165,14 +161,14 @@ namespace MonoGameJamProject
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
             input.Update();
-            for (int i = towerList.Count - 1; i >= 0; i--)
+            for (int i = Utility.TowerList.Count - 1; i >= 0; i--)
             {
-                Tile currenttile = Utility.board.GetTile(new Point(towerList[i].X, towerList[i].Y));
+                Tile currenttile = Utility.board.GetTile(new Point(Utility.TowerList[i].X, Utility.TowerList[i].Y));
                 if (Utility.board.IsTileOnPath(currenttile))
-                    towerList[i].IsDisabled = true;
+                    Utility.TowerList[i].IsDisabled = true;
                 else
-                    towerList[i].IsDisabled = false;
-                towerList[i].Update(gameTime);
+                    Utility.TowerList[i].IsDisabled = false;
+                Utility.TowerList[i].Update(gameTime);
             }
 
             /*if (input.MouseMiddleButtonPressed)
@@ -204,10 +200,9 @@ namespace MonoGameJamProject
                     Utility.assetManager.PlaySFX("sfx_error");
                     return;
                 }
-                if(Utility.placeableTowers > 0)
+                if(Utility.maxTowers - Utility.TowerList.Count > 0)
                 {
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, towerList.Count + 1);
-                    Utility.placeableTowers--;
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, Utility.TowerList.Count + 1);
                 }
                 else
                     Utility.assetManager.PlaySFX("sfx_error");
@@ -231,7 +226,7 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
                 t.Draw(spriteBatch);
             foreach (Path p in Utility.board.Paths)
             {
@@ -279,9 +274,9 @@ namespace MonoGameJamProject
             else if (input.KeyPressed(Keys.Y))
                 goToTowerNumber = 6;
 
-            if(towerList.Count >= goToTowerNumber && goToTowerNumber != 0)
+            if(Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0)
             {
-                foreach(Tower t in towerList)
+                foreach(Tower t in Utility.TowerList)
                 {
                     if(t.HotKeyNumber == goToTowerNumber)
                     {
@@ -319,7 +314,7 @@ namespace MonoGameJamProject
             {
                 if (previewTower == null)
                 {
-                    foreach (Tower t in towerList)
+                    foreach (Tower t in Utility.TowerList)
                     {
                         if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y)
                         {
@@ -334,7 +329,7 @@ namespace MonoGameJamProject
                     if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
                     AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotKeyNumber);
-                    towerList.Remove(selectedTower);
+                    Utility.TowerList.Remove(selectedTower);
                     previewTower = null;
                 }
             }
@@ -347,7 +342,7 @@ namespace MonoGameJamProject
         /// <returns>whether the given position is valid for the tower</returns>
         private bool IsValidTileForTower(int x, int y)
         {
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
             {
                 if (t == selectedTower)
                     continue;
@@ -364,7 +359,7 @@ namespace MonoGameJamProject
         {
             if (!IsWithinDimensions())
                 return;
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
             {
                 if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
                     latestHoveredOverTower = t;

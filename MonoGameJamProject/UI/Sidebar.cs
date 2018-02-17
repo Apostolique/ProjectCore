@@ -34,7 +34,7 @@ namespace MonoGameJamProject.UI
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Kills: " + Utility.totalNumberOfKills, new Vector2(position.X, position.Y + 30), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw amount of towers still available
             Color placetowerscolor = Color.Gray;
-            if (Utility.placeableTowers > 0)
+            if (Utility.maxTowers - Utility.TowerList.Count > 0)
             {
                 if (effectTick > 50)
                 {
@@ -43,7 +43,7 @@ namespace MonoGameJamProject.UI
                 else
                     placetowerscolor = Color.White;
             }
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + Utility.placeableTowers, new Vector2(position.X, position.Y + 60), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + Utility.maxTowers, new Vector2(position.X, position.Y + 60), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             //Draw lives
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 90), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the number of paths
