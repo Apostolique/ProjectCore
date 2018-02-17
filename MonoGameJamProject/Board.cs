@@ -123,6 +123,7 @@ namespace MonoGameJamProject
         {
             Paths.Clear();
             OldPaths.Clear();
+            bossTimer.Reset();
         }
         public void GeneratePath()
         {
