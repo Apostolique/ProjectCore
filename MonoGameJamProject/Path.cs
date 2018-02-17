@@ -126,11 +126,17 @@ namespace MonoGameJamProject
             for(int i = MinionList.Count - 1; i >= 0; i--)
             {
                 MinionList[i].Update(gameTime);
-                if (MinionList[i].dead || !MinionList[i].IsMoving)
+                if (MinionList[i].dead)
                 {
                     MinionList.Remove(MinionList[i]);
                     Utility.totalNumberOfKills++;
                 }
+                else if (!MinionList[i].IsMoving)
+                {
+                    MinionList.Remove(MinionList[i]);
+                    Utility.numberOfLives--;
+                }
+
             }
         }
 

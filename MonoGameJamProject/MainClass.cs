@@ -17,7 +17,7 @@ namespace MonoGameJamProject
         Input input;
         HUD hud;
         Sidebar sidebarUI;
-        
+
         // list for all towers
         List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
@@ -31,6 +31,7 @@ namespace MonoGameJamProject
         }
         protected override void Initialize()
         {
+            Utility.currentGamestate = Utility.GameState.Playing;
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.Window = Window;
@@ -89,7 +90,36 @@ namespace MonoGameJamProject
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            // TODO: Add your update logic here
+            if(Utility.currentGamestate == Utility.GameState.Playing)
+            {
+                UpdatePlayingState(gameTime);
+                if (Utility.numberOfLives < 0)
+                    Utility.currentGamestate = Utility.GameState.GameOver;
+            }
+           else if(Utility.currentGamestate == Utility.GameState.GameOver)
+            {
+
+            }
+
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            if (Utility.currentGamestate == Utility.GameState.Playing)
+            {
+                DrawPlayingState(spriteBatch);
+            }
+            else if (Utility.currentGamestate == Utility.GameState.GameOver)
+            {
+                
+            }
+
+            base.Draw(gameTime);
+        }
+
+        private void UpdatePlayingState(GameTime gameTime)
+        {
             Utility.tdGameTimer += gameTime.ElapsedGameTime;
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
@@ -97,7 +127,7 @@ namespace MonoGameJamProject
             TowerSwitchInput();
             sidebarUI.Update();
             input.Update();
-            for(int i = towerList.Count - 1; i >= 0; i--)
+            for (int i = towerList.Count - 1; i >= 0; i--)
             {
                 Tile currenttile = Utility.board.GetTile(new Point(towerList[i].X, towerList[i].Y));
                 if (Utility.board.IsTileOnPath(currenttile))
@@ -110,21 +140,60 @@ namespace MonoGameJamProject
 
             if (input.MouseMiddleButtonPressed)
             {
-                if (Utility.board.Paths.Count > 1) {
+                if (Utility.board.Paths.Count > 1)
+                {
                     Utility.board.ClearPaths();
                 }
                 Utility.board.GeneratePath();
             }
             if (input.MouseLeftButtonPressed)
             {
-                if (Utility.board.Paths.Count > 0) {
+                if (Utility.board.Paths.Count > 0)
+                {
                     Minion m = new Minion(0, 0, Utility.MinionType.fast);
                     Utility.board.Paths[0].AddMinion(m);
                 }
-                //ITSMYMINION.WalkTo(new Vector2(Utility.ScreenToGame(input.MousePosition.X, board.GridSize), Utility.ScreenToGame(input.MousePosition.Y, board.GridSize)));
             }
-            base.Update(gameTime);
         }
+        private void DrawPlayingState(SpriteBatch spriteBatch)
+        {
+            GraphicsDevice.SetRenderTarget(renderTarget01);
+            GraphicsDevice.Clear(Color.Black);
+            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            Utility.board.Draw(spriteBatch);
+            if (latestHoveredOverTower != null)
+                hud.DrawRangeIndicators(spriteBatch, new Point(latestHoveredOverTower.X, latestHoveredOverTower.Y), latestHoveredOverTower);
+
+            // Highlight needs to be drawn before the actual towers
+            if (previewTower != null)
+            {
+                if (IsWithinDimensions())
+                    hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
+                selectedTower.DrawSelectionHightlight(spriteBatch);
+            }
+            foreach (Tower t in towerList)
+                t.Draw(spriteBatch);
+            foreach (Path p in Utility.board.Paths)
+            {
+                p.DrawMinions(spriteBatch);
+            }
+
+            spriteBatch.End();
+            GraphicsDevice.SetRenderTarget(null);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(renderTarget01, new Vector2(0, 0), Color.White);
+            spriteBatch.End();
+            // Draw sideBar
+            spriteBatch.Begin();
+            if (latestHoveredOverTower != null)
+                sidebarUI.DrawTowerInfo(spriteBatch, latestHoveredOverTower);
+            sidebarUI.Draw(spriteBatch);
+            spriteBatch.End();
+            latestHoveredOverTower = null;
+        }
+
         public bool IsWithinDimensions()
         {
             if (input.MouseToGameGrid().X >= Utility.board.FullWidth - 1 || input.MouseToGameGrid().X <= 0)
@@ -136,7 +205,7 @@ namespace MonoGameJamProject
         }
         private void TowerSwitchInput()
         {
-            if(previewTower != null)
+            if (previewTower != null)
             {
                 if (input.KeyPressed(Keys.D1))
                 {
@@ -175,7 +244,7 @@ namespace MonoGameJamProject
                 {
                     if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y,previewTower.type);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type);
                     towerList.Remove(selectedTower);
                     previewTower = null;
                 }
@@ -201,45 +270,7 @@ namespace MonoGameJamProject
                 return false;
             return true;
         }
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.SetRenderTarget(renderTarget01);
-            GraphicsDevice.Clear(Color.Black);
-            // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            Utility.board.Draw(spriteBatch);
-            if(latestHoveredOverTower != null)
-                hud.DrawRangeIndicators(spriteBatch, new Point(latestHoveredOverTower.X, latestHoveredOverTower.Y), latestHoveredOverTower);
 
-            // Highlight needs to be drawn before the actual towers
-            if (previewTower != null)
-            {
-                if (IsWithinDimensions())
-                    hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
-                selectedTower.DrawSelectionHightlight(spriteBatch);
-            }
-            foreach (Tower t in towerList)
-                t.Draw(spriteBatch);
-            foreach(Path p in Utility.board.Paths)
-            {
-                p.DrawMinions(spriteBatch);
-            }
-
-            spriteBatch.End();
-            GraphicsDevice.SetRenderTarget(null);
-
-            spriteBatch.Begin();
-            spriteBatch.Draw(renderTarget01, new Vector2(0, 0), Color.White);
-            spriteBatch.End();
-            // Draw sideBar
-            spriteBatch.Begin();
-            if(latestHoveredOverTower != null)
-                sidebarUI.DrawTowerInfo(spriteBatch, latestHoveredOverTower);
-            sidebarUI.Draw(spriteBatch);
-            spriteBatch.End();
-            latestHoveredOverTower = null;
-            base.Draw(gameTime);
-        }
         private void HoveringOverTowerChecker()
         {
             if (!IsWithinDimensions())

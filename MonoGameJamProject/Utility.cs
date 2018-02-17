@@ -11,6 +11,8 @@ namespace MonoGameJamProject
         public static Board board;
         public enum TowerType { Sniper, Shotgun, FlameThrower };
         public enum MinionType { slow, fast, boss };
+        public enum GameState { Playing, GameOver };
+        public static GameState currentGamestate;
         public const int slowMinionHP = 100;
         public const int fastMinionHP = 10;
         public const int bossMinionHp = 1000;
