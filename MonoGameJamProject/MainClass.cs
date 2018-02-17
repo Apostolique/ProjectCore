@@ -45,6 +45,7 @@ namespace MonoGameJamProject
             sidebarUI = new Sidebar(new Vector2(190, 10));
             Utility.tdGameTimer = TimeSpan.Zero;
             difficultyCooldown = new CoolDownTimer(30f);
+            difficultyCooldown.Reset();
             latestHoveredOverTower = null;
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
@@ -136,6 +137,8 @@ namespace MonoGameJamProject
         {
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
+            Utility.GameDifficulty = 0;
+            Utility.board.ResetPaths();
             // Reset the difficulty etc.
 
         }
@@ -148,6 +151,7 @@ namespace MonoGameJamProject
             {
                 difficultyCooldown.Reset();
                 Utility.GameDifficulty++;
+                Console.WriteLine("Difficulty: " + Utility.GameDifficulty);
             }
 
             Utility.board.Update(gameTime);

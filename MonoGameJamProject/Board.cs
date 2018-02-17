@@ -109,6 +109,11 @@ namespace MonoGameJamProject
                 p.Despawn();
             }
         }
+        public void ResetPaths()
+        {
+            Paths.Clear();
+            OldPaths.Clear();
+        }
         public void GeneratePath()
         {
             Path newPath = new Path();
