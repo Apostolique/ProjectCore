@@ -30,7 +30,7 @@ namespace MonoGameJamProject.Towers
             base.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
-                TargetRandomMinion();
+                TargetMinion();
                 if (targetedMinion != null)
                     ShootAtTargetedMinion();
                 attackTimer.Reset();
@@ -99,7 +99,7 @@ namespace MonoGameJamProject.Towers
             return offsettedDirection;
         }
 
-        private void TargetRandomMinion()
+        private void TargetMinion()
         {
             targetedMinion = null;
             foreach (Path p in Utility.board.Paths)
@@ -115,7 +115,7 @@ namespace MonoGameJamProject.Towers
                         if (targetedMinion == null)
                         {
                             targetedMinion = m;
-                        } else if (Utility.random.Next(0, 101) > targetChance)
+                        } else if (targetedMinion.DistanceTraveled < m.DistanceTraveled)
                         {
                             targetedMinion = m;
                         }
