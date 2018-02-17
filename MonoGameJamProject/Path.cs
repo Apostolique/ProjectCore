@@ -135,6 +135,7 @@ namespace MonoGameJamProject
                 {
                     MinionList.Remove(MinionList[i]);
                     Utility.numberOfLives--;
+                    Utility.assetManager.PlaySFX("BREAK_HIT_Celery_2");
                 }
 
             }
