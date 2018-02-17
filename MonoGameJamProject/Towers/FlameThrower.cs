@@ -12,7 +12,7 @@ namespace MonoGameJamProject.Towers
         private CoolDownTimer damageClock;
         private List<Projectile> flameList;
         List<Point> damageTiles;
-        public FlameThrower(int iX, int iY) : base(iX, iY, 1F)
+        public FlameThrower(int iX, int iY, int iHotkeyNumber) : base(iX, iY, 1F, iHotkeyNumber)
         {
             towerColor = Color.OrangeRed;
             damageTiles = new List<Point>();

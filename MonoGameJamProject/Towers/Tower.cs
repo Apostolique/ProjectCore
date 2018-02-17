@@ -22,7 +22,7 @@ namespace MonoGameJamProject.Towers
         public string towerInfo;
         int _x;
         int _y;
-        public Tower(int iX, int iY, float iAttackCooldown)
+        public Tower(int iX, int iY, float iAttackCooldown, int iHotkeyNumber)
         {
             _x = iX;
             _y = iY;
@@ -30,6 +30,7 @@ namespace MonoGameJamProject.Towers
             attackTimer.Reset();
             attackTimer.SecondsElapsed = iAttackCooldown / 2;
             towerInfo = "undefined";
+            HotkeyNumber = iHotkeyNumber;
         }
         public virtual void Update(GameTime gameTime)
         {
@@ -84,7 +85,7 @@ namespace MonoGameJamProject.Towers
             get { return maxRange; }
         }
 
-        public int HotKeyNumber
+        public int HotkeyNumber
         {
             get; set;
         }

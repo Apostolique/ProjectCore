@@ -14,7 +14,7 @@ namespace MonoGameJamProject.Towers
         private const int amountOfPellets = 6;
         // The higher, the tighter the spread
         private const int pelletDistribution = 3;
-        public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
+        public Shotgun(int iX, int iY, int iHotKeyNumber) : base(iX, iY, 1.5F, iHotKeyNumber)
         {
             towerColor = Color.SaddleBrown;
             type = Utility.TowerType.Shotgun;

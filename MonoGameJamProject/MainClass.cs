@@ -35,7 +35,6 @@ namespace MonoGameJamProject
             Utility.currentGamestate = Utility.GameState.Playing;
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
-            Utility.numberOfLives = startingLives;
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
             Utility.TowerList = new List<Tower>();
@@ -46,7 +45,7 @@ namespace MonoGameJamProject
             difficultyCooldown = new CoolDownTimer(30f);
             difficultyCooldown.Reset();
             latestHoveredOverTower = null;
-            Utility.board.GeneratePath();
+            ResetPlayingState();
             base.Initialize();
         }
         private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber)
@@ -55,17 +54,16 @@ namespace MonoGameJamProject
             switch(type)
             {
                 case Utility.TowerType.FlameThrower:
-                    tower = new FlameThrower(x, y);
+                    tower = new FlameThrower(x, y, HotKeyNumber);
                     break;
                 case Utility.TowerType.Sniper:
-                    tower = new Sniper(x, y);
+                    tower = new Sniper(x, y, HotKeyNumber);
                     break;
                 case Utility.TowerType.Shotgun:
-                    tower = new Shotgun(x, y);
+                    tower = new Shotgun(x, y, HotKeyNumber);
                     break;
                 default: throw new ArgumentException("invalid tower type: " + type);
             }
-            tower.HotKeyNumber = HotKeyNumber;
             Utility.TowerList.Add(tower);
         }
         protected override void LoadContent()
@@ -135,12 +133,11 @@ namespace MonoGameJamProject
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
             Utility.GameDifficulty = 0;
+            difficultyCooldown.Reset();
             previewTower = null;
             selectedTower = null;
             Utility.board.ResetPaths();
             Utility.TowerList.Clear();
-            // Reset the difficulty etc.
-
         }
         private void UpdatePlayingState(GameTime gameTime)
         {
@@ -157,7 +154,6 @@ namespace MonoGameJamProject
             HoveringOverTowerChecker();
             TowerMovementChecker();
             TowerHotkeySelector();
-            NewTowerPlacementChecker();
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
             input.Update();
@@ -170,42 +166,9 @@ namespace MonoGameJamProject
                     Utility.TowerList[i].IsDisabled = false;
                 Utility.TowerList[i].Update(gameTime);
             }
-
-            /*if (input.MouseMiddleButtonPressed)
+            for (int i = Utility.TowerList.Count; i < Utility.MaxTowers; i++)
             {
-                if (Utility.board.Paths.Count > 1)
-                {
-                    Utility.board.ClearPaths();
-                }
-                Utility.board.GeneratePath();
-            }
-            if (input.MouseLeftButtonPressed)
-            {
-                if (Utility.board.Paths.Count > 0)
-                {
-                    Minion m = new Minion(0, 0, Utility.MinionType.boss);
-                    Utility.board.Paths[0].AddMinion(m);
-                }
-            }*/
-        }
-        private void NewTowerPlacementChecker()
-        {
-            if (!IsWithinDimensions())
-                return;
-
-            if (input.MouseRightButtonPressed)
-            {
-                if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
-                {
-                    Utility.assetManager.PlaySFX("sfx_error");
-                    return;
-                }
-                if(Utility.maxTowers - Utility.TowerList.Count > 0)
-                {
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, Utility.TowerList.Count + 1);
-                }
-                else
-                    Utility.assetManager.PlaySFX("sfx_error");
+                AddTower(1, 1, Utility.TowerType.Sniper, i + 1);
             }
         }
 
@@ -278,7 +241,7 @@ namespace MonoGameJamProject
             {
                 foreach(Tower t in Utility.TowerList)
                 {
-                    if(t.HotKeyNumber == goToTowerNumber)
+                    if(t.HotkeyNumber == goToTowerNumber)
                     {
                         selectedTower = t;
                         previewTower = t;
@@ -293,15 +256,15 @@ namespace MonoGameJamProject
             {
                 if (input.KeyPressed(Keys.D1))
                 {
-                    previewTower = new FlameThrower(selectedTower.X, selectedTower.Y);
+                    previewTower = new FlameThrower(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
                 else if (input.KeyPressed(Keys.D2))
                 {
-                    previewTower = new Shotgun(selectedTower.X, selectedTower.Y);
+                    previewTower = new Shotgun(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
                 else if (input.KeyPressed(Keys.D3))
                 {
-                    previewTower = new Sniper(selectedTower.X, selectedTower.Y);
+                    previewTower = new Sniper(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
             }
         }
@@ -328,8 +291,8 @@ namespace MonoGameJamProject
                 {
                     if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotKeyNumber);
                     Utility.TowerList.Remove(selectedTower);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotkeyNumber);
                     previewTower = null;
                 }
             }

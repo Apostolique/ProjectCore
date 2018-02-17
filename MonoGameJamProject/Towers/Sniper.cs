@@ -9,7 +9,7 @@ namespace MonoGameJamProject.Towers
     class Sniper : Tower
     {
         Minion targetedMinion;
-        public Sniper(int iX, int iY) : base(iX, iY, 9F)
+        public Sniper(int iX, int iY, int iHotkeyNumber) : base(iX, iY, 9F, iHotkeyNumber)
         {
             towerColor = Color.White;
             type = Utility.TowerType.Sniper;
