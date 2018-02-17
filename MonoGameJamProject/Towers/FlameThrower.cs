@@ -119,7 +119,6 @@ namespace MonoGameJamProject.Towers
                     {
                         if (m.IsInTile(point.X, point.Y) && !m.StackFlamethrowers.Contains(this))
                         {
-                            m.isOnFire = true;
                             m.StackFlamethrowers.Add(this);
                         }
                     }

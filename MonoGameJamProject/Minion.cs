@@ -42,7 +42,7 @@ namespace MonoGameJamProject
         HealthBar healthBar;
         CoolDownTimer onFireClock;
         List<FlameThrower> stackFlamethrowers;
-        public bool dead, isOnFire;
+        public bool dead;
         float hp;
         Utility.MinionType type;
 
@@ -123,11 +123,8 @@ namespace MonoGameJamProject
                 dead = true;
             }
         }
-        public bool IsOnFire
-        {
-            get { return isOnFire; }
-            set { isOnFire = value; }
-        }
+        public bool IsOnFire => stackFlamethrowers.Count > 0;
+
         public bool IsInTile(int iX, int iY)
         {
             Rectangle tileBoundingBox = new Rectangle(iX, iY, 1, 1);
@@ -171,7 +168,6 @@ namespace MonoGameJamProject
             if (onFireClock.IsExpired)
             {
                 stackFlamethrowers.Clear();
-                isOnFire = false;
                 onFireClock.Reset();
             }
         }
