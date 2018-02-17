@@ -69,7 +69,7 @@ namespace MonoGameJamProject
                     OldPaths.RemoveAt(i);
                 }
             }
-            if (Paths.Count < Utility.GameDifficulty / 2 + 1)
+            if (Paths.Count < Utility.GameDifficulty / 8 + 1)
             {
                 GeneratePath();
             }
