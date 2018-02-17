@@ -86,3 +86,9 @@
 /processorParam:Quality=Best
 /build:BREAK_HIT_Celery_2.wav
 
+#begin axe_ice_005.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:axe_ice_005.wav
+
