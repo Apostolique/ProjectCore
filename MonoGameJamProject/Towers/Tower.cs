@@ -28,6 +28,7 @@ namespace MonoGameJamProject.Towers
             _y = iY;
             attackTimer = new CoolDownTimer(iAttackCooldown);
             attackTimer.Reset();
+            attackTimer.SecondsElapsed = iAttackCooldown / 2;
             towerInfo = "undefined";
         }
         public virtual void Update(GameTime gameTime)
