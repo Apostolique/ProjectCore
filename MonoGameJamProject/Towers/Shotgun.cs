@@ -21,7 +21,7 @@ namespace MonoGameJamProject.Towers
             bulletList = new List<Projectile>();
             minRange = 1;
             maxRange = 3;
-            damage = 5;
+            damage = 4;
             towerInfo = "Shotgun Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nShoots bullets in a spread\ngood for crowds of minions";
         }
 
