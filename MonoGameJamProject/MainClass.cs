@@ -154,7 +154,6 @@ namespace MonoGameJamProject
             {
                 difficultyCooldown.Reset();
                 Utility.GameDifficulty++;
-                Console.WriteLine("Difficulty: " + Utility.GameDifficulty);
             }
 
             Utility.board.Update(gameTime);
