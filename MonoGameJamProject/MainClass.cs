@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using MonoGame.Extended.BitmapFonts;
 using MonoGameJamProject.Towers;
 using MonoGameJamProject.UI;
 using System;
@@ -10,6 +11,7 @@ namespace MonoGameJamProject
 {
     public class MainClass : Game
     {
+        private const int startingLives = 10;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
@@ -17,7 +19,6 @@ namespace MonoGameJamProject
         Input input;
         HUD hud;
         Sidebar sidebarUI;
-
         // list for all towers
         List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
@@ -34,6 +35,7 @@ namespace MonoGameJamProject
             Utility.currentGamestate = Utility.GameState.Playing;
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
+            Utility.numberOfLives = startingLives;
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
             towerList = new List<Tower>();
@@ -98,7 +100,12 @@ namespace MonoGameJamProject
             }
            else if(Utility.currentGamestate == Utility.GameState.GameOver)
             {
-
+                input.Update();
+                if (input.KeyPressed(Keys.R))
+                {
+                    Utility.currentGamestate = Utility.GameState.Playing;
+                    ResetPlayingState();
+                }
             }
 
             base.Update(gameTime);
@@ -112,12 +119,24 @@ namespace MonoGameJamProject
             }
             else if (Utility.currentGamestate == Utility.GameState.GameOver)
             {
-                
+                GraphicsDevice.Clear(Color.Black);
+                GraphicsDevice.SetRenderTarget(null);
+                spriteBatch.Begin();
+                string gameOverString = "GAME OVER!\nYour number of kills: " + Utility.totalNumberOfKills + "\nYour reached difficulty: " + "UND" + "\nPress R to restart!";
+                spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(Utility.Window.ClientBounds.Width / 2, Utility.Window.ClientBounds.Height), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
+                spriteBatch.End();
             }
 
             base.Draw(gameTime);
         }
 
+        private void ResetPlayingState()
+        {
+            Utility.numberOfLives = startingLives;
+            Utility.totalNumberOfKills = 0;
+            // Reset the difficulty etc.
+
+        }
         private void UpdatePlayingState(GameTime gameTime)
         {
             Utility.tdGameTimer += gameTime.ElapsedGameTime;
