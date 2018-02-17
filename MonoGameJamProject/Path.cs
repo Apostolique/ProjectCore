@@ -24,6 +24,7 @@ namespace MonoGameJamProject
         enum Animation { spawn, despawn, none }
         public List<Tile> pathway;
         public List<Minion> MinionList;
+        private Spawner spawner;
         private CoolDownTimer spawnTimer;
         private int pathsShown;
         private Animation sequence;
@@ -41,6 +42,7 @@ namespace MonoGameJamProject
             spawnTimer.Reset();
             pathsShown = 0;
             sequence = Animation.spawn;
+            spawner = new Spawner();
             _done = false;
         }
 
@@ -95,6 +97,7 @@ namespace MonoGameJamProject
         }
         public void Update(GameTime gameTime)
         {
+            spawner.Update(gameTime, this);
             if (sequence == Animation.spawn)
             {
                 spawnTimer.Update(gameTime);

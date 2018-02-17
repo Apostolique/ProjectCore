@@ -15,9 +15,20 @@ namespace MonoGameJamProject
     /// </summary>
     class Spawner
     {
-        CoolDownTimer cd;
+        CoolDownTimer fastTimer;
         public Spawner()
         {
+            fastTimer = new CoolDownTimer(1);
+            fastTimer.Reset();
+        }
+        public void Update(GameTime gameTime, Path p)
+        {
+            fastTimer.Update(gameTime);
+            if (fastTimer.IsExpired)
+            {
+                p.AddMinion(new Minion(0, 0, Utility.MinionType.fast));
+                fastTimer.Reset();
+            }
         }
     }
 }
