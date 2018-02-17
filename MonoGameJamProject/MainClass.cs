@@ -50,7 +50,6 @@ namespace MonoGameJamProject
             AddTower(3, 1, Utility.TowerType.Sniper);
             AddTower(3, 3, Utility.TowerType.Shotgun);
             AddTower(3, 5, Utility.TowerType.FlameThrower);
-            Utility.board.GeneratePath();
             base.Initialize();
         }
         private void AddTower(int x, int y, Utility.TowerType type)
