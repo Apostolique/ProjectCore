@@ -299,8 +299,6 @@ namespace MonoGameJamProject
         {
             foreach (Tower t in Utility.TowerList)
             {
-                if (t == selectedTower)
-                    continue;
                 if (t.X == x && t.Y == y)
                     return false;
             }
