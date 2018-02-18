@@ -33,6 +33,16 @@ namespace MonoGameJamProject
                 distance = iDistance;
             }
         }
+        struct FireStack
+        {
+            public FlameThrower flameThrower;
+            public CoolDownTimer fireTimer;
+            public FireStack(FlameThrower iFlameThrower, CoolDownTimer iFireTimer)
+            {
+                flameThrower = iFlameThrower;
+                fireTimer = iFireTimer;
+            }
+        }
         List<Waypoint> waypoints;
         float speed;
         float radius;
@@ -40,8 +50,8 @@ namespace MonoGameJamProject
         float inBetween;
         float _distanceTraveled;
         HealthBar healthBar;
-        CoolDownTimer onFireClock;
-        List<FlameThrower> stackFlamethrowers;
+        List<FireStack> stackFlamethrowers;
+        CoolDownTimer fireClock;
         public bool dead;
         float hp;
         Utility.MinionType type;
@@ -52,9 +62,9 @@ namespace MonoGameJamProject
             inBetween = 0;
             _distanceTraveled = 0;
             waypoints = new List<Waypoint>();
-            onFireClock = new CoolDownTimer(7F);
-            stackFlamethrowers = new List<FlameThrower>();
-            Reset();
+            stackFlamethrowers = new List<FireStack>();
+            fireClock = new CoolDownTimer(1);
+            fireClock.Reset();
             type = iType;
 
             if (type == Utility.MinionType.fast)
@@ -82,10 +92,6 @@ namespace MonoGameJamProject
             {
                 return waypoints.Count > 0;
             }
-        }
-        public void Reset()
-        {
-            onFireClock.Reset();
         }
         public void MoveTo(Vector2 b)
         {
@@ -164,11 +170,24 @@ namespace MonoGameJamProject
             } else {
                 inBetween = 0;
             }
+            fireClock.Update(gameTime);
 
-            if (onFireClock.IsExpired)
+            for (int i = stackFlamethrowers.Count - 1; i >= 0; i--)
             {
-                stackFlamethrowers.Clear();
-                onFireClock.Reset();
+                stackFlamethrowers[i].fireTimer.Update(gameTime);
+                if (stackFlamethrowers[i].fireTimer.IsExpired)
+                {
+                    stackFlamethrowers.RemoveAt(i);
+                }
+            }
+
+            if (fireClock.IsExpired)
+            {
+                foreach (FireStack fs in stackFlamethrowers)
+                {
+                    TakeDamage(fs.flameThrower.Damage);
+                }
+                fireClock.Reset();
             }
         }
         public void Draw(SpriteBatch s)
@@ -204,10 +223,26 @@ namespace MonoGameJamProject
         {
             get { return type; }
         }
-
-        public List<FlameThrower> StackFlamethrowers
+        public int FireStacks => stackFlamethrowers.Count;
+        public void AddFireStack(FlameThrower f)
         {
-            get { return stackFlamethrowers; }
+            bool added = false;
+            for (int i = 0; i < stackFlamethrowers.Count; i++)
+            {
+                if (stackFlamethrowers[i].flameThrower == f)
+                {
+                    FireStack fs = new FireStack(f, new CoolDownTimer(f.BurnTime));
+                    fs.fireTimer.Reset();
+                    stackFlamethrowers[i] = fs;
+                    added = true;
+                }
+            }
+            if (!added)
+            {
+                FireStack fs = new FireStack(f, new CoolDownTimer(f.BurnTime));
+                fs.fireTimer.Reset();
+                stackFlamethrowers.Add(fs);
+            }
         }
     }
 }

@@ -18,7 +18,10 @@ namespace MonoGameJamProject.Towers
         protected bool disabled = false;
         protected CoolDownTimer attackTimer;
         public Utility.TowerType type;
-        protected int damage;
+        public int Damage
+        {
+            get; set;
+        }
         public string towerInfo;
         int _x;
         int _y;

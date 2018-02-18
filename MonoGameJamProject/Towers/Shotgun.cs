@@ -21,8 +21,8 @@ namespace MonoGameJamProject.Towers
             bulletList = new List<Projectile>();
             minRange = 1;
             maxRange = 3;
-            damage = 4;
-            towerInfo = "Shotgun Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nShoots bullets in a spread\ngood for crowds of minions";
+            Damage = 4;
+            towerInfo = "Shotgun Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + Damage + "\nShoots bullets in a spread\ngood for crowds of minions";
         }
 
         public override void Update(GameTime gameTime)
@@ -62,7 +62,7 @@ namespace MonoGameJamProject.Towers
                     {
                         if (m.CollidesWithBullet(b.Position, b.Radius))
                         {
-                            m.TakeDamage(damage);
+                            m.TakeDamage(Damage);
                             b.MarkedForDeletion = true;
                         }
                     }
