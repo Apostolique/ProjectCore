@@ -104,3 +104,9 @@
 /processorParam:Quality=Best
 /build:break_space.mp3
 
+#begin AbstractAmbiences-Mix_ST_37.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:AbstractAmbiences-Mix_ST_37.mp3
+
