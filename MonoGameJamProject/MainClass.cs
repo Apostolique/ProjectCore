@@ -78,6 +78,7 @@ namespace MonoGameJamProject
                 if (Utility.numberOfLives < 0)
                 {
                     MediaPlayer.Stop();
+                    Utility.assetManager.PlayMusic("AbstractAmbiences-Mix_ST_37", 0.5F);
                     Utility.currentGamestate = Utility.GameState.GameOver;
                 }
             }
@@ -87,6 +88,7 @@ namespace MonoGameJamProject
                 if (input.KeyPressed(Keys.R))
                 {
                     Utility.currentGamestate = Utility.GameState.Playing;
+                    MediaPlayer.Stop();
                     Utility.assetManager.PlayMusic("break_space", 0.3F);
                     ResetPlayingState();
                 }
