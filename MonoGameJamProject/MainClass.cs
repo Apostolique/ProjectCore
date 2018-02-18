@@ -138,7 +138,7 @@ namespace MonoGameJamProject
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();
-            TowerHotkeySelector();
+            TowerHotkeyHandler();
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
             input.Update();
@@ -213,35 +213,46 @@ namespace MonoGameJamProject
             else
                 return true;
         }
-        private void TowerHotkeySelector()
+        private void TowerHotkeyHandler()
         {
             int goToTowerNumber = 0;
-            if (input.KeyPressed(Keys.Q))
+            Utility.TowerType type = Utility.TowerType.FlameThrower;
+            // Check what number
+            if (input.KeyPressed(Keys.Q) || input.KeyPressed(Keys.A) || input.KeyPressed(Keys.Z))
                 goToTowerNumber = 1;
-            else if (input.KeyPressed(Keys.W))
+            else if (input.KeyPressed(Keys.W) || input.KeyPressed(Keys.S) || input.KeyPressed(Keys.X))
                 goToTowerNumber = 2;
-            else if (input.KeyPressed(Keys.E))
+            else if (input.KeyPressed(Keys.E) || input.KeyPressed(Keys.D) || input.KeyPressed(Keys.C))
                 goToTowerNumber = 3;
-            else if (input.KeyPressed(Keys.R))
+            else if (input.KeyPressed(Keys.R) || input.KeyPressed(Keys.F) || input.KeyPressed(Keys.V))
                 goToTowerNumber = 4;
-            else if (input.KeyPressed(Keys.R))
+            else if (input.KeyPressed(Keys.T) || input.KeyPressed(Keys.G) || input.KeyPressed(Keys.B))
                 goToTowerNumber = 5;
-            else if (input.KeyPressed(Keys.Y))
+            else if (input.KeyPressed(Keys.Y) || input.KeyPressed(Keys.H) || input.KeyPressed(Keys.N))
                 goToTowerNumber = 6;
 
-            if(Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0)
+            // Check type
+            if (input.KeyPressed(Keys.Q) || input.KeyPressed(Keys.W) || input.KeyPressed(Keys.E) || input.KeyPressed(Keys.R) || input.KeyPressed(Keys.T) || input.KeyPressed(Keys.Y))
+                type = Utility.TowerType.FlameThrower;
+            else if (input.KeyPressed(Keys.A) || input.KeyPressed(Keys.S) || input.KeyPressed(Keys.D) || input.KeyPressed(Keys.F) || input.KeyPressed(Keys.G) || input.KeyPressed(Keys.H))
+                type = Utility.TowerType.Shotgun;
+            else if (input.KeyPressed(Keys.Z) || input.KeyPressed(Keys.X) || input.KeyPressed(Keys.C) || input.KeyPressed(Keys.V) || input.KeyPressed(Keys.B) || input.KeyPressed(Keys.N))
+                type = Utility.TowerType.Sniper;
+
+            if (Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0 && IsWithinDimensions())
             {
-                foreach(Tower t in Utility.TowerList)
+                foreach (Tower t in Utility.TowerList)
                 {
-                    if(t.HotkeyNumber == goToTowerNumber)
+                    if (t.HotkeyNumber == goToTowerNumber && IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                     {
-                        selectedTower = t;
-                        previewTower = t;
+                        AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, type, t.HotkeyNumber);
+                        Utility.TowerList.Remove(t);
                         break;
                     }
                 }
             }
         }
+
         private void TowerSwitchInput()
         {
             if (previewTower != null)

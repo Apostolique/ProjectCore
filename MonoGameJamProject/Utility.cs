@@ -11,7 +11,7 @@ namespace MonoGameJamProject
     static class Utility
     {
         public static Board board;
-        public enum TowerType { Sniper, Shotgun, FlameThrower };
+        public enum TowerType { Sniper, Shotgun, FlameThrower};
         public enum MinionType { slow, fast, boss };
         public enum GameState { Playing, GameOver };
         public static GameState currentGamestate;
