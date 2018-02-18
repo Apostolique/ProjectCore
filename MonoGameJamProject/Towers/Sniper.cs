@@ -25,12 +25,14 @@ namespace MonoGameJamProject.Towers
                 attackTimer.Update(gameTime);
                 TargetMinion();
                 if (targetedMinion != null)
+                {
                     if (attackTimer.IsExpired)
                     {
                         targetedMinion.TakeDamage(Damage);
                         Utility.assetManager.PlaySFX("sniper_shot", 0.75f);
                         attackTimer.Reset();
                     }
+                }
             }
             base.Update(gameTime);
         }
