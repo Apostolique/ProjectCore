@@ -105,7 +105,7 @@ namespace MonoGameJamProject
                 GraphicsDevice.Clear(Color.Black);
                 GraphicsDevice.SetRenderTarget(null);
                 spriteBatch.Begin();
-                string gameOverString = "GAME OVER!\nYou killed: " + Utility.totalNumberOfKills + " Minions!" + "\nYou reached difficulty: " + Utility.GameDifficulty + "\nAnd you survived for: " + Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2") + "\nPress R to restart!";
+                string gameOverString = "GAME OVER!\nYou killed: " + Utility.totalNumberOfKills + " Minions!" + "\nYour Score: " + Utility.Score.ToString() + "\nAnd you survived for: " + Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2") + "\nPress R to restart!";
                 spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(200, 100), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
                 spriteBatch.End();
             }

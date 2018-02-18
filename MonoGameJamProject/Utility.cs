@@ -21,7 +21,8 @@ namespace MonoGameJamProject
         public static int totalNumberOfKills = 0;
         public static int numberOfLives;
         public static List<Tower> TowerList;
-        public static int MaxTowers => Utility.board.Paths.Count + 1;
+        public static int MaxTowers => board.Paths.Count + 1;
+        public static int Score => (GameDifficulty * 20) + totalNumberOfKills * GameDifficulty / 3;
         public static GameWindow Window;
         public static AssetManager assetManager;
         public static int sidebarWidth = 200;

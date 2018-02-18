@@ -47,7 +47,18 @@ namespace MonoGameJamProject.Towers
             else
                 s.FillRectangle(new RectangleF(Utility.GameToScreen(_x), Utility.GameToScreen(_y), Utility.board.GridSize, Utility.board.GridSize), towerColor);
             s.DrawString(Utility.assetManager.GetFont("Jura"), HotkeyNumber.ToString(), new Vector2(Utility.GameToScreen(_x) + Utility.board.GridSize / 2.5F, Utility.GameToScreen(_y) + Utility.board.GridSize / 4), Color.Black, 0f, Vector2.Zero, 0.010f * Utility.board.GridSize, SpriteEffects.None, 0);
+            DrawCoolDownTimer(s);
         }
+
+        private void DrawCoolDownTimer(SpriteBatch s)
+        {
+            Vector2 position = new Vector2(Utility.GameToScreen(X), Utility.GameToScreen(Y) - Utility.board.GridSize / 4);
+            RectangleF coolDownRectangle = new RectangleF(position.X, position.Y, 1 * ((attackTimer.MaxTime - attackTimer.SecondsElapsed) / attackTimer.MaxTime) * Utility.board.GridSize, Utility.board.GridSize / 8);
+            s.FillRectangle(coolDownRectangle, Color.Yellow);
+            RectangleF outlineRectangle = new RectangleF(position.X, position.Y, Utility.board.GridSize , Utility.board.GridSize / 8);
+            s.DrawRectangle(outlineRectangle, Color.Black, 2F);
+        }
+
         public void DrawSelectionHightlight(SpriteBatch s)
         {
             s.FillRectangle(new RectangleF(Utility.GameToScreen(_x) - Utility.board.GridSize * highlightOffset / 2, Utility.GameToScreen(_y) - Utility.board.GridSize * highlightOffset / 2, Utility.board.GridSize + highlightOffset * Utility.board.GridSize, Utility.board.GridSize + highlightOffset * Utility.board.GridSize), Color.Yellow);
