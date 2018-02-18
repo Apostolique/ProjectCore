@@ -182,6 +182,8 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
+            foreach (Tower t in Utility.TowerList)
+                t.Draw(spriteBatch);
             foreach (Path p in Utility.board.Paths)
             {
                 p.DrawMinions(spriteBatch);
@@ -194,8 +196,6 @@ namespace MonoGameJamProject
                 if (t is FlameThrower)
                     (t as FlameThrower).DrawFireEffect(spriteBatch);
             }
-            foreach (Tower t in Utility.TowerList)
-                t.Draw(spriteBatch);
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 
