@@ -30,9 +30,7 @@ namespace MonoGameJamProject.UI
         public void Draw(SpriteBatch s)
         {
             DrawPlayTime(s);
-            // Draw amount of kills
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Kills: " + Utility.totalNumberOfKills, new Vector2(position.X, position.Y + 30), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
-            // Draw amount of towers still available
+
             Color placetowerscolor = Color.Gray;
             if (Utility.MaxTowers - Utility.TowerList.Count > 0)
             {
@@ -43,10 +41,12 @@ namespace MonoGameJamProject.UI
                 else
                     placetowerscolor = Color.White;
             }
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Score: " + Utility.Score, new Vector2(position.X, position.Y + 60), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 90), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + (Utility.MaxTowers - Utility.TowerList.Count), new Vector2(position.X, position.Y + 120), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + Utility.GameDifficulty, new Vector2(position.X, position.Y + 150), Color.Aqua, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 30), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Difficulty: " + Utility.GameDifficulty, new Vector2(position.X, position.Y + 60), Color.Aqua, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Kills: " + Utility.totalNumberOfKills, new Vector2(position.X, position.Y + 90), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Score: " + Utility.Score, new Vector2(position.X, position.Y + 120), Color.White, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + (Utility.MaxTowers - Utility.TowerList.Count), new Vector2(position.X, position.Y + 150), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+           
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Music by YERZMYEY", new Vector2(position.X, position.Y + 440), Color.LightGray, 0f, Vector2.Zero, 0.45F, SpriteEffects.None, 0);
 
         }
