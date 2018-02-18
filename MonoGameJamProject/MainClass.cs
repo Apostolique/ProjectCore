@@ -13,7 +13,6 @@ namespace MonoGameJamProject
     public class MainClass : Game
     {
         private const int startingLives = 10;
-        private const int startingTowers = 3;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         RenderTarget2D renderTarget01;
@@ -22,7 +21,6 @@ namespace MonoGameJamProject
         HUD hud;
         Sidebar sidebarUI;
         // list for all towers
-        List<Tower> towerList;
         Tower selectedTower = null, previewTower = null;
         CoolDownTimer difficultyCooldown;
 
@@ -38,40 +36,16 @@ namespace MonoGameJamProject
             Utility.currentGamestate = Utility.GameState.Playing;
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
-            Utility.numberOfLives = startingLives;
-            Utility.placeableTowers = startingTowers;
             Utility.Window = Window;
             Utility.board = new Board(15, 10);
-            towerList = new List<Tower>();
+            Utility.TowerList = new List<Tower>();
             input = new Input();
             hud = new HUD(input);
             sidebarUI = new Sidebar(new Vector2(190, 10));
-            Utility.tdGameTimer = TimeSpan.Zero;
             difficultyCooldown = new CoolDownTimer(30f);
-            difficultyCooldown.Reset();
             latestHoveredOverTower = null;
-            Utility.board.GeneratePath();
-           
+            ResetPlayingState();
             base.Initialize();
-        }
-        private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber)
-        {
-            Tower tower = null;
-            switch(type)
-            {
-                case Utility.TowerType.FlameThrower:
-                    tower = new FlameThrower(x, y);
-                    break;
-                case Utility.TowerType.Sniper:
-                    tower = new Sniper(x, y);
-                    break;
-                case Utility.TowerType.Shotgun:
-                    tower = new Shotgun(x, y);
-                    break;
-                default: throw new ArgumentException("invalid tower type: " + type);
-            }
-            tower.HotKeyNumber = HotKeyNumber;
-            towerList.Add(tower);
         }
         protected override void LoadContent()
         {
@@ -119,7 +93,6 @@ namespace MonoGameJamProject
 
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             if (Utility.currentGamestate == Utility.GameState.Playing)
@@ -138,13 +111,14 @@ namespace MonoGameJamProject
 
             base.Draw(gameTime);
         }
-
         private void ResetPlayingState()
         {
+            Utility.tdGameTimer = TimeSpan.Zero;
             Utility.assetManager.PlayMusic("break_space", 0.3F);
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
             Utility.GameDifficulty = 0;
+            difficultyCooldown.Reset();
             previewTower = null;
             selectedTower = null;
             Utility.board.ResetPaths();
@@ -166,28 +140,17 @@ namespace MonoGameJamProject
             HoveringOverTowerChecker();
             TowerMovementChecker();
             TowerHotkeySelector();
-            NewTowerPlacementChecker();
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
             input.Update();
-            for (int i = towerList.Count - 1; i >= 0; i--)
+            for (int i = Utility.TowerList.Count - 1; i >= 0; i--)
             {
-                Tile currenttile = Utility.board.GetTile(new Point(towerList[i].X, towerList[i].Y));
+                Tile currenttile = Utility.board.GetTile(new Point(Utility.TowerList[i].X, Utility.TowerList[i].Y));
                 if (Utility.board.IsTileOnPath(currenttile))
-                    towerList[i].IsDisabled = true;
+                    Utility.TowerList[i].IsDisabled = true;
                 else
-                    towerList[i].IsDisabled = false;
-                towerList[i].Update(gameTime);
-            }
-
-            
-            if (input.MouseMiddleButtonPressed)
-            {
-                if (Utility.board.Paths.Count > 1)
-                {
-                    Utility.board.ClearPaths();
-                }
-                Utility.board.GeneratePath();
+                    Utility.TowerList[i].IsDisabled = false;
+                Utility.TowerList[i].Update(gameTime);
             }
             if (input.MouseLeftButtonPressed)
             {
@@ -197,31 +160,7 @@ namespace MonoGameJamProject
                     Utility.board.Paths[0].AddMinion(m);
                 }
             }
-            
         }
-
-        private void NewTowerPlacementChecker()
-        {
-            if (!IsWithinDimensions())
-                return;
-
-            if (input.MouseRightButtonPressed)
-            {
-                if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
-                {
-                    Utility.assetManager.PlaySFX("sfx_error");
-                    return;
-                }
-                if(Utility.placeableTowers > 0)
-                {
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.Shotgun, towerList.Count);
-                    Utility.placeableTowers--;
-                }
-                else
-                    Utility.assetManager.PlaySFX("sfx_error");
-            }
-        }
-
         private void DrawPlayingState(SpriteBatch spriteBatch)
         {
             GraphicsDevice.SetRenderTarget(renderTarget01);
@@ -239,7 +178,7 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
                 t.Draw(spriteBatch);
             foreach (Path p in Utility.board.Paths)
             {
@@ -270,7 +209,6 @@ namespace MonoGameJamProject
             else
                 return true;
         }
-
         private void TowerHotkeySelector()
         {
             int goToTowerNumber = 0;
@@ -287,14 +225,14 @@ namespace MonoGameJamProject
             else if (input.KeyPressed(Keys.Y))
                 goToTowerNumber = 6;
 
-            if(towerList.Count >= goToTowerNumber && goToTowerNumber != 0)
+            if(Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0)
             {
-                foreach(Tower t in towerList)
+                foreach(Tower t in Utility.TowerList)
                 {
-                    if(t.HotKeyNumber == goToTowerNumber)
+                    if(t.HotkeyNumber == goToTowerNumber)
                     {
-                        selectedTower = towerList[goToTowerNumber - 1];
-                        previewTower = towerList[goToTowerNumber - 1];
+                        selectedTower = t;
+                        previewTower = t;
                         break;
                     }
                 }
@@ -306,15 +244,15 @@ namespace MonoGameJamProject
             {
                 if (input.KeyPressed(Keys.D1))
                 {
-                    previewTower = new FlameThrower(selectedTower.X, selectedTower.Y);
+                    previewTower = new FlameThrower(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
                 else if (input.KeyPressed(Keys.D2))
                 {
-                    previewTower = new Shotgun(selectedTower.X, selectedTower.Y);
+                    previewTower = new Shotgun(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
                 else if (input.KeyPressed(Keys.D3))
                 {
-                    previewTower = new Sniper(selectedTower.X, selectedTower.Y);
+                    previewTower = new Sniper(selectedTower.X, selectedTower.Y, previewTower.HotkeyNumber);
                 }
             }
         }
@@ -327,7 +265,7 @@ namespace MonoGameJamProject
             {
                 if (previewTower == null)
                 {
-                    foreach (Tower t in towerList)
+                    foreach (Tower t in Utility.TowerList)
                     {
                         if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y)
                         {
@@ -341,8 +279,8 @@ namespace MonoGameJamProject
                 {
                     if (!IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                         return;
-                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotKeyNumber);
-                    towerList.Remove(selectedTower);
+                    Utility.TowerList.Remove(selectedTower);
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, previewTower.type, previewTower.HotkeyNumber);
                     previewTower = null;
                 }
             }
@@ -355,7 +293,7 @@ namespace MonoGameJamProject
         /// <returns>whether the given position is valid for the tower</returns>
         private bool IsValidTileForTower(int x, int y)
         {
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
             {
                 if (t == selectedTower)
                     continue;
@@ -367,16 +305,33 @@ namespace MonoGameJamProject
                 return false;
             return true;
         }
-
         private void HoveringOverTowerChecker()
         {
             if (!IsWithinDimensions())
                 return;
-            foreach (Tower t in towerList)
+            foreach (Tower t in Utility.TowerList)
             {
                 if (t.X == input.MouseToGameGrid().X && t.Y == input.MouseToGameGrid().Y && !t.IsDisabled)
                     latestHoveredOverTower = t;
             }
+        }
+        private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber)
+        {
+            Tower tower = null;
+            switch(type)
+            {
+                case Utility.TowerType.FlameThrower:
+                    tower = new FlameThrower(x, y, HotKeyNumber);
+                    break;
+                case Utility.TowerType.Sniper:
+                    tower = new Sniper(x, y, HotKeyNumber);
+                    break;
+                case Utility.TowerType.Shotgun:
+                    tower = new Shotgun(x, y, HotKeyNumber);
+                    break;
+                default: throw new ArgumentException("invalid tower type: " + type);
+            }
+            Utility.TowerList.Add(tower);
         }
     }
 }

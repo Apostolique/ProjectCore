@@ -22,6 +22,7 @@ namespace MonoGameJamProject
             get; set;
         }
         Tile[,] tiles;
+        CoolDownTimer bossTimer;
         struct TileValue
         {
             public Tile tile;
@@ -41,6 +42,9 @@ namespace MonoGameJamProject
             OldPaths = new List<Path>();
             tiles = new Tile[FullWidth, FullHeight];
 
+            bossTimer = new CoolDownTimer(60);
+            bossTimer.Reset();
+
             for (int i = 0; i < FullWidth; i++)
             {
                 for (int j = 0; j < FullHeight; j++)
@@ -52,6 +56,7 @@ namespace MonoGameJamProject
         }
         public void Update(GameTime gameTime)
         {
+            bossTimer.Update(gameTime);
             CacheGridSize();
             for (int i = Paths.Count - 1; i >= 0; i--)
             {
@@ -69,9 +74,14 @@ namespace MonoGameJamProject
                     OldPaths.RemoveAt(i);
                 }
             }
-            if (Paths.Count < Utility.GameDifficulty / 8 + 1)
+            if (Paths.Count < Utility.GameDifficulty / 4 + 1)
             {
                 GeneratePath();
+            }
+            if (bossTimer.IsExpired)
+            {
+                Paths[0].AddMinion(new Minion(0, 0, Utility.MinionType.boss));
+                bossTimer.Reset();
             }
         }
         public void CacheGridSize()
@@ -113,6 +123,7 @@ namespace MonoGameJamProject
         {
             Paths.Clear();
             OldPaths.Clear();
+            bossTimer.Reset();
         }
         public void GeneratePath()
         {

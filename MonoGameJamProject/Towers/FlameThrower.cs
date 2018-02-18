@@ -9,34 +9,28 @@ namespace MonoGameJamProject.Towers
     class FlameThrower : Tower
     {
         private const int amountOfFlamesPerCycle = 200;
-        private CoolDownTimer damageClock;
         private List<Projectile> flameList;
         List<Point> damageTiles;
-        public FlameThrower(int iX, int iY) : base(iX, iY, 1F)
+        public float BurnTime => 5;
+        public FlameThrower(int iX, int iY, int iHotkeyNumber) : base(iX, iY, 1F, iHotkeyNumber)
         {
             towerColor = Color.OrangeRed;
             damageTiles = new List<Point>();
             flameList = new List<Projectile>();
-            damageClock = new CoolDownTimer(0.5F);
-            damageClock.Reset();
             type = Utility.TowerType.FlameThrower;
-            damage = 2;
+            Damage = 2;
             minRange = 0;
             maxRange = 2;
-            towerInfo = "Flame Turret\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nLights minions on fire\nuse multiple to stack DMG";
+            towerInfo = "Flame Turret\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + Damage + "\nLights minions on fire\nuse multiple to stack DMG";
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            damageClock.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
                 GenerateDamageTiles();
                 CheckDamageTiles();
-                DoDamageToMinions();
                 GenerateFireEffect();
-                if (damageClock.IsExpired)
-                    damageClock.Reset();
                 attackTimer.Reset();
             }
 
@@ -82,20 +76,6 @@ namespace MonoGameJamProject.Towers
                 randomDirection = -randomDirection;
             return randomDirection;
         }
-
-        private void DoDamageToMinions()
-        {
-            foreach (Path p in Utility.board.Paths)
-            {
-                foreach(Minion m in p.MinionList)
-                {
-                    if(m.IsOnFire && damageClock.IsExpired && m.StackFlamethrowers.Contains(this))
-                    {
-                        m.TakeDamage(damage);
-                    }
-                }
-            }
-        }
         public void GenerateDamageTiles()
         {
             damageTiles.Clear();
@@ -117,9 +97,9 @@ namespace MonoGameJamProject.Towers
                         continue;
                     foreach (Point point in damageTiles)
                     {
-                        if (m.IsInTile(point.X, point.Y) && !m.StackFlamethrowers.Contains(this))
+                        if (m.IsInTile(point.X, point.Y))
                         {
-                            m.StackFlamethrowers.Add(this);
+                            m.AddFireStack(this);
                         }
                     }
                 }

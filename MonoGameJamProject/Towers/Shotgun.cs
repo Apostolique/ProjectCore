@@ -14,15 +14,15 @@ namespace MonoGameJamProject.Towers
         private const int amountOfPellets = 6;
         // The higher, the tighter the spread
         private const int pelletDistribution = 3;
-        public Shotgun(int iX, int iY) : base(iX, iY, 1.5F)
+        public Shotgun(int iX, int iY, int iHotKeyNumber) : base(iX, iY, 1.5F, iHotKeyNumber)
         {
             towerColor = Color.DeepPink;
             type = Utility.TowerType.Shotgun;
             bulletList = new List<Projectile>();
             minRange = 1;
             maxRange = 3;
-            damage = 4;
-            towerInfo = "Shotgun Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + damage + "\nShoots bullets in a spread\ngood for crowds of minions";
+            Damage = 4;
+            towerInfo = "Shotgun Tower\nMin. Range: " + minRange + "\nMax. Range: " + maxRange + "\nDamage: " + Damage + "\nShoots bullets in a spread\ngood for crowds of minions";
         }
 
         public override void Update(GameTime gameTime)
@@ -30,7 +30,7 @@ namespace MonoGameJamProject.Towers
             base.Update(gameTime);
             if (!disabled && attackTimer.IsExpired)
             {
-                TargetRandomMinion();
+                TargetMinion();
                 if (targetedMinion != null)
                     ShootAtTargetedMinion();
                 attackTimer.Reset();
@@ -62,7 +62,7 @@ namespace MonoGameJamProject.Towers
                     {
                         if (m.CollidesWithBullet(b.Position, b.Radius))
                         {
-                            m.TakeDamage(damage);
+                            m.TakeDamage(Damage);
                             b.MarkedForDeletion = true;
                         }
                     }
@@ -99,7 +99,7 @@ namespace MonoGameJamProject.Towers
             return offsettedDirection;
         }
 
-        private void TargetRandomMinion()
+        private void TargetMinion()
         {
             targetedMinion = null;
             foreach (Path p in Utility.board.Paths)
@@ -115,7 +115,7 @@ namespace MonoGameJamProject.Towers
                         if (targetedMinion == null)
                         {
                             targetedMinion = m;
-                        } else if (Utility.random.Next(0, 101) > targetChance)
+                        } else if (targetedMinion.DistanceTraveled < m.DistanceTraveled)
                         {
                             targetedMinion = m;
                         }
