@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
+using MonoGame.Extended.BitmapFonts;
 
 namespace MonoGameJamProject.Towers
 {
@@ -45,6 +46,7 @@ namespace MonoGameJamProject.Towers
                 s.FillRectangle(new RectangleF(Utility.GameToScreen(_x), Utility.GameToScreen(_y), Utility.board.GridSize, Utility.board.GridSize), Color.Gray);
             else
                 s.FillRectangle(new RectangleF(Utility.GameToScreen(_x), Utility.GameToScreen(_y), Utility.board.GridSize, Utility.board.GridSize), towerColor);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), HotkeyNumber.ToString(), new Vector2(Utility.GameToScreen(_x) + Utility.board.GridSize / 2.5F, Utility.GameToScreen(_y) + Utility.board.GridSize / 4), Color.Black, 0f, Vector2.Zero, 0.010f * Utility.board.GridSize, SpriteEffects.None, 0);
         }
         public void DrawSelectionHightlight(SpriteBatch s)
         {

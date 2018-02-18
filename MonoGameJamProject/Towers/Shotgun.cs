@@ -72,9 +72,13 @@ namespace MonoGameJamProject.Towers
 
         public override void Draw(SpriteBatch s)
         {
+            base.Draw(s);
+        }
+
+        public void DrawProjectiles(SpriteBatch s)
+        {
             foreach (Projectile b in bulletList)
                 b.Draw(s);
-            base.Draw(s);
         }
 
         private void ShootAtTargetedMinion()

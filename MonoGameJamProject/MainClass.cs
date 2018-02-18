@@ -105,7 +105,7 @@ namespace MonoGameJamProject
                 GraphicsDevice.Clear(Color.Black);
                 GraphicsDevice.SetRenderTarget(null);
                 spriteBatch.Begin();
-                string gameOverString = "GAME OVER!\nYour number of kills: " + Utility.totalNumberOfKills + "\nYour reached difficulty: " + Utility.GameDifficulty + "\nPress R to restart!";
+                string gameOverString = "GAME OVER!\nYou killed: " + Utility.totalNumberOfKills + " Minions!" + "\nYou reached difficulty: " + Utility.GameDifficulty + "\nAnd you survived for: " + Utility.tdGameTimer.Minutes.ToString("D2") + ":" + Utility.tdGameTimer.Seconds.ToString("D2") + "\nPress R to restart!";
                 spriteBatch.DrawString(Utility.assetManager.GetFont("Jura"), gameOverString, new Vector2(200, 100), Color.Yellow, 0f, Vector2.Zero, 0.7F, SpriteEffects.None, 0);
                 spriteBatch.End();
             }
@@ -182,13 +182,20 @@ namespace MonoGameJamProject
                     hud.DrawPlacementIndicator(spriteBatch, previewTower, IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y));
                 selectedTower.DrawSelectionHightlight(spriteBatch);
             }
-            foreach (Tower t in Utility.TowerList)
-                t.Draw(spriteBatch);
             foreach (Path p in Utility.board.Paths)
             {
                 p.DrawMinions(spriteBatch);
             }
-
+            // Draw projectiles and fire effect
+            foreach(Tower t in Utility.TowerList)
+            {
+                if (t is Shotgun)
+                    (t as Shotgun).DrawProjectiles(spriteBatch);
+                if (t is FlameThrower)
+                    (t as FlameThrower).DrawFireEffect(spriteBatch);
+            }
+            foreach (Tower t in Utility.TowerList)
+                t.Draw(spriteBatch);
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
 

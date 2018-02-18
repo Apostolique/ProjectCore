@@ -50,6 +50,10 @@ namespace MonoGameJamProject.Towers
         public override void Draw(SpriteBatch s)
         {
             base.Draw(s);
+        }
+
+        public void DrawFireEffect(SpriteBatch s)
+        {
             foreach (Projectile f in flameList)
                 f.Draw(s);
         }
