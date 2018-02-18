@@ -252,6 +252,8 @@ namespace MonoGameJamProject
                 {
                     if (t.HotkeyNumber == goToTowerNumber && IsValidTileForTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y))
                     {
+                        selectedTower = null;
+                        previewTower = null;
                         AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, type, t.HotkeyNumber);
                         Utility.TowerList.Remove(t);
                         break;
