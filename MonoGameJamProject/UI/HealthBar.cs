@@ -11,7 +11,6 @@ namespace MonoGameJamProject.UI
         Color fillColor, outlineColor;
         private float healthBarWidth, healthBarHeight;
         private const float outlineThickness = 1f;
-        int maxHP;
         Minion owner;
         public HealthBar(Minion iOwner)
         {
@@ -19,17 +18,14 @@ namespace MonoGameJamProject.UI
             switch (owner.Type)
             {
                 case Utility.MinionType.fast:
-                    maxHP = Utility.fastMinionHP;
                     healthBarHeight = 0.10f;
                     healthBarWidth = 0.25f;
                     break;
                 case Utility.MinionType.slow:
-                    maxHP = Utility.slowMinionHP;
                     healthBarHeight = 0.12f;
                     healthBarWidth = 0.35f;
                     break;
                 case Utility.MinionType.boss:
-                    maxHP = Utility.bossMinionHp;
                     healthBarHeight= 0.20f;
                     healthBarWidth = 0.50f;
                     break;
@@ -40,7 +36,7 @@ namespace MonoGameJamProject.UI
         public void Draw(SpriteBatch s)
         {
             Vector2 position = new Vector2(Utility.GameToScreen(owner.Position.X - healthBarWidth / 2), Utility.GameToScreen(owner.Position.Y - owner.Radius - healthBarHeight));
-            RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / maxHP) * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
+            RectangleF healthRectangle = new RectangleF(position.X, position.Y, healthBarWidth * (owner.HP / owner.maxHP) * Utility.board.GridSize, healthBarHeight * Utility.board.GridSize);
             s.FillRectangle(healthRectangle, fillColor);
             DrawOutline(s, position);
             s.DrawString(Utility.assetManager.GetFont("Jura"), owner.FireStacks.ToString(), new Vector2(healthRectangle.X + healthBarWidth * Utility.board.GridSize, healthRectangle.Y - healthRectangle.Height), Color.Orange, 0f, Vector2.Zero, 0.005f * Utility.board.GridSize, SpriteEffects.None, 0);

@@ -46,7 +46,6 @@ namespace MonoGameJamProject
         List<Waypoint> waypoints;
         float speed;
         float radius;
-
         float inBetween;
         float _distanceTraveled;
         HealthBar healthBar;
@@ -54,8 +53,8 @@ namespace MonoGameJamProject
         CoolDownTimer fireClock;
         public bool dead;
         float hp;
+        public float maxHP;
         Utility.MinionType type;
-
         public Minion(float iX, float iY, Utility.MinionType iType)
         {
             Position = new Vector2(iX, iY);
@@ -70,16 +69,19 @@ namespace MonoGameJamProject
             if (type == Utility.MinionType.fast)
             {
                 hp = Utility.fastMinionHP;
+                maxHP = Utility.fastMinionHP;
                 speed = 0.002f;
                 radius = 0.2f;
             } else if (type == Utility.MinionType.slow)
             {
                 hp = Utility.slowMinionHP;
+                maxHP = Utility.slowMinionHP;
                 speed = 0.0005f;
                 radius = 0.4f;
             } else if (type == Utility.MinionType.boss)
             {
                 hp = Utility.bossMinionHp;
+                maxHP = Utility.bossMinionHp;
                 speed = 0.0001f;
                 radius = 0.6f;
             }

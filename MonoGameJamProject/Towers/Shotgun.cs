@@ -32,8 +32,10 @@ namespace MonoGameJamProject.Towers
             {
                 TargetMinion();
                 if (targetedMinion != null)
+                {
+                    attackTimer.Reset();
                     ShootAtTargetedMinion();
-                attackTimer.Reset();
+                }
             }
 
             for(int x = bulletList.Count - 1; x >=0; x--)

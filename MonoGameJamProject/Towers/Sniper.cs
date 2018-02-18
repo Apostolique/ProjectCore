@@ -25,12 +25,14 @@ namespace MonoGameJamProject.Towers
                 attackTimer.Update(gameTime);
                 TargetMinion();
                 if (targetedMinion != null)
+                {
                     if (attackTimer.IsExpired)
                     {
                         targetedMinion.TakeDamage(Damage);
                         Utility.assetManager.PlaySFX("sniper_shot", 0.75f);
                         attackTimer.Reset();
                     }
+                }
             }
             base.Update(gameTime);
         }
@@ -51,9 +53,12 @@ namespace MonoGameJamProject.Towers
                         continue;
                     else if (targetedMinion == null)
                         targetedMinion = m;
-                    else if (m.HP > targetedMinion.HP)
+                    else if (m.maxHP > targetedMinion.maxHP)
                     {
-                        targetedMinion = m;
+                        if (m.maxHP == targetedMinion.maxHP && m.DistanceTraveled > targetedMinion.DistanceTraveled)
+                            targetedMinion = m;
+                        else if (m.maxHP != targetedMinion.maxHP)
+                            targetedMinion = m;
                     }
                 }
             }
