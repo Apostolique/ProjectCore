@@ -43,7 +43,7 @@ namespace MonoGameJamProject.UI
                 else
                     placetowerscolor = Color.White;
             }
-            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + Utility.MaxTowers, new Vector2(position.X, position.Y + 60), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
+            s.DrawString(Utility.assetManager.GetFont("Jura"), "Placeable towers: " + (Utility.MaxTowers - Utility.TowerList.Count), new Vector2(position.X, position.Y + 60), placetowerscolor, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             //Draw lives
             s.DrawString(Utility.assetManager.GetFont("Jura"), "Lives: " + Utility.numberOfLives, new Vector2(position.X, position.Y + 90), Color.Green, 0f, Vector2.Zero, 0.5F, SpriteEffects.None, 0);
             // Draw the number of paths

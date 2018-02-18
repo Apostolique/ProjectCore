@@ -87,6 +87,7 @@ namespace MonoGameJamProject
                 if (input.KeyPressed(Keys.R))
                 {
                     Utility.currentGamestate = Utility.GameState.Playing;
+                    Utility.assetManager.PlayMusic("break_space", 0.3F);
                     ResetPlayingState();
                 }
             }
@@ -114,7 +115,6 @@ namespace MonoGameJamProject
         private void ResetPlayingState()
         {
             Utility.tdGameTimer = TimeSpan.Zero;
-            Utility.assetManager.PlayMusic("break_space", 0.3F);
             Utility.numberOfLives = startingLives;
             Utility.totalNumberOfKills = 0;
             Utility.GameDifficulty = 0;
@@ -122,8 +122,7 @@ namespace MonoGameJamProject
             previewTower = null;
             selectedTower = null;
             Utility.board.ResetPaths();
-            Utility.placeableTowers = startingTowers;
-            towerList.Clear();
+            Utility.TowerList.Clear();
         }
         private void UpdatePlayingState(GameTime gameTime)
         {
@@ -135,7 +134,7 @@ namespace MonoGameJamProject
                 difficultyCooldown.Reset();
                 Utility.GameDifficulty++;
             }
-
+            
             Utility.board.Update(gameTime);
             HoveringOverTowerChecker();
             TowerMovementChecker();
@@ -143,6 +142,11 @@ namespace MonoGameJamProject
             TowerSwitchInput();
             sidebarUI.Update(gameTime);
             input.Update();
+            if(input.MouseRightButtonPressed && IsWithinDimensions())
+            {
+                if (Utility.MaxTowers > Utility.TowerList.Count)
+                    AddTower(input.MouseToGameGrid().X, input.MouseToGameGrid().Y, Utility.TowerType.FlameThrower, Utility.TowerList.Count + 1);
+            }
             for (int i = Utility.TowerList.Count - 1; i >= 0; i--)
             {
                 Tile currenttile = Utility.board.GetTile(new Point(Utility.TowerList[i].X, Utility.TowerList[i].Y));
