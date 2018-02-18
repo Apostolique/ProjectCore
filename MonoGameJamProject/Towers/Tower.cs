@@ -52,7 +52,7 @@ namespace MonoGameJamProject.Towers
 
         private void DrawCoolDownTimer(SpriteBatch s)
         {
-            Vector2 position = new Vector2(Utility.GameToScreen(X), Utility.GameToScreen(Y) - Utility.board.GridSize / 4);
+            Vector2 position = new Vector2(Utility.GameToScreen(X), Utility.GameToScreen(Y) + Utility.board.GridSize / 8);
             RectangleF coolDownRectangle = new RectangleF(position.X, position.Y, 1 * ((attackTimer.MaxTime - attackTimer.SecondsElapsed) / attackTimer.MaxTime) * Utility.board.GridSize, Utility.board.GridSize / 8);
             s.FillRectangle(coolDownRectangle, Color.Yellow);
             RectangleF outlineRectangle = new RectangleF(position.X, position.Y, Utility.board.GridSize , Utility.board.GridSize / 8);
