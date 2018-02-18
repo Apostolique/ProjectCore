@@ -156,6 +156,7 @@ namespace MonoGameJamProject
                     Utility.TowerList[i].IsDisabled = false;
                 Utility.TowerList[i].Update(gameTime);
             }
+            /*
             if (input.MouseLeftButtonPressed)
             {
                 if (Utility.board.Paths.Count > 0)
@@ -164,6 +165,7 @@ namespace MonoGameJamProject
                     Utility.board.Paths[0].AddMinion(m);
                 }
             }
+            */
         }
         private void DrawPlayingState(SpriteBatch spriteBatch)
         {

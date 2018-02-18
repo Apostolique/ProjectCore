@@ -53,9 +53,12 @@ namespace MonoGameJamProject.Towers
                         continue;
                     else if (targetedMinion == null)
                         targetedMinion = m;
-                    else if (m.HP > targetedMinion.HP)
+                    else if (m.maxHP > targetedMinion.maxHP)
                     {
-                        targetedMinion = m;
+                        if (m.maxHP == targetedMinion.maxHP && m.DistanceTraveled > targetedMinion.DistanceTraveled)
+                            targetedMinion = m;
+                        else if (m.maxHP != targetedMinion.maxHP)
+                            targetedMinion = m;
                     }
                 }
             }
