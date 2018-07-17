@@ -103,3 +103,9 @@
 /processorParam:Quality=Best
 /build:AbstractAmbiences-Mix_ST_37.mp3
 
+#begin Death.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Death.mp3
+

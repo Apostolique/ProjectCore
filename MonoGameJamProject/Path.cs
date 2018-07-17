@@ -148,7 +148,7 @@ namespace MonoGameJamProject
                 {
                     MinionList.Remove(MinionList[i]);
                     Utility.totalNumberOfKills++;
-                    Utility.assetManager.PlaySFX("axe_ice_005");
+                    Utility.assetManager.PlaySFX("Death");
                 }
                 else if (!MinionList[i].IsMoving)
                 {
