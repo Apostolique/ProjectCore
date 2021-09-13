@@ -5,24 +5,30 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Run DesktopGL platform",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "buildDesktopGL",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/ProjectCore/bin/Debug/netcoreapp2.0/ProjectCore.dll",
+            "program": "${workspaceFolder}/Platforms/DesktopGL/bin/Debug/netcoreapp3.1/ProjectCore.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/ProjectCore",
+            "cwd": "${workspaceFolder}/Platforms/DesktopGL",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
-            "stopAtEntry": false,
-            "internalConsoleOptions": "openOnSessionStart"
+            "stopAtEntry": false
         },
         {
-            "name": ".NET Core Attach",
+            "name": "Run WindowsDX platform",
             "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
+            "request": "launch",
+            "preLaunchTask": "buildWindowsDX",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Platforms/WindowsDX/bin/Debug/netcoreapp3.1/ProjectCore.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Platforms/WindowsDX",
+            // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
+            "console": "internalConsole",
+            "stopAtEntry": false
         }
     ]
 }

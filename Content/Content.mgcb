@@ -1,0 +1,72 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:HiDef
+/compress:True
+
+#-------------------------------- References --------------------------------#
+
+
+#---------------------------------- Content ---------------------------------#
+
+#begin AbstractAmbiences-Mix_ST_37.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:AbstractAmbiences-Mix_ST_37.mp3
+
+#begin axe_ice_005.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:axe_ice_005.wav
+
+#begin BREAK_HIT_Celery_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BREAK_HIT_Celery_2.wav
+
+#begin break_space.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:break_space.mp3
+
+#begin Death.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Death.mp3
+
+#begin Jura-Bold.ttf
+/copy:Jura-Bold.ttf
+
+#begin Robot_Servo_006.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Robot_Servo_006.mp3
+
+#begin sfx_error.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sfx_error.mp3
+
+#begin shotgun_shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shotgun_shot.wav
+
+#begin sniper_shot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sniper_shot.wav
+
