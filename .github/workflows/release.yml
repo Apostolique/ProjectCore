@@ -1,0 +1,60 @@
+name: Release to itch.io
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+env:
+  ITCH_USER_NAME: apos
+  ITCH_GAME_NAME: projectcore
+  PROJECT_PATH: Platforms/DesktopGL
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Get version from tag
+      run: |
+        TAGVERSION=$(git describe --tags --abbrev=0)
+        echo "TAGVERSION=${TAGVERSION:1}" >> $GITHUB_ENV
+    - name: Build Windows
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r win-x64 -c Release --output build-windows
+    - name: Build Osx
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r osx-x64 -c Release --output build-osx
+    - name: Build Linux
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r linux-x64 -c Release --output build-linux
+    - name: Publish Windows build to itch.io
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+        CHANNEL: windows
+        ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
+        ITCH_USER: ${{ env.ITCH_USER_NAME }}
+        PACKAGE: build-windows
+        VERSION: ${{ env.TAGVERSION }}
+    - name: Publish OSX build to itch.io
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+        CHANNEL: osx
+        ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
+        ITCH_USER: ${{ env.ITCH_USER_NAME }}
+        PACKAGE: build-osx
+        VERSION: ${{ env.TAGVERSION }}
+    - name: Publish Linux build to itch.io
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
+        CHANNEL: linux
+        ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
+        ITCH_USER: ${{ env.ITCH_USER_NAME }}
+        PACKAGE: build-linux
+        VERSION: ${{ env.TAGVERSION }}
