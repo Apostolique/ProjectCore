@@ -1,5 +1,10 @@
 # Entry for the MonoGameJam on itch.io
 ![Alt text](keyboard-layout.png?raw=true "keyboard-layout")
+
+## Builds
+
+* [ProjectCore](https://apos.itch.io/projectcore) on itch.
+
 ## Controls
 The numbers on the keys stand for tower numbers. 1,2,3 are used upon selecting a tower with left mouse button. Hover over a tower to see it's range. Right click to place a new tower.
 
