@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using GameProject.Towers;
+using Apos.Input;
 
 namespace GameProject {
     /// <summary>
@@ -53,5 +54,15 @@ namespace GameProject {
             return (value + Board.GridSize) / Board.GridSize;
         }
         public static readonly Random random = new Random();
+
+        public static Point MouseToGameGrid() {
+            return new Point(ScreenToGame(InputHelper.NewMouse.X), ScreenToGame(InputHelper.NewMouse.Y));
+        }
+        public static Point MouseGridPosition() {
+            return new Point(InputHelper.NewMouse.X / Board.GridSize, InputHelper.NewMouse.Y / Board.GridSize);
+        }
+        public static Point MouseGridBoardPosition() {
+            return new Point(InputHelper.NewMouse.X / Board.GridSize * Board.GridSize, InputHelper.NewMouse.Y / Board.GridSize * Board.GridSize);
+        }
     }
 }

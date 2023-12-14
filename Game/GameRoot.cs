@@ -1,4 +1,5 @@
 ﻿using System;
+using Apos.Input;
 using FontStashSharp;
 using GameProject.Towers;
 using GameProject.UI;
@@ -23,8 +24,7 @@ namespace GameProject {
             Utility.Window = Window;
             Utility.Board = new Board(15, 10);
             Utility.TowerList = [];
-            _input = new Input();
-            _hud = new HUD(_input);
+            _hud = new HUD();
             _sidebarUI = new Sidebar(new Vector2(190, 10));
             _difficultyCooldown = new CoolDownTimer(30f);
             _latestHoveredOverTower = null;
@@ -32,6 +32,7 @@ namespace GameProject {
             base.Initialize();
         }
         protected override void LoadContent() {
+            InputHelper.Setup(this);
             _s = new SpriteBatch(GraphicsDevice);
             _renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.Board.GridSize * Utility.Board.Width, Utility.Board.GridSize * Utility.Board.Height);
             Utility.AssetManager = new AssetManager(Content);
@@ -52,6 +53,7 @@ namespace GameProject {
             _renderTarget01 = new RenderTarget2D(GraphicsDevice, w, h);
         }
         protected override void Update(GameTime gameTime) {
+            InputHelper.UpdateSetup();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if(Utility.CurrentGameState == Utility.GameState.Playing) {
@@ -64,8 +66,7 @@ namespace GameProject {
                 }
             }
             else if(Utility.CurrentGameState == Utility.GameState.GameOver) {
-                _input.Update();
-                if (_input.KeyPressed(Keys.R)) {
+                if (KeyboardCondition.Pressed(Keys.R)) {
                     Utility.CurrentGameState = Utility.GameState.Playing;
                     MediaPlayer.Stop();
                     Utility.AssetManager.PlayMusic("break_space", 0.3F);
@@ -73,6 +74,7 @@ namespace GameProject {
                 }
             }
 
+            InputHelper.UpdateCleanup();
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime) {
@@ -116,10 +118,9 @@ namespace GameProject {
             TowerHotkeyHandler();
             TowerSwitchInput();
             _sidebarUI.Update(gameTime);
-            _input.Update();
-            if(_input.MouseRightButtonPressed && IsWithinDimensions()) {
+            if(MouseCondition.Pressed(MouseButton.RightButton) && IsWithinDimensions()) {
                 if (Utility.MaxTowers > Utility.TowerList.Count)
-                    GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, Utility.TowerType.FlameThrower, Utility.TowerList.Count + 1);
+                    AddTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y, Utility.TowerType.FlameThrower, Utility.TowerList.Count + 1);
             }
             for (int i = Utility.TowerList.Count - 1; i >= 0; i--) {
                 Tile currenttile = Utility.Board.GetTile(new Point(Utility.TowerList[i].X, Utility.TowerList[i].Y));
@@ -152,7 +153,7 @@ namespace GameProject {
             // Highlight needs to be drawn before the actual towers
             if (_previewTower != null) {
                 if (IsWithinDimensions())
-                    _hud.DrawPlacementIndicator(spriteBatch, _previewTower, GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y));
+                    HUD.DrawPlacementIndicator(spriteBatch, _previewTower, IsValidTileForTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y));
                 _selectedTower!.DrawSelectionHighlight(spriteBatch);
             }
             foreach (Tower t in Utility.TowerList) t.Draw(spriteBatch);
@@ -179,9 +180,9 @@ namespace GameProject {
         }
 
         public bool IsWithinDimensions() {
-            if (_input.MouseToGameGrid().X >= Utility.Board.FullWidth - 1 || _input.MouseToGameGrid().X <= 0)
+            if (Utility.MouseToGameGrid().X >= Utility.Board.FullWidth - 1 || Utility.MouseToGameGrid().X <= 0)
                 return false;
-            else if (_input.MouseToGameGrid().Y >= Utility.Board.FullHeight - 1 || _input.MouseToGameGrid().Y <= 0)
+            else if (Utility.MouseToGameGrid().Y >= Utility.Board.FullHeight - 1 || Utility.MouseToGameGrid().Y <= 0)
                 return false;
             else
                 return true;
@@ -190,33 +191,33 @@ namespace GameProject {
             int goToTowerNumber = 0;
             Utility.TowerType type = Utility.TowerType.FlameThrower;
             // Check what number
-            if (_input.KeyPressed(Keys.Q) || _input.KeyPressed(Keys.A) || _input.KeyPressed(Keys.Z))
+            if (KeyboardCondition.Pressed(Keys.Q) || KeyboardCondition.Pressed(Keys.A) || KeyboardCondition.Pressed(Keys.Z))
                 goToTowerNumber = 1;
-            else if (_input.KeyPressed(Keys.W) || _input.KeyPressed(Keys.S) || _input.KeyPressed(Keys.X))
+            else if (KeyboardCondition.Pressed(Keys.W) || KeyboardCondition.Pressed(Keys.S) || KeyboardCondition.Pressed(Keys.X))
                 goToTowerNumber = 2;
-            else if (_input.KeyPressed(Keys.E) || _input.KeyPressed(Keys.D) || _input.KeyPressed(Keys.C))
+            else if (KeyboardCondition.Pressed(Keys.E) || KeyboardCondition.Pressed(Keys.D) || KeyboardCondition.Pressed(Keys.C))
                 goToTowerNumber = 3;
-            else if (_input.KeyPressed(Keys.R) || _input.KeyPressed(Keys.F) || _input.KeyPressed(Keys.V))
+            else if (KeyboardCondition.Pressed(Keys.R) || KeyboardCondition.Pressed(Keys.F) || KeyboardCondition.Pressed(Keys.V))
                 goToTowerNumber = 4;
-            else if (_input.KeyPressed(Keys.T) || _input.KeyPressed(Keys.G) || _input.KeyPressed(Keys.B))
+            else if (KeyboardCondition.Pressed(Keys.T) || KeyboardCondition.Pressed(Keys.G) || KeyboardCondition.Pressed(Keys.B))
                 goToTowerNumber = 5;
-            else if (_input.KeyPressed(Keys.Y) || _input.KeyPressed(Keys.H) || _input.KeyPressed(Keys.N))
+            else if (KeyboardCondition.Pressed(Keys.Y) || KeyboardCondition.Pressed(Keys.H) || KeyboardCondition.Pressed(Keys.N))
                 goToTowerNumber = 6;
 
             // Check type
-            if (_input.KeyPressed(Keys.Q) || _input.KeyPressed(Keys.W) || _input.KeyPressed(Keys.E) || _input.KeyPressed(Keys.R) || _input.KeyPressed(Keys.T) || _input.KeyPressed(Keys.Y))
+            if (KeyboardCondition.Pressed(Keys.Q) || KeyboardCondition.Pressed(Keys.W) || KeyboardCondition.Pressed(Keys.E) || KeyboardCondition.Pressed(Keys.R) || KeyboardCondition.Pressed(Keys.T) || KeyboardCondition.Pressed(Keys.Y))
                 type = Utility.TowerType.FlameThrower;
-            else if (_input.KeyPressed(Keys.A) || _input.KeyPressed(Keys.S) || _input.KeyPressed(Keys.D) || _input.KeyPressed(Keys.F) || _input.KeyPressed(Keys.G) || _input.KeyPressed(Keys.H))
+            else if (KeyboardCondition.Pressed(Keys.A) || KeyboardCondition.Pressed(Keys.S) || KeyboardCondition.Pressed(Keys.D) || KeyboardCondition.Pressed(Keys.F) || KeyboardCondition.Pressed(Keys.G) || KeyboardCondition.Pressed(Keys.H))
                 type = Utility.TowerType.Shotgun;
-            else if (_input.KeyPressed(Keys.Z) || _input.KeyPressed(Keys.X) || _input.KeyPressed(Keys.C) || _input.KeyPressed(Keys.V) || _input.KeyPressed(Keys.B) || _input.KeyPressed(Keys.N))
+            else if (KeyboardCondition.Pressed(Keys.Z) || KeyboardCondition.Pressed(Keys.X) || KeyboardCondition.Pressed(Keys.C) || KeyboardCondition.Pressed(Keys.V) || KeyboardCondition.Pressed(Keys.B) || KeyboardCondition.Pressed(Keys.N))
                 type = Utility.TowerType.Sniper;
 
             if (Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0 && IsWithinDimensions()) {
                 foreach (Tower t in Utility.TowerList) {
-                    if (t.HotkeyNumber == goToTowerNumber && GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y)) {
+                    if (t.HotkeyNumber == goToTowerNumber && IsValidTileForTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y)) {
                         _selectedTower = null;
                         _previewTower = null;
-                        GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, type, t.HotkeyNumber);
+                        AddTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y, type, t.HotkeyNumber);
                         Utility.TowerList.Remove(t);
                         break;
                     }
@@ -226,13 +227,13 @@ namespace GameProject {
 
         private void TowerSwitchInput() {
             if (_previewTower != null) {
-                if (_input.KeyPressed(Keys.D1)) {
+                if (KeyboardCondition.Pressed(Keys.D1)) {
                     _previewTower = new FlameThrower(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
-                else if (_input.KeyPressed(Keys.D2)) {
+                else if (KeyboardCondition.Pressed(Keys.D2)) {
                     _previewTower = new Shotgun(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
-                else if (_input.KeyPressed(Keys.D3)) {
+                else if (KeyboardCondition.Pressed(Keys.D3)) {
                     _previewTower = new Sniper(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
             }
@@ -241,10 +242,10 @@ namespace GameProject {
             if (!IsWithinDimensions())
                 return;
 
-            if (_input.MouseLeftButtonPressed) {
+            if (MouseCondition.Pressed(MouseButton.LeftButton)) {
                 if (_previewTower == null) {
                     foreach (Tower t in Utility.TowerList) {
-                        if (t.X == _input.MouseToGameGrid().X && t.Y == _input.MouseToGameGrid().Y) {
+                        if (t.X == Utility.MouseToGameGrid().X && t.Y == Utility.MouseToGameGrid().Y) {
                             _selectedTower = t;
                             _previewTower = t;
                         }
@@ -252,10 +253,10 @@ namespace GameProject {
                 }
                 //TODO: check if there is no path on this position, and if there isn't place the tower
                 else {
-                    if (!GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y))
+                    if (!IsValidTileForTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y))
                         return;
                     Utility.TowerList.Remove(_selectedTower!);
-                    GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, _previewTower.Type, _previewTower.HotkeyNumber);
+                    AddTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y, _previewTower.Type, _previewTower.HotkeyNumber);
                     _previewTower = null;
                 }
             }
@@ -281,7 +282,7 @@ namespace GameProject {
             if (!IsWithinDimensions())
                 return;
             foreach (Tower t in Utility.TowerList) {
-                if (t.X == _input.MouseToGameGrid().X && t.Y == _input.MouseToGameGrid().Y && !t.IsDisabled)
+                if (t.X == Utility.MouseToGameGrid().X && t.Y == Utility.MouseToGameGrid().Y && !t.IsDisabled)
                     _latestHoveredOverTower = t;
             }
         }
@@ -300,7 +301,6 @@ namespace GameProject {
         SpriteBatch _s = null!;
         RenderTarget2D _renderTarget01 = null!;
         Tower? _latestHoveredOverTower;
-        Input _input = null!;
         HUD _hud = null!;
         Sidebar _sidebarUI = null!;
         // list for all towers

@@ -4,13 +4,13 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
 namespace GameProject.UI {
-    class HUD(Input input) {
-        public void DrawPlacementIndicator(SpriteBatch s, Tower tower, bool isValidPosition) {
+    class HUD() {
+        public static void DrawPlacementIndicator(SpriteBatch s, Tower tower, bool isValidPosition) {
             if (isValidPosition) {
-                HUD.DrawRangeIndicators(s, new Point(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y), tower, 0.3F);
-                s.FillRectangle(new RectangleF(_input.MouseGridPosition().X * Utility.Board.GridSize, _input.MouseGridPosition().Y * Utility.Board.GridSize, Utility.Board.GridSize, Utility.Board.GridSize), Color.White * 0.6F);
+                DrawRangeIndicators(s, Utility.MouseToGameGrid(), tower, 0.3F);
+                s.FillRectangle(new RectangleF(Utility.MouseGridBoardPosition(), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize)), Color.White * 0.6f);
             }
-            else s.FillRectangle(new RectangleF(_input.MouseGridPosition().X * Utility.Board.GridSize, _input.MouseGridPosition().Y * Utility.Board.GridSize, Utility.Board.GridSize, Utility.Board.GridSize), Color.Red * 0.7F);
+            else s.FillRectangle(new RectangleF(Utility.MouseGridBoardPosition(), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize)), Color.Red * 0.7f);
         }
         public static void DrawRangeIndicators(SpriteBatch s, Point origin, Tower tower, float transparency = 0.1f) {
             float horizontal0 = origin.X - tower.MaximumRange;
@@ -36,7 +36,5 @@ namespace GameProject.UI {
             s.FillRectangle(maxRangeLeft, Color.Green * transparency);
             s.FillRectangle(maxRangeRight, Color.Green * transparency);
         }
-
-        readonly Input _input = input;
     }
 }
