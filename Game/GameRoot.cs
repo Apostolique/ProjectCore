@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FontStashSharp;
 using GameProject.Towers;
 using GameProject.UI;
@@ -18,12 +17,12 @@ namespace GameProject {
         }
 
         protected override void Initialize() {
-            Utility.CurrentGamestate = Utility.GameState.Playing;
+            Utility.CurrentGameState = Utility.GameState.Playing;
             // TODO: Add your initialization logic here
             Window.ClientSizeChanged += Window_ClientSizeChanged;
             Utility.Window = Window;
             Utility.Board = new Board(15, 10);
-            Utility.TowerList = new List<Tower>();
+            Utility.TowerList = [];
             _input = new Input();
             _hud = new HUD(_input);
             _sidebarUI = new Sidebar(new Vector2(190, 10));
@@ -39,7 +38,7 @@ namespace GameProject {
             Utility.AssetManager.PlayMusic("break_space", 0.3F);
             // TODO: use this.Content to load your game content here
         }
-        void Window_ClientSizeChanged(object sender, EventArgs e) {
+        void Window_ClientSizeChanged(object? sender, EventArgs e) {
             Utility.Board.CacheGridSize();
             int w = Utility.Board.GridSize * Utility.Board.Width;
             int h = Utility.Board.GridSize * Utility.Board.Height;
@@ -55,19 +54,19 @@ namespace GameProject {
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if(Utility.CurrentGamestate == Utility.GameState.Playing) {
+            if(Utility.CurrentGameState == Utility.GameState.Playing) {
                 UpdatePlayingState(gameTime);
                 if (Utility.NumberOfLives < 0)
                 {
                     MediaPlayer.Stop();
                     Utility.AssetManager.PlayMusic("AbstractAmbiences-Mix_ST_37", 0.3F);
-                    Utility.CurrentGamestate = Utility.GameState.GameOver;
+                    Utility.CurrentGameState = Utility.GameState.GameOver;
                 }
             }
-            else if(Utility.CurrentGamestate == Utility.GameState.GameOver) {
+            else if(Utility.CurrentGameState == Utility.GameState.GameOver) {
                 _input.Update();
                 if (_input.KeyPressed(Keys.R)) {
-                    Utility.CurrentGamestate = Utility.GameState.Playing;
+                    Utility.CurrentGameState = Utility.GameState.Playing;
                     MediaPlayer.Stop();
                     Utility.AssetManager.PlayMusic("break_space", 0.3F);
                     ResetPlayingState();
@@ -77,10 +76,10 @@ namespace GameProject {
             base.Update(gameTime);
         }
         protected override void Draw(GameTime gameTime) {
-            if (Utility.CurrentGamestate == Utility.GameState.Playing) {
+            if (Utility.CurrentGameState == Utility.GameState.Playing) {
                 DrawPlayingState(_s);
             }
-            else if (Utility.CurrentGamestate == Utility.GameState.GameOver) {
+            else if (Utility.CurrentGameState == Utility.GameState.GameOver) {
                 GraphicsDevice.Clear(Color.Black);
                 GraphicsDevice.SetRenderTarget(null);
                 _s.Begin();
@@ -120,7 +119,7 @@ namespace GameProject {
             _input.Update();
             if(_input.MouseRightButtonPressed && IsWithinDimensions()) {
                 if (Utility.MaxTowers > Utility.TowerList.Count)
-                    AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, Utility.TowerType.FlameThrower, Utility.TowerList.Count + 1);
+                    GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, Utility.TowerType.FlameThrower, Utility.TowerList.Count + 1);
             }
             for (int i = Utility.TowerList.Count - 1; i >= 0; i--) {
                 Tile currenttile = Utility.Board.GetTile(new Point(Utility.TowerList[i].X, Utility.TowerList[i].Y));
@@ -148,13 +147,13 @@ namespace GameProject {
             spriteBatch.Begin();
             Utility.Board.Draw(spriteBatch);
             if (_latestHoveredOverTower != null)
-                _hud.DrawRangeIndicators(spriteBatch, new Point(_latestHoveredOverTower.X, _latestHoveredOverTower.Y), _latestHoveredOverTower);
+                HUD.DrawRangeIndicators(spriteBatch, new Point(_latestHoveredOverTower.X, _latestHoveredOverTower.Y), _latestHoveredOverTower);
 
             // Highlight needs to be drawn before the actual towers
             if (_previewTower != null) {
                 if (IsWithinDimensions())
-                    _hud.DrawPlacementIndicator(spriteBatch, _previewTower, IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y));
-                _selectedTower.DrawSelectionHightlight(spriteBatch);
+                    _hud.DrawPlacementIndicator(spriteBatch, _previewTower, GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y));
+                _selectedTower!.DrawSelectionHighlight(spriteBatch);
             }
             foreach (Tower t in Utility.TowerList) t.Draw(spriteBatch);
             foreach (Path p in Utility.Board.Paths) {
@@ -162,8 +161,8 @@ namespace GameProject {
             }
             // Draw projectiles and fire effect
             foreach(Tower t in Utility.TowerList) {
-                if (t is Shotgun) (t as Shotgun).DrawProjectiles(spriteBatch);
-                if (t is FlameThrower) (t as FlameThrower).DrawFireEffect(spriteBatch);
+                if (t is Shotgun) (t as Shotgun)!.DrawProjectiles(spriteBatch);
+                else if (t is FlameThrower) (t as FlameThrower)!.DrawFireEffect(spriteBatch);
             }
             spriteBatch.End();
             GraphicsDevice.SetRenderTarget(null);
@@ -214,10 +213,10 @@ namespace GameProject {
 
             if (Utility.TowerList.Count >= goToTowerNumber && goToTowerNumber != 0 && IsWithinDimensions()) {
                 foreach (Tower t in Utility.TowerList) {
-                    if (t.HotkeyNumber == goToTowerNumber && IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y)) {
+                    if (t.HotkeyNumber == goToTowerNumber && GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y)) {
                         _selectedTower = null;
                         _previewTower = null;
-                        AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, type, t.HotkeyNumber);
+                        GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, type, t.HotkeyNumber);
                         Utility.TowerList.Remove(t);
                         break;
                     }
@@ -228,13 +227,13 @@ namespace GameProject {
         private void TowerSwitchInput() {
             if (_previewTower != null) {
                 if (_input.KeyPressed(Keys.D1)) {
-                    _previewTower = new FlameThrower(_selectedTower.X, _selectedTower.Y, _previewTower.HotkeyNumber);
+                    _previewTower = new FlameThrower(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
                 else if (_input.KeyPressed(Keys.D2)) {
-                    _previewTower = new Shotgun(_selectedTower.X, _selectedTower.Y, _previewTower.HotkeyNumber);
+                    _previewTower = new Shotgun(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
                 else if (_input.KeyPressed(Keys.D3)) {
-                    _previewTower = new Sniper(_selectedTower.X, _selectedTower.Y, _previewTower.HotkeyNumber);
+                    _previewTower = new Sniper(_selectedTower!.X, _selectedTower.Y, _previewTower.HotkeyNumber);
                 }
             }
         }
@@ -253,10 +252,10 @@ namespace GameProject {
                 }
                 //TODO: check if there is no path on this position, and if there isn't place the tower
                 else {
-                    if (!IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y))
+                    if (!GameRoot.IsValidTileForTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y))
                         return;
-                    Utility.TowerList.Remove(_selectedTower);
-                    AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, _previewTower.Type, _previewTower.HotkeyNumber);
+                    Utility.TowerList.Remove(_selectedTower!);
+                    GameRoot.AddTower(_input.MouseToGameGrid().X, _input.MouseToGameGrid().Y, _previewTower.Type, _previewTower.HotkeyNumber);
                     _previewTower = null;
                 }
             }
@@ -267,7 +266,7 @@ namespace GameProject {
         /// <param name="x">x coordinate to check</param>
         /// <param name="y">y coordinate to check</param>
         /// <returns>whether the given position is valid for the tower</returns>
-        private bool IsValidTileForTower(int x, int y) {
+        private static bool IsValidTileForTower(int x, int y) {
             foreach (Tower t in Utility.TowerList)
             {
                 if (t.X == x && t.Y == y)
@@ -286,33 +285,26 @@ namespace GameProject {
                     _latestHoveredOverTower = t;
             }
         }
-        private void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber) {
-            Tower tower = null;
-            switch(type) {
-                case Utility.TowerType.FlameThrower:
-                    tower = new FlameThrower(x, y, HotKeyNumber);
-                    break;
-                case Utility.TowerType.Sniper:
-                    tower = new Sniper(x, y, HotKeyNumber);
-                    break;
-                case Utility.TowerType.Shotgun:
-                    tower = new Shotgun(x, y, HotKeyNumber);
-                    break;
-                default: throw new ArgumentException("invalid tower type: " + type);
-            }
+        private static void AddTower(int x, int y, Utility.TowerType type, int HotKeyNumber) {
+            Tower tower = type switch {
+                Utility.TowerType.FlameThrower => new FlameThrower(x, y, HotKeyNumber),
+                Utility.TowerType.Sniper => new Sniper(x, y, HotKeyNumber),
+                Utility.TowerType.Shotgun => new Shotgun(x, y, HotKeyNumber),
+                _ => throw new ArgumentException("invalid tower type: " + type),
+            };
             Utility.TowerList.Add(tower);
         }
 
         private const int _startingLives = 10;
-        GraphicsDeviceManager _graphics;
-        SpriteBatch _s;
-        RenderTarget2D _renderTarget01;
-        Tower _latestHoveredOverTower;
-        Input _input;
-        HUD _hud;
-        Sidebar _sidebarUI;
+        readonly GraphicsDeviceManager _graphics;
+        SpriteBatch _s = null!;
+        RenderTarget2D _renderTarget01 = null!;
+        Tower? _latestHoveredOverTower;
+        Input _input = null!;
+        HUD _hud = null!;
+        Sidebar _sidebarUI = null!;
         // list for all towers
-        Tower _selectedTower = null, _previewTower = null;
-        CoolDownTimer _difficultyCooldown;
+        Tower? _selectedTower = null, _previewTower = null;
+        CoolDownTimer _difficultyCooldown = null!;
     }
 }

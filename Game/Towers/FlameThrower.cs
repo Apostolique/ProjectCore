@@ -6,8 +6,8 @@ namespace GameProject.Towers {
     class FlameThrower : Tower {
         public FlameThrower(int x, int y, int hotkeyNumber) : base(x, y, 1f, hotkeyNumber) {
             TowerColor = Color.OrangeRed;
-            _damageTiles = new List<Point>();
-            _flameList = new List<Projectile>();
+            _damageTiles = [];
+            _flameList = [];
             Type = Utility.TowerType.FlameThrower;
             Damage = 2;
             _minRange = 0;
@@ -15,7 +15,7 @@ namespace GameProject.Towers {
             TowerInfo = "Flame Turret\nMin. Range: " + _minRange + "\nMax. Range: " + _maxRange + "\nDamage: " + Damage + "\nLights minions on fire\nuse multiple to stack DMG";
         }
 
-        public float BurnTime => 5;
+        public static float BurnTime => 5;
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
@@ -33,7 +33,7 @@ namespace GameProject.Towers {
             foreach (Projectile f in _flameList) {
                 f.Update(gameTime);
                 // bullets start at the center, therefore an extra 0.5f is added to the range
-                if (f.DistanceTravelled > _maxRange + 0.5f)
+                if (f.DistanceTraveled > _maxRange + 0.5f)
                     f.MarkedForDeletion = true;
             }
         }
@@ -48,13 +48,13 @@ namespace GameProject.Towers {
 
         private void GenerateFireEffect() {
             for (int i = 0; i <= _amountOfFlamesPerCycle; i++) {
-                Vector2 randomDirection = RandomDirectionGenerator();
-                Projectile flame = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), randomDirection, Color.Orange, 3.5F);
+                Vector2 randomDirection = FlameThrower.RandomDirectionGenerator();
+                Projectile flame = new Projectile(new Vector2(X + 0.5f, Y + 0.5f), randomDirection, Color.Orange, 3.5F);
                 _flameList.Add(flame);
             }
         }
 
-        private Vector2 RandomDirectionGenerator() {
+        private static Vector2 RandomDirectionGenerator() {
             Vector2 randomDirection = new Vector2((float)Utility.random.NextDouble(), (float)Utility.random.NextDouble());
             int r = Utility.random.Next(0, 5);
             if (r == 2)
@@ -88,7 +88,7 @@ namespace GameProject.Towers {
         }
 
         private const int _amountOfFlamesPerCycle = 200;
-        private List<Projectile> _flameList;
-        List<Point> _damageTiles;
+        private readonly List<Projectile> _flameList;
+        readonly List<Point> _damageTiles;
     }
 }

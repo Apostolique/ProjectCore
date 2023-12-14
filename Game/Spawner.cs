@@ -30,7 +30,7 @@ namespace GameProject {
             }
         }
 
-        CoolDownTimer _timer1;
-        CoolDownTimer _timer2;
+        readonly CoolDownTimer _timer1;
+        readonly CoolDownTimer _timer2;
     }
 }

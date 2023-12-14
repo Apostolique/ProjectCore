@@ -13,13 +13,13 @@ namespace GameProject {
     ///         3) Eliminate tiles that have a path of an other color.
     ///         4) Pick one of the available tiles based on:
     ///             a) If path is short, bias towards the center.
-    ///             b) If path is long, bias towars the edges.
+    ///             b) If path is long, bias towers the edges.
     ///             c) Also bias for longer paths if the mode is easy.
     /// </summary>
     class Path {
         public Path() {
-            pathway = new List<Tile>();
-            MinionList = new List<Minion>();
+            pathway = [];
+            MinionList = [];
             _spawnSequenceTimer = new CoolDownTimer(0.2f);
             _spawnSequenceTimer.Reset();
             _pathsShown = 0;
@@ -170,9 +170,9 @@ namespace GameProject {
             s.DrawLine(x1, y1, x2, y2, Color.White, Utility.Board.GridSize * 0.1f);
         }
 
-        private Spawner _spawner;
-        private CoolDownTimer _spawnSequenceTimer;
-        private CoolDownTimer _minionSpawner;
+        private readonly Spawner _spawner;
+        private readonly CoolDownTimer _spawnSequenceTimer;
+        private readonly CoolDownTimer _minionSpawner;
         private int _pathsShown;
         private bool _done;
     }

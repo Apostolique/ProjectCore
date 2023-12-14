@@ -6,14 +6,9 @@ namespace GameProject {
     /// <summary>
     /// Goal: Base class for the game's minions.
     /// </summary>
-    class Tile {
-        public Tile(int x, int y) {
-            X = x;
-            Y = y;
-        }
-
-        public int X;
-        public int Y;
+    class Tile(int x, int y) {
+        public int X = x;
+        public int Y = y;
 
         public void Draw(SpriteBatch s, Color c) {
             s.DrawRectangle(new RectangleF(Utility.GameToScreen(X), Utility.GameToScreen(Y), Utility.Board.GridSize, Utility.Board.GridSize), c, 1);

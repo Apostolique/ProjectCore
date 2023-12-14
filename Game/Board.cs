@@ -14,8 +14,8 @@ namespace GameProject {
             Width = iWidth;
             Height = iHeight;
 
-            Paths = new List<Path>();
-            OldPaths = new List<Path>();
+            Paths = [];
+            OldPaths = [];
             _tiles = new Tile[FullWidth, FullHeight];
 
             _bossTimer = new CoolDownTimer(60);
@@ -81,7 +81,7 @@ namespace GameProject {
         public void GeneratePath() {
             Path newPath = new Path();
 
-            int preferedSize = (int)Math.Sqrt(FullWidth * FullHeight);
+            int preferredSize = (int)Math.Sqrt(FullWidth * FullHeight);
             int length = 0;
 
             //Edge restriction: Only edges in paths at the start and end of a path.
@@ -102,10 +102,9 @@ namespace GameProject {
             do {
                 HashSet<Tile> nextTiles = FindNeighbors(t);
                 RemoveStartAndEnd(ref nextTiles);
-                List<TileValue> nextTileSort = new List<TileValue>();
-                foreach (Tile i in nextTiles)
-                {
-                    nextTileSort.Add(new TileValue(i, GetTileValue(i, startTile, length, preferedSize, newPath)));
+                List<TileValue> nextTileSort = [];
+                foreach (Tile i in nextTiles) {
+                    nextTileSort.Add(new TileValue(i, GetTileValue(i, startTile, length, preferredSize, newPath)));
                 }
                 nextTileSort.Sort((v1, v2) => v1.Value.CompareTo(v2.Value));
                 foreach (TileValue tv in nextTileSort) {
@@ -134,7 +133,7 @@ namespace GameProject {
             HashSet<Tile> edges = GetEdgeTiles();
             return edges.Contains(tile);
         }
-        private int GetTileValue(Tile t, Tile start, int length, int preferedSize, Path p) {
+        private int GetTileValue(Tile t, Tile start, int length, int preferredSize, Path p) {
             int tileValue = 0;
 
             bool isEdge = GetEdgeTiles().Contains(t);
@@ -146,9 +145,9 @@ namespace GameProject {
             int centerDistance = (int)(Vector2.Distance(relativeCenter, relativeMapping) * 100f);
             int startDistance = (int)(Vector2.Distance(relativeStart, relativeMapping) * 50f);
 
-            if (isEdge && length > preferedSize) {
+            if (isEdge && length > preferredSize) {
                 tileValue += Utility.random.Next(50, 120);
-            } else if (!isEdge && length > preferedSize) {
+            } else if (!isEdge && length > preferredSize) {
                 tileValue += centerDistance + Utility.random.Next(0, 20);
             } else if (!isEdge) {
                 tileValue += (100 - centerDistance) * 3 + Utility.random.Next(0, 100);
@@ -163,7 +162,7 @@ namespace GameProject {
             return tileValue;
         }
         private HashSet<Tile> GetEdgeTiles() {
-            HashSet<Tile> edgeTiles = new HashSet<Tile>();
+            HashSet<Tile> edgeTiles = [];
 
             //Get top row.
             edgeTiles.UnionWith(GetRow(0));
@@ -194,7 +193,7 @@ namespace GameProject {
             }
         }
         private HashSet<Tile> GetRow(int row) {
-            HashSet<Tile> rowTiles = new HashSet<Tile>();
+            HashSet<Tile> rowTiles = [];
             for (int i = 0; i < FullWidth; i++) {
                 rowTiles.Add(_tiles[i, row]);
             }
@@ -202,7 +201,7 @@ namespace GameProject {
             return rowTiles;
         }
         private HashSet<Tile> GetColumn(int column) {
-            HashSet<Tile> rowTiles = new HashSet<Tile>();
+            HashSet<Tile> rowTiles = [];
             for (int i = 0; i < FullHeight; i++) {
                 rowTiles.Add(_tiles[column, i]);
             }
@@ -210,7 +209,7 @@ namespace GameProject {
             return rowTiles;
         }
         private HashSet<Tile> FindNeighbors(Tile t) {
-            HashSet<Tile> neighbors = new HashSet<Tile>();
+            HashSet<Tile> neighbors = [];
             if (t.X - 1 >= 0) {
                 neighbors.Add(_tiles[t.X - 1, t.Y]);
             }
@@ -234,34 +233,29 @@ namespace GameProject {
                     _tiles[i, j].Draw(s, Color.White);
                 }
             }
-            DrawPaths(s, OldPaths);
-            DrawPathLines(s, OldPaths);
-            DrawPaths(s, Paths);
-            DrawPathLines(s, Paths);
+            Board.DrawPaths(s, OldPaths);
+            Board.DrawPathLines(s, OldPaths);
+            Board.DrawPaths(s, Paths);
+            Board.DrawPathLines(s, Paths);
         }
-        public void DrawPaths(SpriteBatch s, List<Path> paths) {
+        public static void DrawPaths(SpriteBatch s, List<Path> paths) {
             foreach (Path p in paths) {
                 p.Draw(s);
             }
         }
-        public void DrawPathLines(SpriteBatch s, List<Path> paths) {
+        public static void DrawPathLines(SpriteBatch s, List<Path> paths) {
             foreach (Path p in paths) {
                 p.DrawLine(s);
             }
         }
 
-        struct TileValue {
-            public TileValue(Tile t, int v) {
-                Tile = t;
-                Value = v;
-            }
-
-            public Tile Tile;
-            public int Value;
+        struct TileValue(Tile t, int v) {
+            public Tile Tile = t;
+            public int Value = v;
         }
 
-        Tile[,] _tiles;
-        CoolDownTimer _bossTimer;
+        readonly Tile[,] _tiles;
+        readonly CoolDownTimer _bossTimer;
         int _gridSize = 1;
     }
 }

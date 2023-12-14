@@ -31,7 +31,7 @@ namespace GameProject.Towers {
         public override void Draw(SpriteBatch s) {
             base.Draw(s);
             if (!_disabled && !(_targetedMinion == null))
-                s.DrawLine(Utility.GameToScreen(this.X) + Utility.Board.GridSize / 2, Utility.GameToScreen(this.Y) + Utility.Board.GridSize / 2, Utility.GameToScreen(_targetedMinion.Position.X), Utility.GameToScreen(_targetedMinion.Position.Y), Color.Red, 2f);
+                s.DrawLine(Utility.GameToScreen(X) + Utility.Board.GridSize / 2, Utility.GameToScreen(Y) + Utility.Board.GridSize / 2, Utility.GameToScreen(_targetedMinion.Position.X), Utility.GameToScreen(_targetedMinion.Position.Y), Color.Red, 2f);
         }
         private void TargetMinion() {
             _targetedMinion = null;
@@ -51,6 +51,6 @@ namespace GameProject.Towers {
             }
         }
 
-        Minion _targetedMinion;
+        Minion? _targetedMinion;
     }
 }

@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GameProject {
     class AssetManager {
-        public AssetManager(ContentManager iContent) {
-            _content = iContent;
+        public AssetManager(ContentManager content) {
+            _content = content;
             FontSystem = new FontSystem();
             FontSystem.AddFont(TitleContainer.OpenStream($"{_content.RootDirectory}/Jura-Bold.ttf"));
         }

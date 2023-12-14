@@ -5,36 +5,30 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
 
 namespace GameProject.UI {
-    class Sidebar {
-        public Sidebar(Vector2 iOffset) {
-            _effectTick = 0;
-            _offset = iOffset;
-            _towerInfoOffset = 190;
-        }
-
+    class Sidebar(Vector2 offset) {
         public void Update(GameTime gameTime) {
             _position = new Vector2(Utility.Window.ClientBounds.Width - _offset.X, _offset.Y);
-            _effectTick++;
-            if (_effectTick > 100)
+            _effectTick += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (_effectTick >= 2000)
                 _effectTick = 0;
         }
 
         public void Draw(SpriteBatch s) {
             DrawPlayTime(s);
 
-            Color placetowerscolor = Color.Gray;
+            Color placeTowersColor = Color.Gray;
             if (Utility.MaxTowers - Utility.TowerList.Count > 0) {
-                if (_effectTick > 50) {
-                    placetowerscolor = Color.Red;
+                if (_effectTick > 1000) {
+                    placeTowersColor = Color.Red;
                 }
                 else
-                    placetowerscolor = Color.White;
+                    placeTowersColor = Color.White;
             }
             s.DrawString(Utility.AssetManager.GetFont(22), "Lives: " + Utility.NumberOfLives, new Vector2(_position.X, _position.Y + 30), Color.Green);
             s.DrawString(Utility.AssetManager.GetFont(22), "Difficulty: " + Utility.GameDifficulty, new Vector2(_position.X, _position.Y + 60), Color.Aqua);
             s.DrawString(Utility.AssetManager.GetFont(22), "Kills: " + Utility.TotalNumberOfKills, new Vector2(_position.X, _position.Y + 90), Color.White);
             s.DrawString(Utility.AssetManager.GetFont(22), "Score: " + Utility.Score, new Vector2(_position.X, _position.Y + 120), Color.White);
-            s.DrawString(Utility.AssetManager.GetFont(22), "Placeable towers: " + (Utility.MaxTowers - Utility.TowerList.Count), new Vector2(_position.X, _position.Y + 150), placetowerscolor);
+            s.DrawString(Utility.AssetManager.GetFont(22), "Placeable towers: " + (Utility.MaxTowers - Utility.TowerList.Count), new Vector2(_position.X, _position.Y + 150), placeTowersColor);
 
             s.DrawString(Utility.AssetManager.GetFont(20), "Music by YERZMYEY", new Vector2(_position.X, _position.Y + 440), Color.LightGray);
 
@@ -51,8 +45,8 @@ namespace GameProject.UI {
             s.DrawString(Utility.AssetManager.GetFont(22), time, _position, Color.Red);
         }
 
-        private float _towerInfoOffset;
-        int _effectTick;
-        Vector2 _position, _offset;
+        private readonly float _towerInfoOffset = 190;
+        float _effectTick = 0;
+        Vector2 _position, _offset = offset;
     }
 }

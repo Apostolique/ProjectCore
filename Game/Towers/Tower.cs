@@ -9,14 +9,14 @@ namespace GameProject.Towers {
     /// Goal: Base class for the game's towers.
     /// </summary>
     abstract class Tower {
-        public Tower(int x, int y, float iAttackCooldown, int iHotkeyNumber) {
+        public Tower(int x, int y, float attackCooldown, int hotkeyNumber) {
             _x = x;
             _y = y;
-            _attackTimer = new CoolDownTimer(iAttackCooldown);
+            _attackTimer = new CoolDownTimer(attackCooldown);
             _attackTimer.Reset();
-            _attackTimer.SecondsElapsed = iAttackCooldown / 2;
+            _attackTimer.SecondsElapsed = attackCooldown / 2;
             TowerInfo = "undefined";
-            HotkeyNumber = iHotkeyNumber;
+            HotkeyNumber = hotkeyNumber;
         }
 
         public int X {
@@ -61,7 +61,7 @@ namespace GameProject.Towers {
             s.DrawRectangle(outlineRectangle, Color.Black, 2F);
         }
 
-        public void DrawSelectionHightlight(SpriteBatch s) {
+        public void DrawSelectionHighlight(SpriteBatch s) {
             s.FillRectangle(new RectangleF(Utility.GameToScreen(_x) - Utility.Board.GridSize * _highlightOffset / 2, Utility.GameToScreen(_y) - Utility.Board.GridSize * _highlightOffset / 2, Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize, Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize), Color.Yellow);
         }
         protected bool IsWithinRange(int x, int y) {

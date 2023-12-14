@@ -8,21 +8,21 @@ namespace GameProject {
     /// Goal: Junk class, used for global variables.
     /// </summary>
     static class Utility {
-        public static Board Board;
+        public static Board Board = null!;
         public enum TowerType { Sniper, Shotgun, FlameThrower};
         public enum MinionType { Slow, Fast, Boss };
         public enum GameState { Playing, GameOver };
-        public static GameState CurrentGamestate;
+        public static GameState CurrentGameState;
         public const int SlowMinionHP = 100;
         public const int FastMinionHP = 10;
         public const int BossMinionHp = 3000;
         public static int TotalNumberOfKills = 0;
         public static int NumberOfLives;
-        public static List<Tower> TowerList;
+        public static List<Tower> TowerList = null!;
         public static int MaxTowers => Board.Paths.Count + 1;
         public static int Score => (GameDifficulty * 20) + TotalNumberOfKills * GameDifficulty / 3;
-        public static GameWindow Window;
-        public static AssetManager AssetManager;
+        public static GameWindow Window = null!;
+        public static AssetManager AssetManager = null!;
         public static int SidebarWidth = 200;
         public static int GameDifficulty = 0;
 

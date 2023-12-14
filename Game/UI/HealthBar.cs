@@ -39,8 +39,8 @@ namespace GameProject.UI {
         }
 
         Color _fillColor, _outlineColor;
-        private float _healthBarWidth, _healthBarHeight;
+        private readonly float _healthBarWidth, _healthBarHeight;
         private const float _outlineThickness = 1f;
-        Minion _owner;
+        readonly Minion _owner;
     }
 }

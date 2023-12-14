@@ -16,8 +16,8 @@ namespace GameProject {
             Position = new Vector2(x, y);
             _inBetween = 0;
             _distanceTraveled = 0;
-            _waypoints = new List<Waypoint>();
-            _stackFlamethrowers = new List<FireStack>();
+            _waypoints = [];
+            _stackFlamethrowers = [];
             _fireClock = new CoolDownTimer(1);
             _fireClock.Reset();
             _type = type;
@@ -75,15 +75,14 @@ namespace GameProject {
                 Tile t = p.First();
                 Vector2 v1 = new Vector2(t.X + 0.5f, t.Y + 0.5f);
                 MoveTo(v1);
-                for (int i = 1; i < p.Count(); i++)
-                {
+                for (int i = 1; i < p.Count(); i++) {
                     Vector2 v2 = new Vector2(p.pathway[i].X + 0.5f, p.pathway[i].Y + 0.5f);
                     WalkTo(v2);
                 }
             }
         }
         public void TakeDamage(int damage) {
-            this._hp -= damage;
+            _hp -= damage;
             if(_hp < 0) {
                 Dead = true;
             }
@@ -102,9 +101,9 @@ namespace GameProject {
             if (circleDistance.Y <= (tileBoundingBox.Height / 2f))
                 return true;
 
-            double cornerDistance_sq = Math.Pow((circleDistance.X - tileBoundingBox.Width / 2f), 2f) + Math.Pow((circleDistance.Y - tileBoundingBox.Height / 2f), 2f);
+            double cornerDistance_sq = Math.Pow(circleDistance.X - tileBoundingBox.Width / 2f, 2f) + Math.Pow(circleDistance.Y - tileBoundingBox.Height / 2f, 2f);
 
-            return (cornerDistance_sq <= (_radius * _radius));
+            return cornerDistance_sq <= (_radius * _radius);
         }
         public bool CollidesWithBullet(Vector2 bulletOrigin , float bulletRadius) {
             var totalRadius = _radius + bulletRadius;
@@ -115,7 +114,7 @@ namespace GameProject {
         public void Update(GameTime gameTime) {
             _distanceTraveled += _speed + (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             _inBetween += _speed * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            while (_waypoints.Count() > 0 && _inBetween >= _waypoints.First().Distance) {
+            while (_waypoints.Count > 0 && _inBetween >= _waypoints.First().Distance) {
                 _inBetween -= _waypoints[0].Distance;
                 _waypoints.RemoveAt(0);
             }
@@ -160,48 +159,37 @@ namespace GameProject {
             bool added = false;
             for (int i = 0; i < _stackFlamethrowers.Count; i++) {
                 if (_stackFlamethrowers[i].FlameThrower == f) {
-                    FireStack fs = new FireStack(f, new CoolDownTimer(f.BurnTime));
+                    FireStack fs = new FireStack(f, new CoolDownTimer(FlameThrower.BurnTime));
                     fs.FireTimer.Reset();
                     _stackFlamethrowers[i] = fs;
                     added = true;
                 }
             }
             if (!added) {
-                FireStack fs = new FireStack(f, new CoolDownTimer(f.BurnTime));
+                FireStack fs = new FireStack(f, new CoolDownTimer(FlameThrower.BurnTime));
                 fs.FireTimer.Reset();
                 _stackFlamethrowers.Add(fs);
             }
         }
 
-        struct Waypoint {
-            public Waypoint(Vector2 start, Vector2 target, float distance) {
-                Start = start;
-                Target = target;
-                Distance = distance;
-            }
-
-            public Vector2 Start;
-            public Vector2 Target;
-            public float Distance;
+        struct Waypoint(Vector2 start, Vector2 target, float distance) {
+            public Vector2 Start = start;
+            public Vector2 Target = target;
+            public float Distance = distance;
         }
-        struct FireStack {
-            public FireStack(FlameThrower flameThrower, CoolDownTimer fireTimer) {
-                FlameThrower = flameThrower;
-                FireTimer = fireTimer;
-            }
-
-            public FlameThrower FlameThrower;
-            public CoolDownTimer FireTimer;
+        struct FireStack(FlameThrower flameThrower, CoolDownTimer fireTimer) {
+            public FlameThrower FlameThrower = flameThrower;
+            public CoolDownTimer FireTimer = fireTimer;
         }
-        List<Waypoint> _waypoints;
-        float _speed;
-        float _radius;
+        readonly List<Waypoint> _waypoints;
+        readonly float _speed;
+        readonly float _radius;
         float _inBetween;
         float _distanceTraveled;
-        HealthBar _healthBar;
-        List<FireStack> _stackFlamethrowers;
-        CoolDownTimer _fireClock;
+        readonly HealthBar _healthBar;
+        readonly List<FireStack> _stackFlamethrowers;
+        readonly CoolDownTimer _fireClock;
         float _hp;
-        Utility.MinionType _type;
+        readonly Utility.MinionType _type;
     }
 }

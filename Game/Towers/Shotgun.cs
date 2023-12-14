@@ -7,7 +7,7 @@ namespace GameProject.Towers {
         public Shotgun(int x, int y, int hotKeyNumber) : base(x, y, 1.5f, hotKeyNumber) {
             TowerColor = Color.DeepPink;
             Type = Utility.TowerType.Shotgun;
-            _bulletList = new List<Projectile>();
+            _bulletList = [];
             _minRange = 1;
             _maxRange = 3;
             Damage = 4;
@@ -32,7 +32,7 @@ namespace GameProject.Towers {
                 b.Update(gameTime);
                 BulletCollisionChecker();
                 // bullets start at the center, therefore an extra 0.5f is added to the range
-                if (b.DistanceTravelled > _maxRange + 0.5f)
+                if (b.DistanceTraveled > _maxRange + 0.5f)
                     b.MarkedForDeletion = true;
             }
 
@@ -42,7 +42,7 @@ namespace GameProject.Towers {
             foreach (Path p in Utility.Board.Paths) {
                 foreach(Minion m in p.MinionList) {
                     foreach(Projectile b in _bulletList) {
-                        if (m.CollidesWithBullet(b.Position, b.Radius)) {
+                        if (m.CollidesWithBullet(b.Position, Projectile.Radius)) {
                             m.TakeDamage(Damage);
                             b.MarkedForDeletion = true;
                         }
@@ -61,22 +61,22 @@ namespace GameProject.Towers {
         }
 
         private void ShootAtTargetedMinion() {
-            Vector2 direction = Vector2.Normalize(new Vector2(_targetedMinion.Position.X - this.X, _targetedMinion.Position.Y - this.Y));
+            Vector2 direction = Vector2.Normalize(new Vector2(_targetedMinion!.Position.X - X, _targetedMinion.Position.Y - Y));
             for(int i = 0; i <= _amountOfPellets; i++) {
                 Vector2 newDirection = GenerateDirectionOffset(direction);
-                Projectile pellet = new Projectile(new Vector2(this.X + 0.5f, this.Y + 0.5f), newDirection, Color.Red, 6F);
+                Projectile pellet = new Projectile(new Vector2(X + 0.5f, Y + 0.5f), newDirection, Color.Red, 6F);
                 _bulletList.Add(pellet);
             }
             Utility.AssetManager.PlaySFX("shotgun_shot", 0.15f);
         }
 
-        private Vector2 GenerateDirectionOffset(Vector2 initialDirection) {
+        private static Vector2 GenerateDirectionOffset(Vector2 initialDirection) {
             float randomizedDirectionOffset = (float)(Utility.random.NextDouble() / _pelletDistribution);
             if (Utility.random.Next(0, 2) > 0)
                 randomizedDirectionOffset = -randomizedDirectionOffset;
-            Vector2 offsettedDirection = new Vector2(initialDirection.X - randomizedDirectionOffset, initialDirection.Y - randomizedDirectionOffset);
-            offsettedDirection.Normalize();
-            return offsettedDirection;
+            Vector2 offsetDirection = new Vector2(initialDirection.X - randomizedDirectionOffset, initialDirection.Y - randomizedDirectionOffset);
+            offsetDirection.Normalize();
+            return offsetDirection;
         }
 
         private void TargetMinion() {
@@ -98,8 +98,8 @@ namespace GameProject.Towers {
             }
         }
 
-        Minion _targetedMinion = null;
-        List<Projectile> _bulletList;
+        Minion? _targetedMinion = null;
+        readonly List<Projectile> _bulletList;
         private const int _targetChance = 33;
         private const int _amountOfPellets = 6;
         // The higher, the tighter the spread
