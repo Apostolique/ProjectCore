@@ -61,6 +61,6 @@ monodroid*.msi
 *.dll
 *.VC.db
 *.VC.opendb
-!MonoGame.Extended.Content.Pipeline.dll
-!MonoGame.Extended.dll
-!Newtonsoft.Json.dll
+
+apos-docs/
+artifacts/

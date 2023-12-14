@@ -13,24 +13,36 @@ env:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+
+    env:
+      MGFXC_WINE_PATH: /home/runner/.winemonogame
 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: '8.0.x'
     - name: Get version from tag
       run: |
         TAGVERSION=$(git describe --tags --abbrev=0)
         echo "TAGVERSION=${TAGVERSION:1}" >> $GITHUB_ENV
+    - name: Setup Wine
+      run: |
+        sudo apt update
+        sudo apt install wine64 p7zip-full
+        wget -qO- https://raw.githubusercontent.com/MonoGame/MonoGame/develop/Tools/MonoGame.Effect.Compiler/mgfxc_wine_setup.sh | sh
     - name: Build Windows
-      run: dotnet publish ${{ env.PROJECT_PATH }} -r win-x64 -c Release --output build-windows
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r win-x64 -c Release --output artifacts/windows --self-contained -p:Version=${{ env.TAGVERSION }}
     - name: Build Osx
-      run: dotnet publish ${{ env.PROJECT_PATH }} -r osx-x64 -c Release --output build-osx
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r osx-x64 -c Release --output artifacts/osx --self-contained -p:Version=${{ env.TAGVERSION }}
     - name: Build Linux
-      run: dotnet publish ${{ env.PROJECT_PATH }} -r linux-x64 -c Release --output build-linux
+      run: dotnet publish ${{ env.PROJECT_PATH }} -r linux-x64 -c Release --output artifacts/linux --self-contained -p:Version=${{ env.TAGVERSION }}
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
     - name: Publish Windows build to itch.io
       uses: josephbmanley/butler-publish-itchio-action@master
       env:
@@ -38,7 +50,7 @@ jobs:
         CHANNEL: windows
         ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
         ITCH_USER: ${{ env.ITCH_USER_NAME }}
-        PACKAGE: build-windows
+        PACKAGE: artifacts/windows
         VERSION: ${{ env.TAGVERSION }}
     - name: Publish OSX build to itch.io
       uses: josephbmanley/butler-publish-itchio-action@master
@@ -47,7 +59,7 @@ jobs:
         CHANNEL: osx
         ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
         ITCH_USER: ${{ env.ITCH_USER_NAME }}
-        PACKAGE: build-osx
+        PACKAGE: artifacts/osx
         VERSION: ${{ env.TAGVERSION }}
     - name: Publish Linux build to itch.io
       uses: josephbmanley/butler-publish-itchio-action@master
@@ -56,5 +68,5 @@ jobs:
         CHANNEL: linux
         ITCH_GAME: ${{ env.ITCH_GAME_NAME }}
         ITCH_USER: ${{ env.ITCH_USER_NAME }}
-        PACKAGE: build-linux
+        PACKAGE: artifacts/linux
         VERSION: ${{ env.TAGVERSION }}
