@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 using FontStashSharp;
+using Apos.Shapes;
 
 namespace GameProject.Towers {
     /// <summary>
@@ -44,25 +44,27 @@ namespace GameProject.Towers {
         public virtual void Update(GameTime gameTime) {
             _attackTimer.Update(gameTime);
         }
-        public virtual void Draw(SpriteBatch s) {
+        public virtual void Draw(ShapeBatch sb) {
             if (_disabled)
-                s.FillRectangle(new RectangleF(Utility.GameToScreen(_x), Utility.GameToScreen(_y), Utility.Board.GridSize, Utility.Board.GridSize), Color.Gray);
+                sb.FillRectangle(new Vector2(Utility.GameToScreen(_x), Utility.GameToScreen(_y)), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize), Color.Gray);
             else
-                s.FillRectangle(new RectangleF(Utility.GameToScreen(_x), Utility.GameToScreen(_y), Utility.Board.GridSize, Utility.Board.GridSize), TowerColor);
+                sb.FillRectangle(new Vector2(Utility.GameToScreen(_x), Utility.GameToScreen(_y)), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize), TowerColor);
+            DrawCoolDownTimer(sb);
+        }
+        public virtual void DrawHotkey(SpriteBatch s) {
             s.DrawString(Utility.AssetManager.GetFont(0.5f * Utility.Board.GridSize), HotkeyNumber.ToString(), new Vector2(Utility.GameToScreen(_x) + Utility.Board.GridSize / 2.5f, Utility.GameToScreen(_y) + Utility.Board.GridSize / 4), Color.Black);
-            DrawCoolDownTimer(s);
         }
 
-        private void DrawCoolDownTimer(SpriteBatch s) {
+        private void DrawCoolDownTimer(ShapeBatch sb) {
             Vector2 position = new Vector2(Utility.GameToScreen(X), Utility.GameToScreen(Y) + Utility.Board.GridSize / 8);
-            RectangleF coolDownRectangle = new RectangleF(position.X, position.Y, 1 * ((_attackTimer.MaxTime - _attackTimer.SecondsElapsed) / _attackTimer.MaxTime) * Utility.Board.GridSize, Utility.Board.GridSize / 8);
-            s.FillRectangle(coolDownRectangle, Color.Yellow);
-            RectangleF outlineRectangle = new RectangleF(position.X, position.Y, Utility.Board.GridSize , Utility.Board.GridSize / 8);
-            s.DrawRectangle(outlineRectangle, Color.Black, 2F);
+            Vector2 coolDownSize = new Vector2(1 * ((_attackTimer.MaxTime - _attackTimer.SecondsElapsed) / _attackTimer.MaxTime) * Utility.Board.GridSize, Utility.Board.GridSize / 8);
+            sb.FillRectangle(position, coolDownSize, Color.Yellow);
+            Vector2 outlineSize = new Vector2(Utility.Board.GridSize , Utility.Board.GridSize / 8);
+            sb.BorderRectangle(position, outlineSize, Color.Black, 1f);
         }
 
-        public void DrawSelectionHighlight(SpriteBatch s) {
-            s.FillRectangle(new RectangleF(Utility.GameToScreen(_x) - Utility.Board.GridSize * _highlightOffset / 2, Utility.GameToScreen(_y) - Utility.Board.GridSize * _highlightOffset / 2, Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize, Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize), Color.Yellow);
+        public void DrawSelectionHighlight(ShapeBatch sb) {
+            sb.FillRectangle(new Vector2(Utility.GameToScreen(_x) - Utility.Board.GridSize * _highlightOffset / 2, Utility.GameToScreen(_y) - Utility.Board.GridSize * _highlightOffset / 2), new Vector2(Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize, Utility.Board.GridSize + _highlightOffset * Utility.Board.GridSize), Color.Yellow);
         }
         protected bool IsWithinRange(int x, int y) {
             return !(Math.Abs(x) > _minRange || Math.Abs(y) > _minRange);

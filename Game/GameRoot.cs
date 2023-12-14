@@ -1,5 +1,6 @@
 ﻿using System;
 using Apos.Input;
+using Apos.Shapes;
 using FontStashSharp;
 using GameProject.Towers;
 using GameProject.UI;
@@ -11,7 +12,9 @@ using Microsoft.Xna.Framework.Media;
 namespace GameProject {
     public class GameRoot : Game {
         public GameRoot() {
-            _graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this) {
+                GraphicsProfile = GraphicsProfile.HiDef
+            };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -34,6 +37,7 @@ namespace GameProject {
         protected override void LoadContent() {
             InputHelper.Setup(this);
             _s = new SpriteBatch(GraphicsDevice);
+            _sb = new ShapeBatch(GraphicsDevice, Content);
             _renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.Board.GridSize * Utility.Board.Width, Utility.Board.GridSize * Utility.Board.Height);
             Utility.AssetManager = new AssetManager(Content);
             Utility.AssetManager.PlayMusic("break_space", 0.3F);
@@ -79,7 +83,7 @@ namespace GameProject {
         }
         protected override void Draw(GameTime gameTime) {
             if (Utility.CurrentGameState == Utility.GameState.Playing) {
-                DrawPlayingState(_s);
+                DrawPlayingState();
             }
             else if (Utility.CurrentGameState == Utility.GameState.GameOver) {
                 GraphicsDevice.Clear(Color.Black);
@@ -141,45 +145,50 @@ namespace GameProject {
             }
             */
         }
-        private void DrawPlayingState(SpriteBatch spriteBatch) {
+        private void DrawPlayingState() {
             GraphicsDevice.SetRenderTarget(_renderTarget01);
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
-            spriteBatch.Begin();
-            Utility.Board.Draw(spriteBatch);
+            _sb.Begin();
+            Utility.Board.Draw(_sb);
             if (_latestHoveredOverTower != null)
-                HUD.DrawRangeIndicators(spriteBatch, new Point(_latestHoveredOverTower.X, _latestHoveredOverTower.Y), _latestHoveredOverTower);
+                HUD.DrawRangeIndicators(_sb, new Point(_latestHoveredOverTower.X, _latestHoveredOverTower.Y), _latestHoveredOverTower);
 
             // Highlight needs to be drawn before the actual towers
             if (_previewTower != null) {
                 if (IsWithinDimensions())
-                    HUD.DrawPlacementIndicator(spriteBatch, _previewTower, IsValidTileForTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y));
-                _selectedTower!.DrawSelectionHighlight(spriteBatch);
+                    HUD.DrawPlacementIndicator(_sb, _previewTower, IsValidTileForTower(Utility.MouseToGameGrid().X, Utility.MouseToGameGrid().Y));
+                _selectedTower!.DrawSelectionHighlight(_sb);
             }
-            foreach (Tower t in Utility.TowerList) t.Draw(spriteBatch);
+            foreach (Tower t in Utility.TowerList) t.Draw(_sb);
+            _sb.End();
+            _s.Begin();
+            foreach (Tower t in Utility.TowerList) t.DrawHotkey(_s);
             foreach (Path p in Utility.Board.Paths) {
-                p.DrawMinions(spriteBatch);
+                p.DrawMinions(_s);
             }
+            _s.End();
+            _sb.Begin();
             // Draw projectiles and fire effect
             foreach(Tower t in Utility.TowerList) {
-                if (t is Shotgun) (t as Shotgun)!.DrawProjectiles(spriteBatch);
-                else if (t is FlameThrower) (t as FlameThrower)!.DrawFireEffect(spriteBatch);
+                if (t is Shotgun) (t as Shotgun)!.DrawProjectiles(_sb);
+                else if (t is FlameThrower) (t as FlameThrower)!.DrawFireEffect(_sb);
             }
-            spriteBatch.End();
+            _sb.End();
             GraphicsDevice.SetRenderTarget(null);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(_renderTarget01, new Vector2(0, 0), Color.White);
-            spriteBatch.End();
+            _s.Begin();
+            _s.Draw(_renderTarget01, new Vector2(0, 0), Color.White);
+            _s.End();
             // Draw sideBar
-            spriteBatch.Begin();
-            if (_latestHoveredOverTower != null) _sidebarUI.DrawTowerInfo(spriteBatch, _latestHoveredOverTower);
-            _sidebarUI.Draw(spriteBatch);
-            spriteBatch.End();
+            _s.Begin();
+            if (_latestHoveredOverTower != null) _sidebarUI.DrawTowerInfo(_s, _latestHoveredOverTower);
+            _sidebarUI.Draw(_s);
+            _s.End();
             _latestHoveredOverTower = null;
         }
 
-        public bool IsWithinDimensions() {
+        public static bool IsWithinDimensions() {
             if (Utility.MouseToGameGrid().X >= Utility.Board.FullWidth - 1 || Utility.MouseToGameGrid().X <= 0)
                 return false;
             else if (Utility.MouseToGameGrid().Y >= Utility.Board.FullHeight - 1 || Utility.MouseToGameGrid().Y <= 0)
@@ -299,6 +308,7 @@ namespace GameProject {
         private const int _startingLives = 10;
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _s = null!;
+        ShapeBatch _sb = null!;
         RenderTarget2D _renderTarget01 = null!;
         Tower? _latestHoveredOverTower;
         HUD _hud = null!;

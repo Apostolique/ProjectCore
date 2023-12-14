@@ -1,6 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
+﻿using Apos.Shapes;
+using Microsoft.Xna.Framework;
 
 namespace GameProject.Towers {
     class Projectile(Vector2 position, Vector2 direction, Color color, float speed) {
@@ -9,10 +8,9 @@ namespace GameProject.Towers {
             _distanceTraveled += _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void Draw(SpriteBatch s) {
-            Point2 tempP = new Point2(Utility.GameToScreen(_position.X), Utility.GameToScreen(_position.Y));
-            s.DrawCircle(new CircleF(tempP, Radius * Utility.Board.GridSize), 8, _color, Radius * Utility.Board.GridSize);
-            s.DrawCircle(new CircleF(tempP, Radius * Utility.Board.GridSize), 8, Color.Black, 1);
+        public void Draw(ShapeBatch sb) {
+            Vector2 tempP = new Vector2(Utility.GameToScreen(_position.X), Utility.GameToScreen(_position.Y));
+            sb.DrawCircle(tempP, Radius * Utility.Board.GridSize, _color, Color.Black, 1f);
         }
 
         public float DistanceTraveled => _distanceTraveled;

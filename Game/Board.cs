@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameProject {
     /// <summary>
     /// Goal: Board, not actually sure what it will handle...
     /// </summary>
     class Board {
-        public Board(int iWidth, int iHeight) {
-            Width = iWidth;
-            Height = iHeight;
+        public Board(int width, int height) {
+            Width = width;
+            Height = height;
 
             Paths = [];
             OldPaths = [];
@@ -225,27 +224,27 @@ namespace GameProject {
 
             return neighbors;
         }
-        public void Draw(SpriteBatch s) {
-            s.FillRectangle(new Rectangle(0, 0, GridSize * Width, GridSize * Height), new Color(15, 15, 15));
+        public void Draw(ShapeBatch sb) {
+            sb.FillRectangle(new Vector2(0, 0), new Vector2(GridSize * Width, GridSize * Height), new Color(15, 15, 15));
 
             for (int i = 1; i < FullWidth - 1; i++) {
                 for (int j = 1; j < FullHeight - 1; j++) {
-                    _tiles[i, j].Draw(s, Color.White);
+                    _tiles[i, j].Draw(sb, Color.White);
                 }
             }
-            Board.DrawPaths(s, OldPaths);
-            Board.DrawPathLines(s, OldPaths);
-            Board.DrawPaths(s, Paths);
-            Board.DrawPathLines(s, Paths);
+            DrawPaths(sb, OldPaths);
+            DrawPathLines(sb, OldPaths);
+            DrawPaths(sb, Paths);
+            DrawPathLines(sb, Paths);
         }
-        public static void DrawPaths(SpriteBatch s, List<Path> paths) {
+        public static void DrawPaths(ShapeBatch sb, List<Path> paths) {
             foreach (Path p in paths) {
-                p.Draw(s);
+                p.Draw(sb);
             }
         }
-        public static void DrawPathLines(SpriteBatch s, List<Path> paths) {
+        public static void DrawPathLines(ShapeBatch sb, List<Path> paths) {
             foreach (Path p in paths) {
-                p.DrawLine(s);
+                p.DrawLine(sb);
             }
         }
 

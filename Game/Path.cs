@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameProject {
     /// <summary>
@@ -123,33 +123,33 @@ namespace GameProject {
             }
         }
 
-        public void Draw(SpriteBatch s) {
+        public void Draw(ShapeBatch sb) {
             if (Sequence == Animation.Spawn) {
                 for (int i = 0; i < _pathsShown; i++) {
-                    DrawPathTile(s, i);
+                    DrawPathTile(sb, i);
                 }
             } else if (Sequence == Animation.Despawn) {
                 for (int i = _pathsShown; i < pathway.Count; i++) {
-                    DrawPathTile(s, i);
+                    DrawPathTile(sb, i);
                 }
             } else {
                 for (int i = 0; i < pathway.Count; i++) {
-                    DrawPathTile(s, i);
+                    DrawPathTile(sb, i);
                 }
             }
         }
-        public void DrawLine(SpriteBatch s) {
+        public void DrawLine(ShapeBatch sb) {
             if (Sequence == Animation.Spawn) {
                 for (int i = 1; i < _pathsShown; i++) {
-                    DrawPathLine(s, i);
+                    DrawPathLine(sb, i);
                 }
             } else if (Sequence == Animation.Despawn) {
                 for (int i = _pathsShown + 1; i < pathway.Count; i++) {
-                    DrawPathLine(s, i);
+                    DrawPathLine(sb, i);
                 }
             } else {
                 for (int i = 1; i < pathway.Count; i++) {
-                    DrawPathLine(s, i);
+                    DrawPathLine(sb, i);
                 }
             }
         }
@@ -157,17 +157,16 @@ namespace GameProject {
             foreach (Minion m in MinionList)
                 m.Draw(s);
         }
-        private void DrawPathTile(SpriteBatch s, int i) {
-            s.FillRectangle(new Rectangle(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y), Utility.Board.GridSize, Utility.Board.GridSize), new Color(19, 59, 131));
+        private void DrawPathTile(ShapeBatch sb, int i) {
+            sb.FillRectangle(new Vector2(Utility.GameToScreen(pathway[i].X), Utility.GameToScreen(pathway[i].Y)), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize), new Color(19, 59, 131));
         }
-        private void DrawPathLine(SpriteBatch s, int i) {
+        private void DrawPathLine(ShapeBatch sb, int i) {
             float x1 = Utility.GameToScreen(pathway[i].X + 0.5f);
             float y1 = Utility.GameToScreen(pathway[i].Y + 0.5f);
             float x2 = Utility.GameToScreen(pathway[i - 1].X + 0.5f);
             float y2 = Utility.GameToScreen(pathway[i - 1].Y + 0.5f);
 
-            s.DrawLine(x1, y1, x2, y2, Color.Black, Utility.Board.GridSize * 0.15f);
-            s.DrawLine(x1, y1, x2, y2, Color.White, Utility.Board.GridSize * 0.1f);
+            sb.DrawLine(new Vector2(x1, y1), new Vector2(x2, y2), Utility.Board.GridSize * 0.1f, Color.White, Color.Black, Utility.Board.GridSize * 0.001f);
         }
 
         private readonly Spawner _spawner;

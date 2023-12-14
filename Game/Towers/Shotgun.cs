@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Towers {
     class Shotgun : Tower {
@@ -51,13 +51,9 @@ namespace GameProject.Towers {
             }
         }
 
-        public override void Draw(SpriteBatch s) {
-            base.Draw(s);
-        }
-
-        public void DrawProjectiles(SpriteBatch s) {
+        public void DrawProjectiles(ShapeBatch sb) {
             foreach (Projectile b in _bulletList)
-                b.Draw(s);
+                b.Draw(sb);
         }
 
         private void ShootAtTargetedMinion() {

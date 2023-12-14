@@ -1,6 +1,5 @@
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameProject {
     /// <summary>
@@ -10,8 +9,8 @@ namespace GameProject {
         public int X = x;
         public int Y = y;
 
-        public void Draw(SpriteBatch s, Color c) {
-            s.DrawRectangle(new RectangleF(Utility.GameToScreen(X), Utility.GameToScreen(Y), Utility.Board.GridSize, Utility.Board.GridSize), c, 1);
+        public void Draw(ShapeBatch sb, Color c) {
+            sb.BorderRectangle(new Vector2(Utility.GameToScreen(X), Utility.GameToScreen(Y)), new Vector2(Utility.Board.GridSize, Utility.Board.GridSize), c, 1f);
         }
     }
 }

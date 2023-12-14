@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GameProject.Towers {
     class FlameThrower : Tower {
@@ -37,11 +37,8 @@ namespace GameProject.Towers {
                     f.MarkedForDeletion = true;
             }
         }
-        public override void Draw(SpriteBatch s) {
-            base.Draw(s);
-        }
 
-        public void DrawFireEffect(SpriteBatch s) {
+        public void DrawFireEffect(ShapeBatch s) {
             foreach (Projectile f in _flameList)
                 f.Draw(s);
         }

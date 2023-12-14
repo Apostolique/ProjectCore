@@ -1,7 +1,6 @@
 ﻿using System;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoGame.Extended;
 
 namespace GameProject.Towers {
     class Sniper : Tower {
@@ -28,10 +27,10 @@ namespace GameProject.Towers {
             }
             base.Update(gameTime);
         }
-        public override void Draw(SpriteBatch s) {
-            base.Draw(s);
+        public override void Draw(ShapeBatch sb) {
+            base.Draw(sb);
             if (!_disabled && !(_targetedMinion == null))
-                s.DrawLine(Utility.GameToScreen(X) + Utility.Board.GridSize / 2, Utility.GameToScreen(Y) + Utility.Board.GridSize / 2, Utility.GameToScreen(_targetedMinion.Position.X), Utility.GameToScreen(_targetedMinion.Position.Y), Color.Red, 2f);
+                sb.BorderLine(new Vector2(Utility.GameToScreen(X) + Utility.Board.GridSize / 2, Utility.GameToScreen(Y) + Utility.Board.GridSize / 2), new Vector2(Utility.GameToScreen(_targetedMinion.Position.X), Utility.GameToScreen(_targetedMinion.Position.Y)), 1f, Color.Red, 2f);
         }
         private void TargetMinion() {
             _targetedMinion = null;
