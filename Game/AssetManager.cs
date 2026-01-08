@@ -18,9 +18,20 @@ namespace GameProject {
         }
 
         public void PlayMusic(string assetName, float volume = 0.5f, bool repeat = true) {
-            MediaPlayer.Volume = volume;
-            MediaPlayer.IsRepeating = repeat;
-            MediaPlayer.Play(_content.Load<Song>(assetName));
+            // MediaPlayer.Volume = volume;
+            // MediaPlayer.IsRepeating = repeat;
+            // MediaPlayer.Play(_content.Load<Song>(assetName));
+
+            if (CurrentMusic != null) {
+                CurrentMusic.Stop();
+                CurrentMusic.Dispose();
+            }
+
+            SoundEffect se = _content.Load<SoundEffect>(assetName);
+            CurrentMusic = se.CreateInstance();
+            CurrentMusic.Volume = volume;
+            CurrentMusic.IsLooped = repeat;
+            CurrentMusic.Play();
         }
 
         public DynamicSpriteFont GetFont(float size) {
@@ -28,6 +39,7 @@ namespace GameProject {
         }
 
         public FontSystem FontSystem;
+        public SoundEffectInstance CurrentMusic = null!;
 
         protected ContentManager _content;
     }

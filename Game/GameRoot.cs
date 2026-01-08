@@ -13,7 +13,11 @@ namespace GameProject {
     public class GameRoot : Game {
         public GameRoot() {
             _graphics = new GraphicsDeviceManager(this) {
+#if KNI
+                GraphicsProfile = GraphicsProfile.FL10_0
+#else
                 GraphicsProfile = GraphicsProfile.HiDef
+#endif
             };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -64,7 +68,6 @@ namespace GameProject {
                 UpdatePlayingState(gameTime);
                 if (Utility.NumberOfLives < 0)
                 {
-                    MediaPlayer.Stop();
                     Utility.AssetManager.PlayMusic("AbstractAmbiences-Mix_ST_37", 0.3F);
                     Utility.CurrentGameState = Utility.GameState.GameOver;
                 }
@@ -72,7 +75,6 @@ namespace GameProject {
             else if(Utility.CurrentGameState == Utility.GameState.GameOver) {
                 if (KeyboardCondition.Pressed(Keys.R)) {
                     Utility.CurrentGameState = Utility.GameState.Playing;
-                    MediaPlayer.Stop();
                     Utility.AssetManager.PlayMusic("break_space", 0.3F);
                     ResetPlayingState();
                 }

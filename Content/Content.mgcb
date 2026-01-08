@@ -15,7 +15,7 @@
 
 #begin AbstractAmbiences-Mix_ST_37.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:AbstractAmbiences-Mix_ST_37.mp3
 
@@ -33,7 +33,7 @@
 
 #begin break_space.mp3
 /importer:Mp3Importer
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:break_space.mp3
 
