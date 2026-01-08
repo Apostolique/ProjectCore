@@ -141,7 +141,7 @@ namespace GameProject {
             }
         }
         public void Draw(SpriteBatch s) {
-            Point2 tempP = new Point2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y));
+            Vector2 tempP = new Vector2(Utility.GameToScreen(Position.X), Utility.GameToScreen(Position.Y));
             if (_type == Utility.MinionType.Fast) {
                 s.DrawCircle(new CircleF(tempP, _radius * Utility.Board.GridSize), 8, Color.Green, 0.1f * Utility.Board.GridSize);
                 s.DrawCircle(new CircleF(tempP, _radius * Utility.Board.GridSize), 8, Color.Black, 2f);
