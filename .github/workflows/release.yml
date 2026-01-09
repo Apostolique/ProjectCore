@@ -46,7 +46,7 @@ jobs:
     - name: Build Web
       run: |
         dotnet restore ${{ env.PROJECT_PATH_WEB }}
-        cp -a /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/. /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/Tools/
+        cp /home/runner/work/ProjectCore/ProjectCore/.github/script/nkast.Xna.Framework.Content.Pipeline.Builder.targets /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/build/
         chmod +x /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/MGCB.exe
         chmod +x /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/Tools/MGCB.exe
         dotnet /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/MGCB.dll
