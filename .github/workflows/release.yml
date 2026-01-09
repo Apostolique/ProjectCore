@@ -24,7 +24,9 @@ jobs:
     - name: Setup dotnet
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: |
+          9.0.x
+          8.0.x
     - name: Get version from tag
       run: |
         TAGVERSION=$(git describe --tags --abbrev=0)
@@ -42,7 +44,13 @@ jobs:
     - name: Build Linux
       run: dotnet publish ${{ env.PROJECT_PATH }} -r linux-x64 -c Release --output artifacts/linux --self-contained -p:Version=${{ env.TAGVERSION }}
     - name: Build Web
-      run: dotnet publish ${{ env.PROJECT_PATH_WEB }} -c Release --output artifacts/web -p:Version=${{ env.TAGVERSION }}
+      run: |
+        dotnet restore ${{ env.PROJECT_PATH_WEB }}
+        cp -a /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/. /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/Tools/
+        chmod +x /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/MGCB.exe
+        chmod +x /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/Tools/MGCB.exe
+        /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/4.2.9001/tools/MGCB.exe
+        dotnet publish ${{ env.PROJECT_PATH_WEB }} -c Release --output artifacts/web -p:Version=${{ env.TAGVERSION }}
     - name: Publish Windows build to itch.io
       uses: yeslayla/butler-publish-itchio-action@master
       env:
