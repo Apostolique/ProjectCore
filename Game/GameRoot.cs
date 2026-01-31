@@ -178,6 +178,7 @@ namespace GameProject {
             }
             _sb.End();
             GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Black);
 
             _s.Begin();
             _s.Draw(_renderTarget01, new Vector2(0, 0), Color.White);
