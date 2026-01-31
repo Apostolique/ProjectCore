@@ -63,7 +63,7 @@ namespace GameProject.Towers {
                 Projectile pellet = new Projectile(new Vector2(X + 0.5f, Y + 0.5f), newDirection, Color.Red, 6F);
                 _bulletList.Add(pellet);
             }
-            Utility.AssetManager.PlaySFX("shotgun_shot", 0.15f);
+            Utility.AssetManager.PlaySFX(Utility.AssetManager.ShotgunSound, 0.15f);
         }
 
         private static Vector2 GenerateDirectionOffset(Vector2 initialDirection) {

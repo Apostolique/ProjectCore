@@ -20,7 +20,7 @@ namespace GameProject.Towers {
                 if (_targetedMinion != null) {
                     if (_attackTimer.IsExpired) {
                         _targetedMinion.TakeDamage(Damage);
-                        Utility.AssetManager.PlaySFX("sniper_shot", 0.75f);
+                        Utility.AssetManager.PlaySFX(Utility.AssetManager.SniperSound, 0.75f);
                         _attackTimer.Reset();
                     }
                 }

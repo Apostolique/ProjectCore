@@ -89,7 +89,7 @@ namespace GameProject {
                 _spawnSequenceTimer.Update(gameTime);
                 if (_spawnSequenceTimer.IsExpired) {
                     _pathsShown++;
-                    Utility.AssetManager.PlaySFX("Robot_Servo_006", 0.1f);
+                    Utility.AssetManager.PlaySFX(Utility.AssetManager.RobotSound, 0.1f);
                     _spawnSequenceTimer.Reset();
                     if (_pathsShown >= pathway.Count) {
                         Sequence = Animation.None;
@@ -100,7 +100,7 @@ namespace GameProject {
                 if (_spawnSequenceTimer.IsExpired)
                 {
                     _pathsShown++;
-                    Utility.AssetManager.PlaySFX("Robot_Servo_006", 0.1f);
+                    Utility.AssetManager.PlaySFX(Utility.AssetManager.RobotSound, 0.1f);
                     _spawnSequenceTimer.Reset();
                     if (_pathsShown >= pathway.Count)
                     {
@@ -114,11 +114,11 @@ namespace GameProject {
                 if (MinionList[i].Dead) {
                     MinionList.Remove(MinionList[i]);
                     Utility.TotalNumberOfKills++;
-                    Utility.AssetManager.PlaySFX("Death");
+                    Utility.AssetManager.PlaySFX(Utility.AssetManager.DeathSound);
                 } else if (!MinionList[i].IsMoving) {
                     MinionList.Remove(MinionList[i]);
                     Utility.NumberOfLives--;
-                    Utility.AssetManager.PlaySFX("BREAK_HIT_Celery_2");
+                    Utility.AssetManager.PlaySFX(Utility.AssetManager.BreakSound);
                 }
             }
         }

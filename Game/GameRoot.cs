@@ -44,7 +44,7 @@ namespace GameProject {
             _sb = new ShapeBatch(GraphicsDevice, Content);
             _renderTarget01 = new RenderTarget2D(GraphicsDevice, Utility.Board.GridSize * Utility.Board.Width, Utility.Board.GridSize * Utility.Board.Height);
             Utility.AssetManager = new AssetManager(Content);
-            Utility.AssetManager.PlayMusic("break_space", 0.3F);
+            Utility.AssetManager.PlayMusic(Utility.AssetManager.BreakMusic, 0.3F);
             // TODO: use this.Content to load your game content here
         }
         void Window_ClientSizeChanged(object? sender, EventArgs e) {
@@ -68,14 +68,14 @@ namespace GameProject {
                 UpdatePlayingState(gameTime);
                 if (Utility.NumberOfLives < 0)
                 {
-                    Utility.AssetManager.PlayMusic("AbstractAmbiences-Mix_ST_37", 0.3F);
+                    Utility.AssetManager.PlayMusic(Utility.AssetManager.AbstractMusic, 0.3F);
                     Utility.CurrentGameState = Utility.GameState.GameOver;
                 }
             }
             else if(Utility.CurrentGameState == Utility.GameState.GameOver) {
                 if (KeyboardCondition.Pressed(Keys.R)) {
                     Utility.CurrentGameState = Utility.GameState.Playing;
-                    Utility.AssetManager.PlayMusic("break_space", 0.3F);
+                    Utility.AssetManager.PlayMusic(Utility.AssetManager.BreakMusic, 0.3F);
                     ResetPlayingState();
                 }
             }
